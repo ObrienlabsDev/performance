@@ -12,8 +12,8 @@ import (
 func main() {
 	fmt.Println("Collatz 2024 michael@obrienlabs.dev")
 
-	var oddSearchStart uint64 = 1          // must be odd
-	var oddSearchEnd uint64 = 184467440737 //09551615 // must be odd
+	var oddSearchStart uint64 = 1        // must be odd
+	var oddSearchEnd uint64 = 4294967295 //18446744073709551615 // must be odd
 	var oddSearchIncrement uint64 = 2
 	var oddSearchCurrent uint64 = 1
 	var current uint64 = oddSearchStart
