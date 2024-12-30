@@ -134,7 +134,7 @@ void getSequence128Bench() {
     printf("%llu: %llu : %i\n", i0, max0, path);
     //for (int64_t i=27; i < 223372036854775808; i+=2) {
     for (;;) {
-        for (int x = 0; x < 16777216; x++) {
+        //for (int x = 0; x < 16777216; x++) {
             current0 = i0;
             current1 = i1;
             max1 = 0;
@@ -206,8 +206,8 @@ void getSequence128Bench() {
                 printf("mp: %llu:%llu %llu:%llu: %i\n", i1, i0, max1, max0, path);
             }
             i0 += 2;
-        }
-        printf("%llu:%llu %llu:%llu %i\n", i1, i0, max1, max0, path);
+        //}
+        //printf("%llu:%llu %llu:%llu %i\n", i1, i0, max1, max0, path);
     }
 }
 
@@ -283,8 +283,8 @@ void getSequence128() {
     __int64 newMax = 0;
     //unsigned long long path = 0;
     //unsigned long long maxPath = 0;
-    __int64 MAX = (1 << 30); // dont use long long
-    while (1) {//(num < MAX) {
+    __int64 MAX = (1 << 31) - 1; // dont use long long
+    while (num < MAX) {
         printf("%I64d ", maxNumber);
         newMax = hailstoneMax2();
         if (newMax > maxNumber) {
