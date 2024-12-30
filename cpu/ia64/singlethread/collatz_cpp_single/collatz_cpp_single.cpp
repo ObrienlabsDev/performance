@@ -135,11 +135,11 @@ void getSequence128Bench() {
 
     time_t secondsStart;
     time_t secondsLast;
-    //time_t secondsCurrent;
+    time_t secondsCurrent;
 
     secondsStart = time(NULL);
     secondsLast = time(NULL);
-    //secondsCurrent = time(NULL);
+    secondsCurrent = time(NULL);
     printf("time: %ul", secondsStart);
 
     printf("%llu: \n", MAXBIT);
@@ -202,21 +202,24 @@ void getSequence128Bench() {
             if (maxValue1 < max1) {
                 maxValue0 = max0;
                 maxValue1 = max1;
-                printf("m1: %llu:%llu %llu:%llu: p: %i sec: %i\n", i1, i0, max1, max0, path, (time(NULL) - secondsLast));
+                secondsCurrent = (time(NULL));
+                printf("m1: %llu:%llu %llu:%llu: p: %i sec: %i dur: %i\n", i1, i0, max1, max0, path, (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
                 secondsLast = time(NULL);
             }
             else {
                 if (maxValue1 == max1) {
                     if (maxValue0 < max0) {
                         maxValue0 = max0;
-                        printf("m0: %llu:%llu %llu:%llu: p: %i sec: %i\n", i1, i0, max1, max0, path, (time(NULL) - secondsLast));
+                        secondsCurrent = (time(NULL));
+                        printf("m0: %llu:%llu %llu:%llu: p: %i sec: %i dur: %i\n", i1, i0, max1, max0, path, (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
                         secondsLast = time(NULL);
                     }
                 }
             }
             if (maxPath < path) {
                 maxPath = path;
-                printf("mp: %llu:%llu %llu:%llu: p: %i sec: %i\n", i1, i0, max1, max0, path, (time(NULL) - secondsLast));
+                secondsCurrent = (time(NULL));
+                printf("mp: %llu:%llu %llu:%llu: p: %i sec: %i dur: %i\n", i1, i0, max1, max0, path, (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
                 secondsLast = time(NULL);
             }
             i0 += 2;
@@ -312,7 +315,7 @@ int main(int argc, char* argv[]) {
     printf("\nCollatz Sequence\n");
     //getSequence128();
     //getSequence64();
-    getSequence128Bench();
+    getSequence128Bench(); // 2304
     return 0;
 }
 
