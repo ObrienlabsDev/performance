@@ -19,6 +19,7 @@
 #### Java
 - 544 sec MacBook 16 M4max/12c
 - 648 sec MacMini M4pro/6c
+- 689 sec 13900K a
 ### Single Threaded : 128 bit native - 32 bit run
 ### CPP
 - 960 sec P1Gen6 13800H
