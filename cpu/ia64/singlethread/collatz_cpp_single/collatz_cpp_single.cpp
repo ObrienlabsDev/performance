@@ -113,7 +113,7 @@ void getSequence64() {
 
 /* 20241229:2256*/
 void getSequence128Bench() {
-    unsigned long long searchEnd = (1 << 32) - 1;
+    unsigned long long searchEnd = 4294967296;//  (1L << 32) - 1; // overflow to 64 bits
     unsigned long long current0 = 0; // no uint64_t typedef
     unsigned long long current1 = 0;
     unsigned long long maxValue0 = 0;
@@ -144,7 +144,7 @@ void getSequence128Bench() {
     printf("time: %ul", secondsStart);
 
     printf("%llu: \n", MAXBIT);
-    printf("%llu: %llu : %i\n", i0, max0, path);
+    printf("%llu: %llu : %i %llu\n", i0, max0, path, searchEnd);
     //for (int64_t i=27; i < 223372036854775808; i+=2) {
     for (;;) {
             current0 = i0;
@@ -154,6 +154,7 @@ void getSequence128Bench() {
             path = 0;
 
             if (i0 > searchEnd) {
+                printf("Completed: %i\n", time(NULL) - secondsStart);
                 break;
             }
 
@@ -228,7 +229,7 @@ void getSequence128Bench() {
                 printf("mp: %llu:%llu %llu:%llu: p: %i sec: %i dur: %i\n", i1, i0, max1, max0, path, (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
                 secondsLast = time(NULL);
             }
-            i0 += 2;
+            i0 += 2; // this will need i1 rollover logic when we hit # 88 and pass from 61 to 64 bits
     }
 }
 
