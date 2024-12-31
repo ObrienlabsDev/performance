@@ -113,6 +113,7 @@ void getSequence64() {
 
 /* 20241229:2256*/
 void getSequence128Bench() {
+    unsigned long long searchEnd = (1 << 32) - 1;
     unsigned long long current0 = 0; // no uint64_t typedef
     unsigned long long current1 = 0;
     unsigned long long maxValue0 = 0;
@@ -151,6 +152,11 @@ void getSequence128Bench() {
             max1 = 0;
             max0 = 0;
             path = 0;
+
+            if (i0 > searchEnd) {
+                break;
+            }
+
             while (!((current0 == 1) && (current1 == 0))) {
                 if (current0 % 2 == 0) {
                     current0 = current0 >> 1;
@@ -315,7 +321,7 @@ int main(int argc, char* argv[]) {
     printf("\nCollatz Sequence\n");
     //getSequence128();
     //getSequence64();
-    getSequence128Bench(); // 2304
+    getSequence128Bench();
     return 0;
 }
 
