@@ -1,4 +1,12 @@
 # performance
+## Criteria
+- CON: Single / Multi threaded (both CPU and GPU (you can use just 1 ALU core in a GPU)
+- PRU: CPU / GPU
+- FRM: native / framework (as in java long (64 bit max) or java BigInteger (open ended))
+- BIT: 64 / 128 / 256 bit
+- LAN: language (C, Swift, Go, Java, Python, Rust)
+- ARC: Architecture (IA64/AMD64 or ARM64 - or agnostic (JIT compiled Go))
+- 
 
 ## CPU
 ### Single Threaded : 64 bit native - 32 bit run
