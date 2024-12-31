@@ -46,13 +46,13 @@ public class Collatz {
 					if (maxValue > globalMaxValue) {
 						globalMaxValue = maxValue;
 						System.out.println("m0: " + oddSearchCurrent + " p: " + path + " m: " + maxValue + " ms: " 
-								+ (System.currentTimeMillis() - secondsLast) + " dur: " + (System.currentTimeMillis() - secondsStart));
+								+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 						secondsLast = System.currentTimeMillis();
 					}
 					if (path > globalMaxPath) {
 						globalMaxPath = path;
 						System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + maxValue + " ms: " 
-								+ (System.currentTimeMillis() - secondsLast) + " dur: " + (System.currentTimeMillis() - secondsStart));
+								+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 						secondsLast = System.currentTimeMillis();
 					}
 					break;
