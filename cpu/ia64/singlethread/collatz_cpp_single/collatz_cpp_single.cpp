@@ -111,7 +111,7 @@ void getSequence64() {
     }
 }
 
-/* 20241229:2256*/
+/* 20241229 */
 void getSequence128Bench() {
     unsigned long long searchEnd = 4294967296;//  (1L << 32) - 1; // overflow to 64 bits
     unsigned long long current0 = 0; // no uint64_t typedef
@@ -145,94 +145,83 @@ void getSequence128Bench() {
 
     printf("%llu: \n", MAXBIT);
     printf("%llu: %llu : %i %llu\n", i0, max0, path, searchEnd);
-    //for (int64_t i=27; i < 223372036854775808; i+=2) {
     for (;;) {
-            current0 = i0;
-            current1 = i1;
-            max1 = 0;
-            max0 = 0;
-            path = 0;
+        current0 = i0;
+        current1 = i1;
+        max1 = 0;
+        max0 = 0;
+        path = 0;
 
-            if (i0 > searchEnd) {
-                printf("Completed: %i\n", time(NULL) - secondsStart);
-                break;
+        if (i0 > searchEnd) {
+            printf("Completed: %i\n", time(NULL) - secondsStart);
+            break;
+        }
+
+        while (!((current0 == 1) && (current1 == 0))) {
+            if (current0 % 2 == 0) {
+                current0 = current0 >> 1;
+                // shift high byte first
+                if (current1 % 2 != 0) {
+                    current0 += MAXBIT;
+                }
+                current1 = current1 >> 1;
+            } else {
+                temp1 = 3 * current1;// + (current1 << 1);
+                current1 = temp1;
+
+                // shift first - calc overflow 1
+                temp0_sh = 1 + (current0 << 1);
+                if (!(current0 < MAXBIT)) {
+                    current1 = current1 + 1;
+                }
+                // add second - calc overflow 2
+                temp0_ad = temp0_sh + current0;
+                if (temp0_ad < current0) { // overflow
+                    current1 = current1 + 1;
+                }
+                current0 = temp0_ad;
             }
-
-            while (!((current0 == 1) && (current1 == 0))) {
-                if (current0 % 2 == 0) {
-                    current0 = current0 >> 1;
-                    // shift high byte first
-                    if (current1 % 2 != 0) {
-                        current0 += MAXBIT;
-                        //NSLog(@"u: %llu:%llu %i",current1, current0,path);
-                    }
-                    current1 = current1 >> 1;
-                    //NSLog(@"x: %llu:%llu %i",current1, current0,path);
-                }
-                else {
-                    temp1 = 3 * current1;// + (current1 << 1);
-                    current1 = temp1;
-
-                    // shift first - calc overflow 1
-                    temp0_sh = 1 + (current0 << 1);
-                    if (!(current0 < MAXBIT)) {
-                        current1 = current1 + 1;
-                        //NSLog(@"o1: %llu:%llu %i",current1, temp0_sh,path);
-
-                    }
-                    // add second - calc overflow 2
-                    temp0_ad = temp0_sh + current0;
-                    if (temp0_ad < current0) { // overflow
-                        current1 = current1 + 1;
-                        //NSLog(@"o2: %llu:%llu %i",current1, temp0_ad,path);
-                    }
-                    current0 = temp0_ad;
-                    //NSLog(@"z: %llu:%llu %i",current1, current0,path);
-
-                }
-                path++;
-                if (max1 < current1) {
-                    max1 = current1;
-                    max0 = current0;
-                    //NSLog(@"m: %llu: %llu: %i",max1, max0, path);
-                }
-                else {
-                    if (max1 == current1) {
-                        if (max0 < current0) {
-                            max0 = current0;
-                            //NSLog(@"b: %llu: %lld: %i",max1, max0, path);
-                        }
+               
+            path++;
+            if (max1 < current1) {
+                max1 = current1;
+                max0 = current0;
+            } else {
+                if (max1 == current1) {
+                    if (max0 < current0) {
+                        max0 = current0;
                     }
                 }
             }
-            //bool maxSet = false;
-            if (maxValue1 < max1) {
-                maxValue0 = max0;
-                maxValue1 = max1;
-                secondsCurrent = (time(NULL));
-                printf("m1: %llu:%llu %llu:%llu: p: %i sec: %i dur: %i\n", i1, i0, max1, max0, path, (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
-                secondsLast = time(NULL);
-            }
-            else {
-                if (maxValue1 == max1) {
-                    if (maxValue0 < max0) {
-                        maxValue0 = max0;
-                        secondsCurrent = (time(NULL));
-                        printf("m0: %llu:%llu %llu:%llu: p: %i sec: %i dur: %i\n", i1, i0, max1, max0, path, (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
-                        secondsLast = time(NULL);
-                    }
+        }
+        if (maxValue1 < max1) {
+            maxValue0 = max0;
+            maxValue1 = max1;
+            secondsCurrent = (time(NULL));
+            printf("m1: %llu:%llu %llu:%llu: p: %i sec: %i dur: %i\n", i1, i0, max1, max0, path, 
+                (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
+            secondsLast = time(NULL);
+        } else {
+            if (maxValue1 == max1) {
+                if (maxValue0 < max0) {
+                    maxValue0 = max0;
+                    secondsCurrent = (time(NULL));
+                    printf("m0: %llu:%llu %llu:%llu: p: %i sec: %i dur: %i\n", i1, i0, max1, max0, path, 
+                        (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
+                    secondsLast = time(NULL);
                 }
             }
-            if (maxPath < path) {
-                maxPath = path;
-                secondsCurrent = (time(NULL));
-                printf("mp: %llu:%llu %llu:%llu: p: %i sec: %i dur: %i\n", i1, i0, max1, max0, path, (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
-                secondsLast = time(NULL);
-            }
-            i0 += 2; // this will need i1 rollover logic when we hit # 88 and pass from 61 to 64 bits
+        }
+        if (maxPath < path) {
+            maxPath = path;
+            secondsCurrent = (time(NULL));
+            printf("mp: %llu:%llu %llu:%llu: p: %i sec: %i dur: %i\n", i1, i0, max1, max0, path, 
+                (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
+            secondsLast = time(NULL);
+        }
+        i0 += 2; // this will need i1 rollover logic when we hit # 88 and pass from 61 to 64 bits
     }
 }
-
 
 
 void getSequence64Bench() {
