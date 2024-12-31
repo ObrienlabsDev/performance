@@ -14,7 +14,7 @@
 - 508 sec MacBook 16 M4max/12c
 - 549 sec 13900K a 3.0/5.7 GHz
 - 587 sec MacMini M4pro/6c
-- 626 sec P1Gen6 13800H
+- 626 sec P1Gen6 13800H 2.5/4.1 GHz
 - 639 sec MacBook 16 M1max/8c
 #### Java
 - 544 sec MacBook 16 M4max/12c
@@ -25,6 +25,6 @@
 - sec 13900KS d 3.2/5.9 GHz
 - 828 sec 14900K c 3.2/5.9 GHz
 - 873 sec 13900K a 3.0/5.7 GHz
-- 960 sec P1Gen6 13800H
+- 960 sec P1Gen6 13800H 2.5/4.1 GHz
 
 ## GPU
