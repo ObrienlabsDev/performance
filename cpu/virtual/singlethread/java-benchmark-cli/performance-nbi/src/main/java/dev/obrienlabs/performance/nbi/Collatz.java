@@ -8,7 +8,7 @@ public class Collatz {
 		System.out.println("Collatz 2024 michael at obrienlabs.dev");
 
 		long oddSearchStart = 1L;        // must be odd
-		long oddSearchEnd = 2147483647L; //4294967295L; //18446744073709551615 // must be odd
+		long oddSearchEnd = 4294967295L; //18446744073709551615 // must be odd
 		long oddSearchIncrement = 2L;
 		long oddSearchCurrent = 1L;
 		long current = oddSearchStart;
