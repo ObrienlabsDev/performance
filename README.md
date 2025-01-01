@@ -66,7 +66,7 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 - 639 sec MacBook 16 M1max/8c
 ##### Java | 2 step odd/even 5% optimized
 - 517 sec MacBook 16 M4max/12c
--  sec MacMini M4pro/6c
+- 546 sec MacMini M4pro/6c
 -     sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 -  sec 13900K a 3.0/5.7 GHz
