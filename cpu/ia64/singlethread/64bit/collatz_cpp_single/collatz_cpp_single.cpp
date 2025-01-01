@@ -99,6 +99,8 @@ void getSequence64Bench() {
                 current0 = current0 >> 1;
             } else {
                 // 21% optimize odd+even together - needs a x2 on max height milestones later
+                // When we have an odd number, the next step is usually 3n + 1 applied to the current value.However, the number resulting from 3n + 1 will always be positive - which will require at least one divide by 2. If we combine the double step optimization with the fact that a shift right(or divide by 2) is always floor truncated(where the 1 / 2 is removed on an odd number).If we combine the floor with an implicit round up(ceil) by adding 1 (where for example 27 / 2 = 13.5 = 13 rounded, with + 1 = 14) - we have the following math...
+                // (3n + 1) / 2 = 3 / 2 * n + 1 / 2, where we drop the 1 / 2 due to rounding on a shift right.We then have 3 / 2 * n which is also n + n / 2. We add 1 to this to get a round up(it will hold as we only perform this round up for odd numbers) - of - 1 + n + n / 2.
                 // optimized
                 current0 = (current0 >> 1) + current0 + 1;
                 path++; // path is 2 for this single op
