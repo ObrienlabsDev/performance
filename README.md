@@ -9,19 +9,32 @@
 - 
 
 ## CPU
-### Single Threaded : 64 bit native - 32 bit run
-#### Go 
+### Single Threaded : 32 bit run
+#### 64 bit native
+##### CPP
+- 514 sec 14900K c 3.2/5.9 GHz
+-     sec 13900KS d 3.2/5.9 GHz
+- 535 sec 13900K a 3.0/5.7 GHz
+- 592 sec P1Gen6 13800H 2.5/4.1 GHz
+##### Go 
 - 508 sec MacBook 16 M4max/12c
+-     sec 14900K c 3.2/5.9 GHz
+-     sec 13900KS d 3.2/5.9 GHz
 - 549 sec 13900K a 3.0/5.7 GHz
 - 587 sec MacMini M4pro/6c
 - 626 sec P1Gen6 13800H 2.5/4.1 GHz
 - 639 sec MacBook 16 M1max/8c
-#### Java
+##### Java
 - 544 sec MacBook 16 M4max/12c
 - 648 sec MacMini M4pro/6c
+-     sec 14900K c 3.2/5.9 GHz
+-     sec 13900KS d 3.2/5.9 GHz
 - 689 sec 13900K a 3.0/5.7 GHz
-### Single Threaded : 128 bit native - 32 bit run
-### CPP
+
+#### 128 bit native
+##### Go
+##### Java
+##### CPP
 - 828 sec 14900K c 3.2/5.9 GHz
 - 846 sec 13900KS d 3.2/5.9 GHz
 - 873 sec 13900K a 3.0/5.7 GHz
