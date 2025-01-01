@@ -22,7 +22,7 @@ public class Collatz {
 		/**
 		  if even divide by 2, if odd multiply by 3 and add 1
 		  or for odd numbers do 2 steps to optimize (n + n/2 + 1) - because we truncate divides
-		  6% speed up for java, 20% for c, 
+		  6% speed up for Java, 20% for C, 6% for Go
 		*/
 		for(oddSearchCurrent = oddSearchStart; oddSearchCurrent < oddSearchEnd; oddSearchCurrent += oddSearchIncrement) {
 			current = oddSearchCurrent;
