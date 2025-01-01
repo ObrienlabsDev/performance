@@ -76,10 +76,10 @@ public class Collatz {
 		long maxValue = 1L;
 
 		
-		//for (;;) {
+		for (long part = 0; part < 16; part++) {
 			
 			// generate a limited collection for the search space - 32 is a good
-			List<Long> oddNumbers = LongStream.range(1L,1L << 28)
+			List<Long> oddNumbers = LongStream.range(1L + (part * (1L << 28)), (1 + part) * (1L << 28))
 					.boxed()
 					.collect(Collectors.toList());
 			
@@ -90,7 +90,14 @@ public class Collatz {
 				.collect(Collectors.toList());
 
 			results.stream().sorted().forEach(x -> System.out.println(x));
-		//}
+			// clear the heap
+			System.out.println("Clear the 12g heap between ForkJoinPool runs");
+			results = null;
+			oddNumbers = null;
+			// ask
+			System.gc();
+			
+		}
 	}
 
 	public static void main(String[] args) {
