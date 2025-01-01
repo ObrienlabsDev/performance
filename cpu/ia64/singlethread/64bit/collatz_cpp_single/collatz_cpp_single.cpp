@@ -98,7 +98,13 @@ void getSequence64Bench() {
             if (current0 % 2 == 0) {
                 current0 = current0 >> 1;
             } else {
-                current0 = (current0 << 1) + current0 + 1;
+                // 21% optimize odd+even together - needs a x2 on max height milestones later
+                // optimized
+                current0 = (current0 >> 1) + current0 + 1;
+                path++; // path is 2 for this single op
+                // not optimized
+                //current0 = (current0 << 1) + current0 + 1;
+
                 if (current0 > max0) {
                     max0 = current0;
                 }
@@ -108,8 +114,12 @@ void getSequence64Bench() {
         if (maxValue0 < max0) {
             maxValue0 = max0;
             secondsCurrent = (time(NULL));
-            printf("m0: %llu p: %i m: %llu ms: %i dur: %i\n", i0, path, max0, 
+            // optimized
+            printf("m0: %llu p: %i m: %llu ms: %i dur: %i\n", i0, path, max0 << 1,
                 (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
+            // not optimized
+            //printf("m0: %llu p: %i m: %llu ms: %i dur: %i\n", i0, path, max0, 
+            //    (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
             secondsLast = time(NULL);
         }
 
