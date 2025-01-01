@@ -78,6 +78,7 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 -     sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 -  sec 13900K a 3.0/5.7 GHz
+- 591 sec MacBook 16 M1max/8c
 ##### Java
 - 544 sec MacBook 16 M4max/12c
 -  sec MacMini M4pro/6c
