@@ -20,7 +20,9 @@ public class Collatz {
 		long secondsLast = System.currentTimeMillis();
 
 		/**
-		  if odd divide by 2, if event multiply by 3 and add 1
+		  if even divide by 2, if odd multiply by 3 and add 1
+		  or for odd numbers do 2 steps to optimize (n + n/2 + 1) - because we truncate divides
+		  6% speed up for java, 20% for c, 
 		*/
 		for(oddSearchCurrent = oddSearchStart; oddSearchCurrent < oddSearchEnd; oddSearchCurrent += oddSearchIncrement) {
 			current = oddSearchCurrent;
@@ -31,7 +33,10 @@ public class Collatz {
 				if (current % 2 == 0) {
 					current = current >> 1;
 				} else {
-					current = (current << 1) + current + 1L;
+					// optimize
+					current = (current >> 1) + current  + 1L;
+					//current = (current << 1) + current + 1L
+					path++;
 					// check limits
 					if (current > maxValue) {
 						maxValue = current;
@@ -45,13 +50,13 @@ public class Collatz {
 					// check limits
 					if (maxValue > globalMaxValue) {
 						globalMaxValue = maxValue;
-						System.out.println("m0: " + oddSearchCurrent + " p: " + path + " m: " + maxValue + " ms: " 
+						System.out.println("m0: " + oddSearchCurrent + " p: " + path + " m: " + (maxValue << 1) + " ms: " 
 								+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 						secondsLast = System.currentTimeMillis();
 					}
 					if (path > globalMaxPath) {
 						globalMaxPath = path;
-						System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + maxValue + " ms: " 
+						System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + (maxValue << 1) + " ms: " 
 								+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 						secondsLast = System.currentTimeMillis();
 					}
