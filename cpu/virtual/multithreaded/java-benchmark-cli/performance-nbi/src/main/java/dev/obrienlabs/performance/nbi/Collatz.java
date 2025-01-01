@@ -76,21 +76,21 @@ public class Collatz {
 		long maxValue = 1L;
 
 		
-		for (;;) {
+		//for (;;) {
 			
 			// generate a limited collection for the search space - 32 is a good
-			List<Long> oddNumbers = LongStream.range(1L,11L)
+			List<Long> oddNumbers = LongStream.range(1L,1L << 28)
 					.boxed()
 					.collect(Collectors.toList());
 			
 			// filter on max value or path
 			List<Long> results = oddNumbers
-				.parallelStream()//.filter(n -> n > 5).collect(Collectors.toList());
+				.parallelStream()
 				.filter(num -> isCollatzMax(num.longValue(), secondsStart))
 				.collect(Collectors.toList());
 
-			results.forEach(x -> System.out.println(x));
-		}
+			results.stream().sorted().forEach(x -> System.out.println(x));
+		//}
 	}
 
 	public static void main(String[] args) {
@@ -109,8 +109,10 @@ public class Collatz {
 		*/
 		for(oddSearchCurrent = oddSearchStart; oddSearchCurrent < oddSearchEnd; oddSearchCurrent += oddSearchIncrement) {
 			collatz.searchCollatzParallel(oddSearchCurrent, secondsStart);
+			System.out.println("completed: " + (System.currentTimeMillis() - secondsStart));
+			return;
 		}
-		System.out.println("completed: " + (System.currentTimeMillis() - secondsStart));
+		//System.out.println("completed: " + (System.currentTimeMillis() - secondsStart));
 	}
 
 }
