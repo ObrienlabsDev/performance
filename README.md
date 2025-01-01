@@ -53,7 +53,7 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 -     sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 -  sec 13900K a 3.0/5.7 GHz
--  sec MacMini M4pro/6c
+- 475 sec MacMini M4pro/6c
 -  sec P1Gen6 13800H 2.5/4.1 GHz
 -  sec MacBook 16 M1max/8c
 ##### Go 
@@ -65,14 +65,15 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 - 626 sec P1Gen6 13800H 2.5/4.1 GHz
 - 639 sec MacBook 16 M1max/8c
 ##### Java | 2 step odd/even 5% optimized
--  sec MacBook 16 M4max/12c
+- 517 sec MacBook 16 M4max/12c
 -  sec MacMini M4pro/6c
 -     sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 -  sec 13900K a 3.0/5.7 GHz
 ##### Java
 - 544 sec MacBook 16 M4max/12c
-- 648 sec MacMini M4pro/6c
+-  sec MacMini M4pro/6c
+- 648 sec MacBook 16 M1max/8c
 -     sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 - 689 sec 13900K a 3.0/5.7 GHz
