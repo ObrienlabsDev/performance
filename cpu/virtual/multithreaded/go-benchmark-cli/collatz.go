@@ -9,6 +9,7 @@ Michael O'Brien 2025 michael at obrienlabs.dev
 import (
 	"fmt"
 	"runtime"
+	"sync"
 	"time"
 )
 
@@ -21,6 +22,9 @@ func collatz(oddSearchCurrent uint64, secondsStart time.Time) {
 	var current uint64 = oddSearchCurrent
 	var path = 0
 	var maxValue uint64 = 1
+
+	var wg sync.WaitGroup
+
 	/**
 		  if even divide by 2, if odd multiply by 3 and add 1
 		  or for odd numbers do 2 steps to optimize (n + n/2 + 1) - because we truncate divides
@@ -83,7 +87,7 @@ func main() {
 	fmt.Println("Collatz 2024 michael obrienlabs.dev")
 	var secondsStart = time.Now()
 
-	runtime.GOMAXPROCS(1)
+	runtime.GOMAXPROCS(16)
 
 	collatzSearch(secondsStart)
 
