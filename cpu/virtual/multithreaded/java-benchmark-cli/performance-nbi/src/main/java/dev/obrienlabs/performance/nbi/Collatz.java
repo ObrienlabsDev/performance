@@ -76,10 +76,17 @@ public class Collatz {
 		long maxValue = 1L;
 
 		
-		for (long part = 0; part < 16; part++) {
+		long searchBits = 32;
+		long batchBits = 5;
+		long batches = 1 << batchBits;
+		long threadBits = searchBits - batchBits;
+		long threads = 1 << threadBits;
+		for (long part = 0; part < batches ; part++) {
 			
 			// generate a limited collection for the search space - 32 is a good
-			List<Long> oddNumbers = LongStream.range(1L + (part * (1L << 28)), (1 + part) * (1L << 28))
+			System.out.println("Searching: " + searchBits + " space, batch " + part + " of " 
+					+ batches + " with " + threadBits +" bits of " + threads + " threads"  );
+			List<Long> oddNumbers = LongStream.range(1L + (part * threads), (1 + part) * threads)
 					.boxed()
 					.collect(Collectors.toList());
 			
@@ -90,13 +97,6 @@ public class Collatz {
 				.collect(Collectors.toList());
 
 			results.stream().sorted().forEach(x -> System.out.println(x));
-			// clear the heap
-			System.out.println("Clear the 12g heap between ForkJoinPool runs");
-			results = null;
-			oddNumbers = null;
-			// ask
-			System.gc();
-			
 		}
 	}
 
