@@ -46,13 +46,15 @@ func collatz(oddSearchCurrent uint64, secondsStart time.Time) {
 			// check limits
 			if maxValue > globalMaxValue {
 				globalMaxValue = maxValue
-				fmt.Println("m0:", oddSearchCurrent, "p:", path, "m:", (maxValue << 1), "ms:", time.Since(secondsLast).Milliseconds(), "dur:", time.Since(secondsStart).Seconds())
+				fmt.Println("m0:", oddSearchCurrent, "p:", path, "m:", (maxValue << 1), "ms:",
+					time.Since(secondsLast).Milliseconds(), "dur:", time.Since(secondsStart).Seconds())
 				secondsLast = time.Now()
 
 			}
 			if path > globalMaxPath {
 				globalMaxPath = path
-				fmt.Println("mp:", oddSearchCurrent, "p:", path, "m:", (maxValue << 1), "ms:", time.Since(secondsLast).Milliseconds(), "dur:", time.Since(secondsStart).Seconds())
+				fmt.Println("mp:", oddSearchCurrent, "p:", path, "m:", (maxValue << 1), "ms:",
+					time.Since(secondsLast).Milliseconds(), "dur:", time.Since(secondsStart).Seconds())
 				secondsLast = time.Now()
 			}
 			break
