@@ -37,15 +37,14 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 ## CPU
 ### Multi Threaded : 32 bit run
 #### 64 bit native
-##### Java | 2 step odd/even 5% optimized - lambda/streams
-- 112 sec 13900K a 3.0/5.7 GHz 16g heap
+##### Java | 2 step odd/even 5% optimized - lambda/streams - heap/max-ram bound
+- 111 sec 13900K a 3.0/5.7 GHz 17g heap
 - 115 sec MacBook 16 M4max/12c 12g heap
-- 122 sec 14900K c 3.2/5.9 GHz
-- 231 sec P1Gen6 13800H 2.5/4.1 GHz
+- 120 sec 14900K c 3.2/5.9 GHz
+- 217 sec P1Gen6 13800H 2.5/4.1 GHz
 - 239 sec MacBook 16 M1max/8c
 - 285 sec MacMini M4pro/6c
 -     sec 13900KS d 3.2/5.9 GHz
--  sec 13900K a 3.0/5.7 GHz
 ### Single Threaded : 32 bit run
 #### 64 bit native
 ##### CPP | 2 step odd/even 21% optimized
