@@ -43,10 +43,19 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 - 447 sec 13900K a 3.0/5.7 GHz
 - 489 sec P1Gen6 13800H 2.5/4.1 GHz
 ##### CPP
+-  sec Macbook 16 M4max/12c
 - 514 sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 - 535 sec 13900K a 3.0/5.7 GHz
 - 592 sec P1Gen6 13800H 2.5/4.1 GHz
+##### Go | 2 step odd/even 6% optimized
+- 445 sec MacBook 16 M4max/12c
+-     sec 14900K c 3.2/5.9 GHz
+-     sec 13900KS d 3.2/5.9 GHz
+-  sec 13900K a 3.0/5.7 GHz
+-  sec MacMini M4pro/6c
+-  sec P1Gen6 13800H 2.5/4.1 GHz
+-  sec MacBook 16 M1max/8c
 ##### Go 
 - 508 sec MacBook 16 M4max/12c
 -     sec 14900K c 3.2/5.9 GHz
@@ -55,6 +64,12 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 - 587 sec MacMini M4pro/6c
 - 626 sec P1Gen6 13800H 2.5/4.1 GHz
 - 639 sec MacBook 16 M1max/8c
+##### Java | 2 step odd/even 5% optimized
+-  sec MacBook 16 M4max/12c
+-  sec MacMini M4pro/6c
+-     sec 14900K c 3.2/5.9 GHz
+-     sec 13900KS d 3.2/5.9 GHz
+-  sec 13900K a 3.0/5.7 GHz
 ##### Java
 - 544 sec MacBook 16 M4max/12c
 - 648 sec MacMini M4pro/6c
