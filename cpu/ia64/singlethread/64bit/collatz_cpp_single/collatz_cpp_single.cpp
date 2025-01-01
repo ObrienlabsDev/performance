@@ -126,8 +126,12 @@ void getSequence64Bench() {
         if (maxPath < path) {
             maxPath = path;
             secondsCurrent = (time(NULL));
-            printf("mp: %llu p: %i m: %llu ms: %i dur: %i\n", i0, path, max0, 
+            // optimized
+            printf("mp: %llu p: %i m: %llu ms: %i dur: %i\n", i0, path, max0 << 1, 
                 (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
+            // not optimized
+            //printf("mp: %llu p: %i m: %llu ms: %i dur: %i\n", i0, path, max0,
+            //    (secondsCurrent - secondsLast), secondsCurrent - secondsStart);
             secondsLast = time(NULL);
         }
         i0 += 2;
