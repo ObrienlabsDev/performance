@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Collatz 2024 michael@obrienlabs.dev")
+	fmt.Println("Collatz 2024 michael obrienlabs.dev")
 
 	var oddSearchStart uint64 = 1        // must be odd
 	var oddSearchEnd uint64 = 4294967295 //18446744073709551615 // must be odd
@@ -25,7 +25,9 @@ func main() {
 	var secondsLast = time.Now()
 
 	/**
-	  if odd divide by 2, if event multiply by 3 and add 1
+	  if even divide by 2, if odd multiply by 3 and add 1
+	  or for odd numbers do 2 steps to optimize (n + n/2 + 1) - because we truncate divides
+   	  6% speed up for Java, 20% for C, 6% for Go
 	*/
 	for oddSearchCurrent = oddSearchStart; oddSearchCurrent < oddSearchEnd; oddSearchCurrent += oddSearchIncrement {
 		current = oddSearchCurrent
@@ -36,7 +38,9 @@ func main() {
 			if current%2 == 0 {
 				current = current >> 1
 			} else {
-				current = current<<1 + current + 1
+				//current = current<<1 + current + 1
+				current = current >> 1 + current + 1
+				path++
 				// check limits
 				if current > maxValue {
 					maxValue = current
@@ -50,12 +54,12 @@ func main() {
 				// check limits
 				if maxValue > globalMaxValue {
 					globalMaxValue = maxValue
-					fmt.Println("m0:", oddSearchCurrent, "p:", path, "m:", maxValue, "ms:", time.Since(secondsLast).Milliseconds(), "dur:", time.Since(secondsStart).Seconds())
+					fmt.Println("m0:", oddSearchCurrent, "p:", path, "m:", (maxValue << 1), "ms:", time.Since(secondsLast).Milliseconds(), "dur:", time.Since(secondsStart).Seconds())
 					secondsLast = time.Now()
 				}
 				if path > globalMaxPath {
 					globalMaxPath = path
-					fmt.Println("mp:", oddSearchCurrent, "p:", path, "m:", maxValue, "ms:", time.Since(secondsLast).Milliseconds(), "dur:", time.Since(secondsStart).Seconds())
+					fmt.Println("mp:", oddSearchCurrent, "p:", path, "m:", (maxValue << 1), "ms:", time.Since(secondsLast).Milliseconds(), "dur:", time.Since(secondsStart).Seconds())
 					secondsLast = time.Now()
 				}
 				break
