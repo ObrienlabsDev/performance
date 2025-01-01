@@ -75,18 +75,19 @@ public class Collatz {
 		long path = 0L;
 		long maxValue = 1L;
 
+
+		long batchBits = 5; // adjust this based on the chip architecture 
 		
 		long searchBits = 32;
-		long batchBits = 5;
 		long batches = 1 << batchBits;
 		long threadBits = searchBits - batchBits;
 		long threads = 1 << threadBits;
-		for (long part = 0; part < batches ; part++) {
+		for (long part = 0; part < (batches + 1) ; part++) {
 			
 			// generate a limited collection for the search space - 32 is a good
 			System.out.println("Searching: " + searchBits + " space, batch " + part + " of " 
 					+ batches + " with " + threadBits +" bits of " + threads + " threads"  );
-			List<Long> oddNumbers = LongStream.range(1L + (part * threads), (1 + part) * threads)
+			List<Long> oddNumbers = LongStream.range(1L + (part * threads), ((1 + part) * threads) - 1)
 					.boxed()
 					.collect(Collectors.toList());
 			
@@ -98,6 +99,7 @@ public class Collatz {
 
 			results.stream().sorted().forEach(x -> System.out.println(x));
 		}
+		System.out.println("last number: " + ((1 + (batches) * threads) - 1));
 	}
 
 	public static void main(String[] args) {
