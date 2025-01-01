@@ -36,7 +36,7 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 ### Single Threaded : 32 bit run
 #### 64 bit native
 ##### CPP | 2 step odd/even 21% optimized
-- 431 sec 14900K c 3.2/5.9 GHz
+- 429 sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 - 447 sec 13900K a 3.0/5.7 GHz
 - 489 sec P1Gen6 13800H 2.5/4.1 GHz
