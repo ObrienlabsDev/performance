@@ -35,6 +35,14 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 - 
 
 ## CPU
+### Multi Threaded : 32 bit run
+#### 64 bit native
+##### Java | 2 step odd/even 5% optimized
+- 117 sec MacBook 16 M4max/12c
+-     sec MacMini M4pro/6c
+-     sec 14900K c 3.2/5.9 GHz
+-     sec 13900KS d 3.2/5.9 GHz
+-  sec 13900K a 3.0/5.7 GHz
 ### Single Threaded : 32 bit run
 #### 64 bit native
 ##### CPP | 2 step odd/even 21% optimized
