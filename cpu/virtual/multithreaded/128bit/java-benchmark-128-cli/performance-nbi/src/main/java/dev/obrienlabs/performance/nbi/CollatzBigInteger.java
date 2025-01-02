@@ -53,7 +53,7 @@ public class CollatzBigInteger {
 			if (current.compareTo(TWO) < 0) {
 				// check limits
 				if (maxValue.compareTo(globalMaxValue) > 0) {
-					globalMaxValue = maxValue; // double this n(3/2)
+					globalMaxValue = maxValue.shiftLeft(1); // double this n(3/2)
 					System.out.println("m0: " + oddSearchCurrent + " p: " + path + " m: " + maxValue.shiftLeft(1) + " ms: " 
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
@@ -61,7 +61,7 @@ public class CollatzBigInteger {
 					//result = Long.valueOf(current);
 				}
 				if (path.compareTo(globalMaxPath) > 0) {
-					globalMaxPath = maxValue; // double this n(3/2)
+					globalMaxPath = path;
 					System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + maxValue.shiftLeft(1) + " ms: " 
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
