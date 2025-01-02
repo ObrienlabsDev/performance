@@ -6,34 +6,33 @@ The 3n+1, collatz or hailstone numbers problem - https://en.wikipedia.org/wiki/C
 #### option 3: Java 8 lambda/streams parallelization
 see https://github.com/ObrienlabsDev/performance/issues/19
 ```
-	public void searchCollatzParallel(long oddSearchCurrent, long secondsStart) {
-		long batchBits = 5; // adjust this based on the chip architecture 
-		long searchBits = 32;
-		long batches = 1 << batchBits;
-		long threadBits = searchBits - batchBits;
-		long threads = 1 << threadBits;
+public void searchCollatzParallel(long oddSearchCurrent, long secondsStart) {
+	long batchBits = 5; // adjust this based on the chip architecture 
+	long searchBits = 32;
+	long batches = 1 << batchBits;
+	long threadBits = searchBits - batchBits;
+	long threads = 1 << threadBits;
 		
-		for (long part = 0; part < (batches + 1) ; part++) {	
-			// generate a limited collection for the search space - 32 is a good
-			System.out.println("Searching: " + searchBits + " space, batch " + part + " of " 
-					+ batches + " with " + threadBits +" bits of " + threads + " threads"  );
-			
-			List<Long> oddNumbers = LongStream
-					.range(1L + (part * threads), ((1 + part) * threads) - 1)
-					.filter(x -> x % 2 != 0) // TODO: find a way to avoid this filter using range above
-					.boxed()
-					.collect(Collectors.toList());
-			
-			List<Long> results = oddNumbers
-				.parallelStream()
-				.filter(num -> isCollatzMax(num.longValue(), secondsStart))
+	for (long part = 0; part < (batches + 1) ; part++) {	
+		// generate a limited collection for the search space - 32 is a good
+		System.out.println("Searching: " + searchBits + " space, batch " + part + " of " 
+				+ batches + " with " + threadBits +" bits of " + threads + " threads"  );
+		
+		List<Long> oddNumbers = LongStream
+				.range(1L + (part * threads), ((1 + part) * threads) - 1)
+				.filter(x -> x % 2 != 0) // TODO: find a way to avoid this filter using range above
+				.boxed()
 				.collect(Collectors.toList());
+			
+		List<Long> results = oddNumbers
+			.parallelStream()
+			.filter(num -> isCollatzMax(num.longValue(), secondsStart))
+			.collect(Collectors.toList());
 
-			results.stream().sorted().forEach(x -> System.out.println(x));
-		}
-		System.out.println("last number: " + ((1 + (batches) * threads) - 1));
+		results.stream().sorted().forEach(x -> System.out.println(x));
 	}
-
+	System.out.println("last number: " + ((1 + (batches) * threads) - 1));
+}
 ```
 
 ### Optimization 2: Combine odd/even steps
