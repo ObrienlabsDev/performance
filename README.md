@@ -76,6 +76,7 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 - 41 sec 13900K a 3.0/5.7 GHz 6g heap 23/128g - 11/12 bit batch
 - 42 sec 13900K a 3.0/5.7 GHz 6g heap 23/128g - 14 bit batch
 - 43 sec 13900K a 3.0/5.7 GHz 6g heap 23/128g - 15 bit batch
+- 50 sec MacBook 16 M4max/12c 12g heap 1/48g - 12 bit batch
 - 51 sec MacBook 16 M4max/12c 12g heap 1/48g - 14 bit batch
 - 52 sec 13900K a 3.0/5.7 GHz 6g heap 128g - 10 bit batch
 - 54 sec MacBook 16 M4max/12c 12g heap 1/48g - 12 bit batch
