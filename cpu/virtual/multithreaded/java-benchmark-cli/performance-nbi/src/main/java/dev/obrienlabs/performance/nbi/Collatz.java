@@ -5,13 +5,16 @@ import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 /**
+ * 20250101
+ * Michael O'Brien michael at obrienlabs.dev
+ * 
  * Architecture
  * map the search space by interleaved UOW (1,3,5,7) - to 4 threads
  * reduce the result by comparing thread local maximums
+ * 
  */
 public class Collatz {
 	
-
 	private long globalMaxValue = 1L;
 	private long globalMaxPath = 1L;
 
@@ -25,55 +28,51 @@ public class Collatz {
 		long path = 0L;
 		long maxValue = 1L;
 		
-		for (;;) {
-			
+		for (;;) {	
+			if (current % 2 == 0) {
+				current = current >> 1;
+			} else {
+				// optimize
+				current = (current >> 1) + current  + 1L;
+				//current = (current << 1) + current + 1L
+				path++;
+				// check limits
+				if (current > maxValue) {
+					maxValue = current;
+				}
+			}
 
-			
-		if (current % 2 == 0) {
-			current = current >> 1;
-		} else {
-			// optimize
-			current = (current >> 1) + current  + 1L;
-			//current = (current << 1) + current + 1L
 			path++;
-			// check limits
-			if (current > maxValue) {
-				maxValue = current;
-			}
-		}
 
-		path++;
-
-		// check completion of this number
-		if (current < 2L) {
-			// check limits
-			if (maxValue > globalMaxValue) {
-				globalMaxValue = maxValue;
-				System.out.println("m0: " + oddSearchCurrent + " p: " + path + " m: " + (maxValue << 1) + " ms: " 
+			// check completion of this number
+			if (current < 2L) {
+				// check limits
+				if (maxValue > globalMaxValue) {
+					globalMaxValue = maxValue;
+					System.out.println("m0: " + oddSearchCurrent + " p: " + path + " m: " + (maxValue << 1) + " ms: " 
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
-				secondsLast = System.currentTimeMillis();
-				result = true;
-				//result = Long.valueOf(current);
-			}
-			if (path > globalMaxPath) {
-				globalMaxPath = path;
-				System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + (maxValue << 1) + " ms: " 
+					secondsLast = System.currentTimeMillis();
+					result = true;
+					//result = Long.valueOf(current);
+				}
+				if (path > globalMaxPath) {
+					globalMaxPath = path;
+					System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + (maxValue << 1) + " ms: " 
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
-				secondsLast = System.currentTimeMillis();
-				result = true;
-				//result = Long.valueOf(current);
+					secondsLast = System.currentTimeMillis();
+					result = true;
+					//result = Long.valueOf(current);
+				}
+				break;
 			}
-			break;
-		}
 		}
 		return result;
 	}
 	
 	public void searchCollatzParallel(long oddSearchCurrent, long secondsStart) {
-		long current = oddSearchCurrent;
-		long path = 0L;
-		long maxValue = 1L;
-
+		//long current = oddSearchCurrent;
+		//long path = 0L;
+		//long maxValue = 1L;
 
 		long batchBits = 5; // adjust this based on the chip architecture 
 		
@@ -81,8 +80,8 @@ public class Collatz {
 		long batches = 1 << batchBits;
 		long threadBits = searchBits - batchBits;
 		long threads = 1 << threadBits;
-		for (long part = 0; part < (batches + 1) ; part++) {
-			
+		
+		for (long part = 0; part < (batches + 1) ; part++) {	
 			// generate a limited collection for the search space - 32 is a good
 			System.out.println("Searching: " + searchBits + " space, batch " + part + " of " 
 					+ batches + " with " + threadBits +" bits of " + threads + " threads"  );
@@ -118,8 +117,9 @@ public class Collatz {
 		for(oddSearchCurrent = oddSearchStart; oddSearchCurrent < oddSearchEnd; oddSearchCurrent += oddSearchIncrement) {
 			collatz.searchCollatzParallel(oddSearchCurrent, secondsStart);
 			System.out.println("completed: " + (System.currentTimeMillis() - secondsStart));
-			return;
+			return; // temp
 		}
+		// temp
 		//System.out.println("completed: " + (System.currentTimeMillis() - secondsStart));
 	}
 
