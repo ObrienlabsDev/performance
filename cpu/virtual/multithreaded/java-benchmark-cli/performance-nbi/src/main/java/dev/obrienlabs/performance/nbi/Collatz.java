@@ -70,22 +70,18 @@ public class Collatz {
 	}
 	
 	public void searchCollatzParallel(long oddSearchCurrent, long secondsStart) {
-		//long current = oddSearchCurrent;
-		//long path = 0L;
-		//long maxValue = 1L;
-
-		long batchBits = 5; // adjust this based on the chip architecture 
+		long batchBits = 8; // adjust this based on the chip architecture 
 		
 		long searchBits = 32;
 		long batches = 1 << batchBits;
 		long threadBits = searchBits - batchBits;
 		long threads = 1 << threadBits;
 		
+		System.out.println("Searching: " + searchBits + " space, batch " + "0" + " of " 
+				+ batches + " with " + threadBits +" bits of " + threads + " threads"  );
+		
 		for (long part = 0; part < (batches + 1) ; part++) {	
 			// generate a limited collection for the search space - 32 is a good
-			System.out.println("Searching: " + searchBits + " space, batch " + part + " of " 
-					+ batches + " with " + threadBits +" bits of " + threads + " threads"  );
-			
 			List<Long> oddNumbers = LongStream
 					.range(1L + (part * threads), ((1 + part) * threads) - 1)
 					.filter(x -> x % 2 != 0) // TODO: find a way to avoid this filter using range above
