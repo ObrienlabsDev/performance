@@ -1,9 +1,9 @@
 package dev.obrienlabs.performance.nbi;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
+import java.math.BigInteger;
 
 /**
  * 20250101
@@ -13,54 +13,56 @@ import java.util.stream.LongStream;
  * map the search space by interleaved UOW (1,3,5,7) - to 4 threads
  * reduce the result by comparing thread local maximums
  * 
+ * 20250102 - move from 64 bit long to 64 bit BigInteger
  */
-public class Collatz {
+public class CollatzBigInteger {
 	
 	private long secondsLast = System.currentTimeMillis();
+	private static BigInteger ZERO = BigInteger.ZERO;
+	private static BigInteger ONE = BigInteger.ONE;
+	private static BigInteger TWO = BigInteger.TWO;
+	private BigInteger globalMaxValue = ONE;
+	private BigInteger globalMaxPath = ONE;
 	
-	private AtomicLong globalMaxValue = new AtomicLong(1L);
-	private AtomicLong globalMaxPath = new AtomicLong(1L);
-	
-	public boolean isCollatzMax(long oddSearchCurrent, long secondsStart) {
+	public boolean isCollatzMax(BigInteger oddSearchCurrent, long secondsStart) {
 		boolean result = false;
-		//Long result = 0L;
-		long current = oddSearchCurrent;
-		long path = 0L;
-		long maxValue = 1L;
+		//Long result = BigInteger.ZERO;
+		BigInteger current = oddSearchCurrent;
+		BigInteger path = ZERO;
+		BigInteger maxValue = ONE;
 		
-		for (;;) {	
+		for (;;) {
 			/**
 			  if even divide by 2, if odd multiply by 3 and add 1
 			  or for odd numbers do 2 steps to optimize (n + n/2 + 1) - because we truncate divides
 			  6% speed up for Java, 20% for C, 6% for Go
 			*/
-			if (current % 2 == 0) {
-				current = current >> 1;
-			} else {
-				current = (current >> 1) + current  + 1L; // optimize
-				//current = (current << 1) + current + 1L
-				path++;
-				if (current > maxValue) { // check limits
+			if (current.testBit(0)) {
+				current = (current.shiftRight(1)).add(current).add(ONE); // optimized
+				path = path.add(ONE);
+				if (current.compareTo( maxValue) > 0) { // check limits
 					maxValue = current;
 				}
+			} else {
+				current = current.shiftRight(1);
 			}
 
-			path++;
+			path = path.add(ONE);
 
 			// check completion of this number
-			if (current < 2L) {
+			if (current.compareTo(TWO) < 0) {
 				// check limits
-				if (maxValue > globalMaxValue.get()) {
-					globalMaxValue.set(maxValue);
-					System.out.println("m0: " + oddSearchCurrent + " p: " + path + " m: " + (maxValue << 1) + " ms: " 
+				if (maxValue.compareTo(globalMaxValue) > 0) {
+					globalMaxValue = maxValue; // double this n(3/2)
+					System.out.println("m0: " + oddSearchCurrent + " p: " + path + " m: " + maxValue.shiftLeft(1) + " ms: " 
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
 					result = true;
 					//result = Long.valueOf(current);
 				}
-				if (path > globalMaxPath.get()) {
-					globalMaxPath.set(maxValue);
-					System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + (maxValue << 1) + " ms: " 
+				if (path.compareTo(globalMaxPath) > 0) {
+					globalMaxPath = maxValue; // double this n(3/2)
+					System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + maxValue.shiftLeft(1) + " ms: " 
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
 					result = true;
@@ -72,7 +74,7 @@ public class Collatz {
 		return result;
 	}
 	
-	public void searchCollatzParallel(long oddSearchCurrent, long secondsStart) {
+	public void searchCollatzParallel(BigInteger oddSearchCurrent, long secondsStart) {
 		long batchBits = 12; // adjust this based on the chip architecture 
 		
 		long searchBits = 32;
@@ -92,9 +94,10 @@ public class Collatz {
 					.collect(Collectors.toList());
 			
 			// filter on max value or path
-			List<Long> results = oddNumbers
+			List<BigInteger> results = oddNumbers
 				.parallelStream()
-				.filter(num -> isCollatzMax(num.longValue(), secondsStart))
+				.map(n -> BigInteger.valueOf(n))
+				.filter(num -> isCollatzMax(num, secondsStart))
 				.collect(Collectors.toList());
 
 			results.stream().sorted().forEach(x -> System.out.println(x));
@@ -104,18 +107,12 @@ public class Collatz {
 
 	public static void main(String[] args) {
 		System.out.println("Collatz multithreaded 2025 michael at obrienlabs.dev");
-		Collatz collatz = new Collatz();
+		CollatzBigInteger collatz = new CollatzBigInteger();
 
-		//long oddSearchStart = 1L;        // must be odd
-		//long oddSearchEnd = 4294967295L; //18446744073709551615 // must be odd
-		//long oddSearchIncrement = 2L;
-		long oddSearchCurrent = 1L;
+		BigInteger oddSearchCurrent = ONE;
 		long secondsStart = System.currentTimeMillis();
 
 		collatz.searchCollatzParallel(oddSearchCurrent, secondsStart);
-		/*for(oddSearchCurrent = oddSearchStart; oddSearchCurrent < oddSearchEnd; oddSearchCurrent += oddSearchIncrement) {
-			collatz.searchCollatzParallel(oddSearchCurrent, secondsStart);
-		}*/
 		System.out.println("completed: " + (System.currentTimeMillis() - secondsStart));
 	}
 
