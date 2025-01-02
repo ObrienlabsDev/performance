@@ -72,7 +72,6 @@ public class Collatz {
 		return result;
 	}
 	
-	// TODO: Verify AtomicLong, CopyOnWriteArrayList
 	public void searchCollatzParallel(long oddSearchCurrent, long secondsStart) {
 		long batchBits = 12; // adjust this based on the chip architecture 
 		
@@ -85,7 +84,7 @@ public class Collatz {
 				+ batches + " with " + threadBits +" bits of " + threads + " threads"  );
 		
 		for (long part = 0; part < (batches + 1) ; part++) {	
-			// generate a limited collection for the search space - 32 is a good
+			// generate a limited collection (CopyOnWriteArrayList not required as r/o) for the search space - 32 is a good
 			List<Long> oddNumbers = LongStream
 					.range(1L + (part * threads), ((1 + part) * threads) - 1)
 					.filter(x -> x % 2 != 0) // TODO: find a way to avoid this filter using range above
