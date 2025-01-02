@@ -59,7 +59,7 @@ public class Collatz {
 					//result = Long.valueOf(current);
 				}
 				if (path > globalMaxPath.get()) {
-					globalMaxPath.set(maxValue);
+					globalMaxPath.set(path);
 					System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + (maxValue << 1) + " ms: " 
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
