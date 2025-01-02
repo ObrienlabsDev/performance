@@ -70,7 +70,7 @@ public class Collatz {
 	}
 	
 	public void searchCollatzParallel(long oddSearchCurrent, long secondsStart) {
-		long batchBits = 10; // adjust this based on the chip architecture 
+		long batchBits = 12; // adjust this based on the chip architecture 
 		
 		long searchBits = 32;
 		long batches = 1 << batchBits;
