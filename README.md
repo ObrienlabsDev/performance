@@ -71,16 +71,32 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 ### Multi Threaded : 32 bit run
 #### 64 bit native
 ##### Java | 2 step odd/even 5% optimized - lambda/streams - heap/max-ram bound
-- 60 sec 13900K a 3.0/5.7 GHz 17g heap
-- 65 sec MacBook 16 M4max/12c 12g heap
-- 65 sec 14900K c 3.2/5.9 GHz 24 of 32 cores
-- 120 sec P1Gen6 13800H 2.5/4.1 GHz
-- 128 sec MacBook 16 M1max/8c
-- 129 sec MacMini M4pro/6c
+- https://github.com/ObrienlabsDev/performance/tree/main/cpu/virtual/multithreaded/java-benchmark-cli
+large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes down, thread ram overhead reduced
+- 41 sec 13900K a 3.0/5.7 GHz 6g heap 23/128g - 11/12 bit batch
+- 42 sec 13900K a 3.0/5.7 GHz 6g heap 23/128g - 14 bit batch
+- 43 sec 13900K a 3.0/5.7 GHz 6g heap 23/128g - 15 bit batch
+- 51 sec MacBook 16 M4max/12c 12g heap 1/48g - 14 bit batch
+- 52 sec 13900K a 3.0/5.7 GHz 6g heap 128g - 10 bit batch
+- 54 sec MacBook 16 M4max/12c 12g heap 1/48g - 12 bit batch
+- 54 sec MacBook 16 M4max/12c 12g heap 1/48g - 15 bit batch
+- 60 sec 13900K a 3.0/5.7 GHz 17g heap 128g - 5 bit batch
+- 61 sec MacBook 16 M4max/12c 12g heap 1/48g - 11 bit batch
+- 63 sec MacBook 16 M4max/12c 12g heap 1/48g - 5 bit batch
+- 43 sec 14900K c 3.2/5.9 GHz 24 of 32 cores 13/128g - 12 batch
+- 61 sec 14900K c 3.2/5.9 GHz 24 of 32 cores 128g - 10 batch
+- 90 sec P1Gen6 13800H 2.5/4.1 GHz 64g - 14 batch
+- 110 sec P1Gen6 13800H 2.5/4.1 GHz 64g - 10 batch
+- 111 sec P1Gen6 13800H 2.5/4.1 GHz 64g - 5 batch
+- 116 sec MacBook 16 M1max/8c 32g - 12 batch
+- 128 sec MacBook 16 M1max/8c 32g - 5 batch
+- 127 sec MacMini M4pro/6c 24g - 12 batch
+- 129 sec MacMini M4pro/6c 24g - 5 batch
 -     sec 13900KS d 3.2/5.9 GHz
 ### Single Threaded : 32 bit run
 #### 64 bit native
 ##### CPP | 2 step odd/even 21% optimized
+- https://github.com/ObrienlabsDev/performance/tree/main/cpu/ia64/singlethread/64bit/collatz_cpp_single
 - 429 sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 - 447 sec 13900K a 3.0/5.7 GHz
@@ -92,6 +108,7 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 - 535 sec 13900K a 3.0/5.7 GHz
 - 592 sec P1Gen6 13800H 2.5/4.1 GHz
 ##### Go | 2 step odd/even 6% optimized
+- https://github.com/ObrienlabsDev/performance/tree/main/cpu/virtual/singlethread/go-benchmark-cli
 - 445 sec MacBook 16 M4max/12c
 -     sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
@@ -108,6 +125,7 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 - 626 sec P1Gen6 13800H 2.5/4.1 GHz
 - 639 sec MacBook 16 M1max/8c
 ##### Java | 2 step odd/even 5% optimized
+- https://github.com/ObrienlabsDev/performance/tree/main/cpu/virtual/singlethread/java-benchmark-cli
 - 517 sec MacBook 16 M4max/12c
 - 546 sec MacMini M4pro/6c
 -     sec 14900K c 3.2/5.9 GHz
@@ -126,6 +144,7 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 ##### Go
 ##### Java
 ##### CPP
+- https://github.com/ObrienlabsDev/performance/tree/main/cpu/ia64/singlethread/128bit/collatz_cpp_single
 - 828 sec 14900K c 3.2/5.9 GHz
 - 846 sec 13900KS d 3.2/5.9 GHz
 - 873 sec 13900K a 3.0/5.7 GHz
