@@ -88,13 +88,14 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 - 63 sec MacBook 16 M4max/12c 12g heap 1/48g - 5 bit batch
 - 43 sec 14900K c 3.2/5.9 GHz 24 of 32 cores 13/128g - 12 batch
 - 61 sec 14900K c 3.2/5.9 GHz 24 of 32 cores 128g - 10 batch
+- 80 sec MacMini M4pro 8p4e 24g - 12 batch
 - 90 sec P1Gen6 13800H 2.5/4.1 GHz 64g - 14 batch
 - 108 sec MacBook 16 M1max/8c 32g - 12 batch
 - 110 sec P1Gen6 13800H 2.5/4.1 GHz 64g - 10 batch
 - 111 sec P1Gen6 13800H 2.5/4.1 GHz 64g - 5 batch
 - 128 sec MacBook 16 M1max/8c 32g - 5 batch
-- 127 sec MacMini M4pro/6c 24g - 12 batch
-- 129 sec MacMini M4pro/6c 24g - 5 batch
+- 127 sec MacMini M2pro 6p2e 16g - 12 batch
+- 129 sec MacMini M2pro 6p2e 16g - 5 batch
 -     sec 13900KS d 3.2/5.9 GHz
 ### Single Threaded : 32 bit run
 #### 64 bit native
@@ -112,11 +113,12 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 - 592 sec P1Gen6 13800H 2.5/4.1 GHz
 ##### Go | 2 step odd/even 6% optimized
 - https://github.com/ObrienlabsDev/performance/tree/main/cpu/virtual/singlethread/go-benchmark-cli
+- 399 sec MacMin M4pro 8p4e
 - 445 sec MacBook 16 M4max/12c
 -     sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 -  sec 13900K a 3.0/5.7 GHz
-- 475 sec MacMini M4pro/6c
+- 475 sec MacMini M2pro 6p2e
 -  sec P1Gen6 13800H 2.5/4.1 GHz
 -  sec MacBook 16 M1max/8c
 ##### Go 
@@ -124,20 +126,21 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 -     sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 - 549 sec 13900K a 3.0/5.7 GHz
-- 587 sec MacMini M4pro/6c
+- 587 sec MacMini M2pro 6p2e
 - 626 sec P1Gen6 13800H 2.5/4.1 GHz
 - 639 sec MacBook 16 M1max/8c
 ##### Java | 2 step odd/even 5% optimized
 - https://github.com/ObrienlabsDev/performance/tree/main/cpu/virtual/singlethread/java-benchmark-cli
-- 517 sec MacBook 16 M4max/12c
-- 546 sec MacMini M4pro/6c
+- 476 sec MacMini M4pro 8p/4e
+- 507 sec MacBook 16 M4max/12c
+- 546 sec MacMini M2pro 6p/2e
 -     sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 -  sec 13900K a 3.0/5.7 GHz
-- 591 sec MacBook 16 M1max/8c
+- 589 sec MacBook 16 M1max/8c
 ##### Java
 - 544 sec MacBook 16 M4max/12c
--  sec MacMini M4pro/6c
+-  sec MacMini M2pro 6p/2e
 - 648 sec MacBook 16 M1max/8c
 -     sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
