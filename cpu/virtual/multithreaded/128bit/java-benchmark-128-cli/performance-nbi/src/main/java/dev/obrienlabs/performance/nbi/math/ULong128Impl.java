@@ -29,30 +29,28 @@ public class ULong128Impl implements ULong128 {
 		// testBit(0)
 		return long0 % 2 == 0;
 	}
-	
 
 	@Override
 	public boolean isGreaterThan(ULong128 ulong128) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public ULong128 add(ULong128 ulong128) {
-		ULong128 result = new ULong128Impl();
+		ULong128 result = this;
 		
 		return result;
 	}
 	
 	@Override
 	public ULong128 shiftLeft(int positions) {
-		ULong128 result = new ULong128Impl();
+		ULong128 result = this;
 		return result;
 	}
 	
 	@Override
 	public ULong128 shiftRight(int positions) {
-		ULong128 result = new ULong128Impl();
+		ULong128 result = this;
 		return result;
 	}
 	
@@ -72,10 +70,9 @@ public class ULong128Impl implements ULong128 {
 	public void setLong1(long long1) {
 		this.long1 = long1;
 	}
-
 	@Override
 	public String toString() {
-		return "ULong128 [long0=" + long0 + ", long1=" + long1 + "]";
+		return new StringBuffer().append(long1).append(":").append(long0).toString();
 	}
 	@Override
 	public int hashCode() {
@@ -92,7 +89,5 @@ public class ULong128Impl implements ULong128 {
 		ULong128Impl other = (ULong128Impl) obj;
 		return long0 == other.long0 && long1 == other.long1;
 	}
-
-
 
 }

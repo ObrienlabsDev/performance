@@ -24,7 +24,9 @@ public class Collatz128bit {
 	private long secondsLast = System.currentTimeMillis();
 	
 	private ULong128 globalMaxValue = new ULong128Impl(1L);
-	private ULong128 globalMaxPath = new ULong128Impl(1L);
+	private long globalMaxPath = 1L;
+	private static ULong128 ONE = new ULong128Impl(1L);
+	private static ULong128 TWO = new ULong128Impl(2L);
 	
 	
 	public boolean isCollatzMax(ULong128 oddSearchCurrent, long secondsStart) {
@@ -32,7 +34,7 @@ public class Collatz128bit {
 		//Long result = 0L;
 		ULong128 current = oddSearchCurrent;
 		long path = 0L;
-		long maxValue = 1L;
+		ULong128 maxValue = new ULong128Impl();
 		
 		for (;;) {	
 			/**
@@ -43,10 +45,10 @@ public class Collatz128bit {
 			if (current.isEven()) {
 				current = current.shiftRight(1);
 			} else {
-				current = current.shiftRight(1).add(current).add(1L); // optimize
+				current = current.shiftRight(1).add(current).add(ONE); // optimize
 				//current = (current << 1) + current + 1L
 				path++;
-				if (current > maxValue) { // check limits
+				if (current.isGreaterThan(maxValue)) { // check limits
 					maxValue = current;
 				}
 			}
@@ -54,19 +56,19 @@ public class Collatz128bit {
 			path++;
 
 			// check completion of this number
-			if (current < 2L) {
+			if (TWO.isGreaterThan(current)) {
 				// check limits
-				if (maxValue > globalMaxValue.get()) {
-					globalMaxValue.set(maxValue);
-					System.out.println("m0: " + oddSearchCurrent + " p: " + path + " m: " + (maxValue << 1) + " ms: " 
+				if (maxValue.isGreaterThan(globalMaxValue)) {
+					globalMaxValue = maxValue;
+					System.out.println("m0: " + oddSearchCurrent + " p: " + path + " m: " + maxValue.shiftLeft(1) + " ms: " 
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
 					result = true;
 					//result = Long.valueOf(current);
 				}
-				if (path > globalMaxPath.get()) {
-					globalMaxPath.set(path);
-					System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + (maxValue << 1) + " ms: " 
+				if (path > globalMaxPath) {
+					globalMaxPath = path;
+					System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + maxValue.shiftLeft(1) + " ms: " 
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
 					result = true;
