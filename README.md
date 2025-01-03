@@ -1,5 +1,7 @@
 # Architecture
 The 3n+1, collatz or hailstone numbers problem - https://en.wikipedia.org/wiki/Collatz_conjecture
+- Path/Delay - http://www.ericr.nl/wondrous/delrecs.html
+- Maximums - http://www.ericr.nl/wondrous/pathrecs.html
 ## Optimizations
   The focus here is on the base algorithm which is independent of the programming language used.  However, there are 'architecture aware' optimizations that we will detail as we get closer to the hardware using AVX, CUDA or Metal.
 ### Optimization 1: Skip even numbers
