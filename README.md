@@ -94,6 +94,7 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 - 80 sec MacMini M4pro 8p4e 24g - 12 batch
 - 85 sec MacMini M4pro 8p4e 24g - 8 batch
 - 90 sec P1Gen6 13800H 2.5/4.1 GHz 64g - 14 batch
+- 105 sec MacBook 16 M1max/8c 32g - 13 batch
 - 108 sec MacBook 16 M1max/8c 32g - 12 batch
 - 110 sec P1Gen6 13800H 2.5/4.1 GHz 64g - 10 batch
 - 111 sec P1Gen6 13800H 2.5/4.1 GHz 64g - 5 batch
