@@ -66,6 +66,7 @@ public class Collatz {
 					result = true;
 					//result = Long.valueOf(current);
 				}
+
 				break;
 			}
 		}
