@@ -1,9 +1,13 @@
 package dev.obrienlabs.performance.nbi;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
+
+import dev.obrienlabs.performance.nbi.math.ULong128;
+import dev.obrienlabs.performance.nbi.math.ULong128Impl;
 
 /**
  * 20250101
@@ -19,15 +23,14 @@ public class Collatz128bit {
 	
 	private long secondsLast = System.currentTimeMillis();
 	
-	private AtomicLong globalMaxValue = new AtomicLong(1L);
-	private AtomicLong globalMaxPath = new AtomicLong(1L);
-	//private AtomicLong globalMaxValue1 = new AtomicLong(0L);
-	//private AtomicLong globalMaxPath1 = new AtomicLong(0L);
+	private ULong128 globalMaxValue = new ULong128Impl(1L);
+	private ULong128 globalMaxPath = new ULong128Impl(1L);
 	
-	public boolean isCollatzMax(long oddSearchCurrent, long secondsStart) {
+	
+	public boolean isCollatzMax(ULong128 oddSearchCurrent, long secondsStart) {
 		boolean result = false;
 		//Long result = 0L;
-		long current = oddSearchCurrent;
+		ULong128 current = oddSearchCurrent;
 		long path = 0L;
 		long maxValue = 1L;
 		
@@ -37,10 +40,10 @@ public class Collatz128bit {
 			  or for odd numbers do 2 steps to optimize (n + n/2 + 1) - because we truncate divides
 			  6% speed up for Java, 20% for C, 6% for Go
 			*/
-			if (current % 2 == 0) {
-				current = current >> 1;
+			if (current.isEven()) {
+				current = current.shiftRight(1);
 			} else {
-				current = (current >> 1) + current  + 1L; // optimize
+				current = current.shiftRight(1).add(current).add(1L); // optimize
 				//current = (current << 1) + current + 1L
 				path++;
 				if (current > maxValue) { // check limits
@@ -89,16 +92,20 @@ public class Collatz128bit {
 		
 		for (long part = 0; part < (batches + 1) ; part++) {	
 			// generate a limited collection (CopyOnWriteArrayList not required as r/o) for the search space - 32 is a good
-			List<Long> oddNumbers = LongStream
+			List<ULong128> oddNumbers = LongStream
 					.range(1L + (part * threads), ((1 + part) * threads) - 1)
 					.filter(x -> x % 2 != 0) // TODO: find a way to avoid this filter using range above
 					.boxed()
+					//.map(n -> ULong128Impl.ONE)
+					.map(ULong128Impl::new)
 					.collect(Collectors.toList());
 			
 			// filter on max value or path
-			List<Long> results = oddNumbers
+			List<ULong128> results = oddNumbers
 				.parallelStream()
-				.filter(num -> isCollatzMax(num.longValue(), secondsStart))
+				//.map(n -> ULong128)
+				
+				.filter(num -> isCollatzMax(num, secondsStart))
 				.collect(Collectors.toList());
 
 			results.stream().sorted().forEach(x -> System.out.println(x));
