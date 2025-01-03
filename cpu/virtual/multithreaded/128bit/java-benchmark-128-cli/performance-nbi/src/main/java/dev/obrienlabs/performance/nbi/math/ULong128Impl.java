@@ -41,7 +41,9 @@ public class ULong128Impl implements ULong128 {
 	public ULong128 add(ULong128 ulong128) {
 		//this.getLong0()+ + ulong128.getLong0();
 		
-		return result;
+		return this;
+
+		
 	}
 	
 	@Override
