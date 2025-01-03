@@ -120,7 +120,7 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 -  sec 13900K a 3.0/5.7 GHz
 - 475 sec MacMini M2pro 6p2e
 -  sec P1Gen6 13800H 2.5/4.1 GHz
--  sec MacBook 16 M1max/8c
+- 527 sec MacBook 16 M1max/8c
 ##### Go 
 - 508 sec MacBook 16 M4max/12c
 -     sec 14900K c 3.2/5.9 GHz
