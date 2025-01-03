@@ -86,9 +86,13 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 - 60 sec 13900K a 3.0/5.7 GHz 17g heap 128g - 5 bit batch
 - 61 sec MacBook 16 M4max/12c 12g heap 1/48g - 11 bit batch
 - 63 sec MacBook 16 M4max/12c 12g heap 1/48g - 5 bit batch
+- 64 sec MacMini M4pro 8p4e 24g - 13 batch
+- 65 sec MacMini M4pro 8p4e 24g - 14 batch
 - 43 sec 14900K c 3.2/5.9 GHz 24 of 32 cores 13/128g - 12 batch
 - 61 sec 14900K c 3.2/5.9 GHz 24 of 32 cores 128g - 10 batch
+- 69 sec MacMini M4pro 8p4e 24g - 16 batch
 - 80 sec MacMini M4pro 8p4e 24g - 12 batch
+- 85 sec MacMini M4pro 8p4e 24g - 8 batch
 - 90 sec P1Gen6 13800H 2.5/4.1 GHz 64g - 14 batch
 - 108 sec MacBook 16 M1max/8c 32g - 12 batch
 - 110 sec P1Gen6 13800H 2.5/4.1 GHz 64g - 10 batch
