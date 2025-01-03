@@ -18,17 +18,16 @@ import java.math.BigInteger;
 public class CollatzBigInteger {
 	
 	private long secondsLast = System.currentTimeMillis();
-	private static BigInteger ZERO = BigInteger.ZERO;
 	private static BigInteger ONE = BigInteger.ONE;
 	private static BigInteger TWO = BigInteger.TWO;
 	private BigInteger globalMaxValue = ONE;
-	private BigInteger globalMaxPath = ONE;
+	private long globalMaxPath = 1L;
 	
 	public boolean isCollatzMax(BigInteger oddSearchCurrent, long secondsStart) {
 		boolean result = false;
 		//Long result = BigInteger.ZERO;
 		BigInteger current = oddSearchCurrent;
-		BigInteger path = ZERO;
+		long path = 0L;
 		BigInteger maxValue = ONE;
 		
 		for (;;) {
@@ -39,7 +38,7 @@ public class CollatzBigInteger {
 			*/
 			if (current.testBit(0)) {
 				current = (current.shiftRight(1)).add(current).add(ONE); // optimized
-				path = path.add(ONE);
+				path++;
 				if (current.compareTo( maxValue) > 0) { // check limits
 					maxValue = current;
 				}
@@ -47,7 +46,7 @@ public class CollatzBigInteger {
 				current = current.shiftRight(1);
 			}
 
-			path = path.add(ONE);
+			path++;
 
 			// check completion of this number
 			if (current.compareTo(TWO) < 0) {
@@ -60,7 +59,7 @@ public class CollatzBigInteger {
 					result = true;
 					//result = Long.valueOf(current);
 				}
-				if (path.compareTo(globalMaxPath) > 0) {
+				if (path > globalMaxPath) {
 					globalMaxPath = path;
 					System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + maxValue.shiftLeft(1) + " ms: " 
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
