@@ -4,9 +4,11 @@ import java.util.Objects;
 
 /**
  * Algorithm
+ * Math.multiplyHigh - check it
  */
 public class ULong128Impl implements ULong128 {
 
+	
 	private long long0;
 	private long long1;
 	
@@ -37,7 +39,7 @@ public class ULong128Impl implements ULong128 {
 	
 	@Override
 	public ULong128 add(ULong128 ulong128) {
-		ULong128 result = this;
+		//this.getLong0()+ + ulong128.getLong0();
 		
 		return result;
 	}

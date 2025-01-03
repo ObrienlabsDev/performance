@@ -2,6 +2,7 @@ package dev.obrienlabs.performance.nbi.math;
 
 public interface ULong128 {
 	
+	long MAXBIT = Long.MAX_VALUE;//9223372036854775807L
 	//static ULong128 ONE {
 	//	return new ULong128Impl();
 	//}

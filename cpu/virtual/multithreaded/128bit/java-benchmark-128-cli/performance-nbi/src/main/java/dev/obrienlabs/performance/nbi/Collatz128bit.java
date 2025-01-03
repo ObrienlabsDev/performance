@@ -18,6 +18,11 @@ import dev.obrienlabs.performance.nbi.math.ULong128Impl;
  * reduce the result by comparing thread local maximums
  * 20250102: refactor for 128 bit native 
  * Before refactor: m4max speed: 55sec
+ * 
+ * check out https://docs.oracle.com/javase/10/docs/api/java/lang/Math.html#multiplyHigh(long,%20long)
+Long.compareUnsigned
+Long.toUnsignedString
+
  */
 public class Collatz128bit {
 	
