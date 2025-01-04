@@ -129,10 +129,12 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 235 sec MacMini M2pro 6p4e 16g - 16 batch
 - 243 sec MacMini M2pro 6p4e 16g - 14 batch
 - 299 sec MacMini M2pro 6p4e 16g - 13 batch
-- 313 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch noAV
+- 308 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch noAV
+- 315 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch 
 - 339 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch noAV
 - 360 sec MacMini M2pro 6p4e 16g - 11 batch
 - 392 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch noAV
+- 455 sec Hyperv Ubuntu 24 on 13900k a 3.0/5.7 GHz 16 of 8p/16e/32t 128g
 
 
 ##### Go
