@@ -83,6 +83,11 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 
 # Performance Numbers
 
+- 17.6h on an M4Pro 8p4e to check up to 40 bits (79 bit max) #60 on http://www.ericr.nl/wondrous/pathrecs.html
+```
+60	871673,828443	400558,740821,250122,033728	0.527	40	79	Leavens & Vermeulen
+```
+
 ## Criteria
 - CON: Single / Multi threaded (both CPU and GPU (you can use just 1 ALU core in a GPU)
 - PRU: CPU / GPU
@@ -95,6 +100,15 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 ## GPU
 
 ## CPU
+### Multi Threaded : 40 bit run
+#### 128 bit native
+##### Java 
+- sec Macbook 16 M4max 12p4e - 13 batch
+- sec MacMini M4pro 8p4e 24g - 13 batch
+- sec MacBook 16 M1max 8p2e 32g - 13 batch
+- sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
+- sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch
+- sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch
 ### Multi Threaded : 37 bit run
 #### 128 bit native
 ##### Java 
@@ -111,10 +125,13 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 114 sec Macbook 16 M4max 12p4e - 13 batch
 - 153 sec MacMini M4pro 8p4e 24g - 13 batch
 - 225 sec MacBook 16 M1max 8p2e 32g - 13 batch
+- 232 sec MacMini M2pro 6p4e 16g - 15 batch
+- 235 sec MacMini M2pro 6p4e 16g - 16 batch
 - 243 sec MacMini M2pro 6p4e 16g - 14 batch
 - 299 sec MacMini M2pro 6p4e 16g - 13 batch
 - 313 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch noAV
 - 339 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch noAV
+- 360 sec MacMini M2pro 6p4e 16g - 11 batch
 - 392 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch noAV
 
 
@@ -313,6 +330,17 @@ mp: 0:568847878633 p: 1324 m: 0:2662567439048656 ms: 62590 dur: 32259
 mp: 0:674190078379 p: 1332 m: 0:2662567439048656 ms: 6148200 dur: 38407
 0:674190078379
 20250104:1040
+40/79 bit
+m0: 0:871673828443 p: 650 m: 21714:6140004720918243904 ms: 11642008 dur: 50049
+0:871673828443
+mp: 0:881715740415 p: 1335 m: 0:5234135688127384 ms: 597153 dur: 50646
+0:881715740415
+mp: 0:989345275647 p: 1348 m: 0:1219624271099764 ms: 6370486 dur: 57017
+0:989345275647
+20250104:1725
+20250105:1745
+last number: 1099511627776
+completed: 63554039
 
 ```
 ## 128 bit Single Threaded C++ on native unsigned long long - 13900KS 128g 8p16e32t
