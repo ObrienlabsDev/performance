@@ -11,9 +11,14 @@ import java.math.BigInteger;
  * 
  * Architecture
  * map the search space by interleaved UOW (1,3,5,7) - to 4 threads
- * reduce the result by comparing thread local maximums
+ * reduce the result by comparing thread local maximums.
+ * 
+ * Note: because the code is concurrent - not all the maximums will be displayed.
+ * The reason is the global maxiumum may be reached in an adjacent thread above for example
+ * 27:111:9232 by 34177:187:1302532
  * 
  * 20250102 - move from 64 bit long to 64 bit BigInteger
+ * 
  */
 public class CollatzBigInteger {
 	
@@ -57,7 +62,6 @@ public class CollatzBigInteger {
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
 					result = true;
-					//result = Long.valueOf(current);
 				}
 				if (path > globalMaxPath) {
 					globalMaxPath = path;
@@ -65,7 +69,6 @@ public class CollatzBigInteger {
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
 					result = true;
-					//result = Long.valueOf(current);
 				}
 				break;
 			}
