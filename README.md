@@ -72,6 +72,12 @@ Performance will vary widely up to 10x based on the algorithm and memory/heap ar
 
 ### Optimization 5: Turn off real time AV protection
 Either map out the drive or turn off Anti Virus protection.  Windows systems are particularly slower because defender will kick in during compilation and runtime with up to a full core that is bound by disk access.
+```
+33% speed increase on same p1gen6 system 
+mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 101041 dur: 270
+to
+mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
+```
 ![image](https://github.com/user-attachments/assets/b0bf1241-48bb-4119-adf4-81a445849c03)
 
 # Performance Numbers
