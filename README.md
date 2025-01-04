@@ -72,8 +72,23 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 - ARC: Architecture (IA64/AMD64 or ARM64 - or agnostic (JIT compiled Go))
 - 
 
+## GPU
+
 ## CPU
 ### Multi Threaded : 32 bit run
+#### 128 bit native
+##### Java 
+- 114 sec Macbook 16 M4max 12p4e - 13 batch
+
+##### Go
+
+##### CPP
+- https://github.com/ObrienlabsDev/performance/tree/main/cpu/ia64/singlethread/128bit/collatz_cpp_single
+- 828 sec 14900K c 3.2/5.9 GHz
+- 846 sec 13900KS d 3.2/5.9 GHz
+- 873 sec 13900K a 3.0/5.7 GHz
+- 960 sec P1Gen6 13800H 2.5/4.1 GHz
+
 #### 64 bit native
 ##### Java | 2 step odd/even 5% optimized - lambda/streams - heap/max-ram bound
 - https://github.com/ObrienlabsDev/performance/tree/main/cpu/virtual/multithreaded/64bit/java-benchmark-cli
@@ -122,7 +137,7 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 - 592 sec P1Gen6 13800H 2.5/4.1 GHz
 ##### Go | 2 step odd/even 6% optimized
 - https://github.com/ObrienlabsDev/performance/tree/main/cpu/virtual/singlethread/go-benchmark-cli
-- 399 sec MacMin M4pro 8p4e
+- 399 sec MacMini M4pro 8p4e
 - 445 sec MacBook 16 M4max/12c
 -     sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
@@ -154,18 +169,6 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 -     sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 - 689 sec 13900K a 3.0/5.7 GHz
-
-#### 128 bit native
-##### Go
-##### Java
-##### CPP
-- https://github.com/ObrienlabsDev/performance/tree/main/cpu/ia64/singlethread/128bit/collatz_cpp_single
-- 828 sec 14900K c 3.2/5.9 GHz
-- 846 sec 13900KS d 3.2/5.9 GHz
-- 873 sec 13900K a 3.0/5.7 GHz
-- 960 sec P1Gen6 13800H 2.5/4.1 GHz
-
-## GPU
 
 
 # Links
