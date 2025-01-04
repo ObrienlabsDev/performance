@@ -69,7 +69,11 @@ Performance will vary widely up to 10x based on the algorithm and memory/heap ar
 
 - We will use concurrency as each operation is independent of parallel searches.  Except for the case of global maximum records.  Since the code is concurrent - not all the maximums will be displayed.  The reason is the global maximum may be reached in an adjacent thread.  For example 27:111:9232 may be missed by 34177:187:1302532.  Use of Thread local maximums will solve this.
 - see https://github.com/ObrienlabsDev/performance/issues/26
-- 
+
+### Optimization 5: Turn off real time AV protection
+Either map out the drive or turn off Anti Virus protection.  Windows systems are particularly slower because defender will kick in during compilation and runtime with up to a full core that is bound by disk access.
+![image](https://github.com/user-attachments/assets/b0bf1241-48bb-4119-adf4-81a445849c03)
+
 # Performance Numbers
 
 ## Criteria
