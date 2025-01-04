@@ -58,6 +58,9 @@ n / 2 + n + 1 = n >> 1 + n + 1
 ### Optimization 3: Roll up all divide by 2 sequences
 When whe have for example a power of 2 like 256 - this will represent a straight path to 1 via 8 shift right operations.
 
+### Optimization 4: Concurrent Multithreading - Parallel Processing
+- We will use concurrency as each operation is independent of parallel searches.  Except for the case of global maximum records.  Since the code is concurrent - not all the maximums will be displayed.  The reason is the global maximum may be reached in an adjacent thread.  For example 27:111:9232 may be missed by 34177:187:1302532.  Use of Thread local maximums will solve this.
+- see https://github.com/ObrienlabsDev/performance/issues/26
 # Performance Numbers
 
 ## Criteria
