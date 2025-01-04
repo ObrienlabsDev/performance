@@ -34,29 +34,54 @@ public class ULong128Impl implements ULong128 {
 
 	@Override
 	public boolean isGreaterThan(ULong128 ulong128) {
-		return false;
+		// check high (fast exit), then low
+		int topCompare = Long.compareUnsigned(this.long1, ulong128.getLong1());
+		
+		if(topCompare < 0) {
+			return false;
+		} else {
+			if(topCompare > 0) {
+				return true;
+			} else {
+				int lowCompare = Long.compareUnsigned(this.long0, ulong128.getLong0());
+				if(lowCompare < 0) {
+					return false;
+				} else {
+					if(lowCompare > 0) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+		}
 	}
 	
 	@Override
 	// we add the low bytes, detect the carry, add the high bytes and add the carry
 	public ULong128 add(ULong128 ulong128) {;
-		long temp0 = this.getLong0() + ulong128.getLong0();
+		long temp0 = this.long0 + ulong128.getLong0();
 		// a smaller result means we experienced overflow
 		long carry0 = Long.compareUnsigned(temp0, this.getLong0()) < 0 ? 1L : 0L;
-		long temp1 = this.getLong1() + ulong128.getLong1() + carry0;
+		long temp1 = this.long1 + ulong128.getLong1() + carry0;
 		return new ULong128Impl(temp1, temp0);
 	}
 	
 	@Override
+	// use >>> triple shift to fill 0's on the right
 	public ULong128 shiftLeft(int positions) {
-		ULong128 result = this;
-		return result;
+		// we only shift one digit
+		return this.add(this);
 	}
 	
 	@Override
+	// use >>> triple shift to fill 0's on the right
 	public ULong128 shiftRight(int positions) {
-		ULong128 result = this;
-		return result;
+		// multiply by 2 until we have the last LSB shifted to MSBit left position
+		long highShiftedLeft63BitsInPrepOfAddToLow = this.long1 << 63;//(64 - positions);
+		long temp0 = (this.long0 >>> 1) + highShiftedLeft63BitsInPrepOfAddToLow ;
+		long temp1 = this.long1 >>> 1;
+		return new ULong128Impl(temp1, temp0);
 	}
 	
 	@Override

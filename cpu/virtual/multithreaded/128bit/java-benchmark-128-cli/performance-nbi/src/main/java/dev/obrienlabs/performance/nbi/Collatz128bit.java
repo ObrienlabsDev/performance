@@ -10,6 +10,7 @@ import dev.obrienlabs.performance.nbi.math.ULong128Impl;
 /**
  * 20250101
  * Michael O'Brien michael at obrienlabs.dev
+ * Code from https://github.com/ObrienlabsDev/performance
  * 
  * Architecture
  * map the search space by interleaved UOW (1,3,5,7) - to 4 threads
@@ -117,7 +118,8 @@ public class Collatz128bit {
 				.filter(num -> isCollatzMax(num, secondsStart))
 				.collect(Collectors.toList());
 
-			results.stream().sorted().forEach(x -> System.out.println(x));
+			results.stream().forEach(x -> System.out.println(x));  // fix comparable in https://github.com/ObrienlabsDev/performance/issues/27
+			//results.stream().sorted().forEach(x -> System.out.println(x)); 
 		}
 		System.out.println("last number: " + ((1 + (batches) * threads) - 1));
 	}
