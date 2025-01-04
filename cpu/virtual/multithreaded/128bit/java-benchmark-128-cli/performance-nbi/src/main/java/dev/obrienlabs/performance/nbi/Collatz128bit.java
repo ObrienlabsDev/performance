@@ -1,8 +1,6 @@
 package dev.obrienlabs.performance.nbi;
 
-import java.math.BigInteger;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -18,6 +16,10 @@ import dev.obrienlabs.performance.nbi.math.ULong128Impl;
  * reduce the result by comparing thread local maximums
  * 20250102: refactor for 128 bit native 
  * Before refactor: m4max speed: 55sec
+ * 
+ * Note: because the code is concurrent - not all the maximums will be displayed.
+ * The reason is the global maxiumum may be reached in an adjacent thread above for example
+ * 27:111:9232 by 34177:187:1302532
  * 
  * check out https://docs.oracle.com/javase/10/docs/api/java/lang/Math.html#multiplyHigh(long,%20long)
 Long.compareUnsigned
@@ -87,7 +89,7 @@ public class Collatz128bit {
 	}
 	
 	public void searchCollatzParallel(long oddSearchCurrent, long secondsStart) {
-		long batchBits = 12; // adjust this based on the chip architecture 
+		long batchBits = 13; // adjust this based on the chip architecture 
 		
 		long searchBits = 32;
 		long batches = 1 << batchBits;
@@ -100,7 +102,7 @@ public class Collatz128bit {
 		for (long part = 0; part < (batches + 1) ; part++) {	
 			// generate a limited collection (CopyOnWriteArrayList not required as r/o) for the search space - 32 is a good
 			List<ULong128> oddNumbers = LongStream
-					.range(1L + (part * threads), ((1 + part) * threads) - 1)
+					.rangeClosed(1L + (part * threads), ((1 + part) * threads) - 1)
 					.filter(x -> x % 2 != 0) // TODO: find a way to avoid this filter using range above
 					.boxed()
 					//.map(n -> ULong128Impl.ONE)
