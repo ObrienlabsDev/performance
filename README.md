@@ -95,14 +95,26 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 ## GPU
 
 ## CPU
+### Multi Threaded : 37 bit run
+#### 128 bit native
+##### Java 
+- 5833 sec Macbook 16 M4max 12p4e - 13 batch
+- sec MacMini M4pro 8p4e 24g - 13 batch
+- sec MacBook 16 M1max 8p2e 32g - 13 batch
+- sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
+- sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch
+- sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch
+
 ### Multi Threaded : 32 bit run
 #### 128 bit native
 ##### Java 
 - 114 sec Macbook 16 M4max 12p4e - 13 batch
 - 153 sec MacMini M4pro 8p4e 24g - 13 batch
 - 225 sec MacBook 16 M1max 8p2e 32g - 13 batch
-- 313 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
-- 394 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch
+- 313 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch noAV
+- 339 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch noAV
+- 392 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch noAV
+
 
 ##### Go
 
