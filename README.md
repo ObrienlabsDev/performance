@@ -1,3 +1,7 @@
+# Abstract
+This article attempts to systematically determine the optimized spot where we can push our hardware to the fullest possible use.
+Multithreaded optimization depends on multiple factors including CPU/GPU type (M4Max vs 14900 or MetalCUDA.  Operations involving space-time tradeoffs like heap usage need to be fine tuned around batch sizes.
+
 # Architecture
 The 3n+1, collatz or hailstone numbers problem - https://en.wikipedia.org/wiki/Collatz_conjecture
 - Path/Delay - http://www.ericr.nl/wondrous/delrecs.html
