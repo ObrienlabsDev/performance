@@ -80,6 +80,7 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 ##### Java 
 - 114 sec Macbook 16 M4max 12p4e - 13 batch
 - 153 sec MacMini M4pro 8p4e 24g - 13 batch
+- 225 sec MacBook 16 M1max 8p2e 32g - 13 batch
 - 313 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
 - 394 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch
 
