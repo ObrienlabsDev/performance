@@ -72,7 +72,6 @@ public class Collatz128bit {
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
 					result = true;
-					//result = Long.valueOf(current);
 				}
 				if (path > globalMaxPath) {
 					globalMaxPath = path;
@@ -80,7 +79,6 @@ public class Collatz128bit {
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
 					result = true;
-					//result = Long.valueOf(current);
 				}
 
 				break;
@@ -103,15 +101,12 @@ public class Collatz128bit {
 					.rangeClosed(1L + (part * threads), ((1 + part) * threads) - 1)
 					.filter(x -> x % 2 != 0) // TODO: find a way to avoid this filter using range above
 					.boxed()
-					//.map(n -> ULong128Impl.ONE)
 					.map(ULong128Impl::new)
 					.collect(Collectors.toList());
 			
 			// filter on max value or path
 			List<ULong128> results = oddNumbers
-				.parallelStream()
-				//.map(n -> ULong128)
-				
+				.parallelStream()	
 				.filter(num -> isCollatzMax(num, secondsStart))
 				.collect(Collectors.toList());
 
@@ -131,7 +126,6 @@ public class Collatz128bit {
 			searchBits = Long.parseLong(args[0]);
 			batchBits = Long.parseLong(args[1]);
 		}
-		
 		
 		Collatz128bit collatz = new Collatz128bit();
 

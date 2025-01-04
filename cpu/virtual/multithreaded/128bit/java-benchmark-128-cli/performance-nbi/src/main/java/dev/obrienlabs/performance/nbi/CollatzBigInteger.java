@@ -8,6 +8,7 @@ import java.math.BigInteger;
 /**
  * 20250101
  * Michael O'Brien michael at obrienlabs.dev
+ * https://github.com/ObrienlabsDev/performance
  * 
  * Architecture
  * map the search space by interleaved UOW (1,3,5,7) - to 4 threads
