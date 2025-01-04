@@ -20,7 +20,7 @@ public class ULong128Impl implements ULong128 {
 		this(0L, long0);
 	}
 	
-	public ULong128Impl(long long0, long long1) {
+	public ULong128Impl(long long1, long long0) {
 		//super();
 		this.long0 = long0;
 		this.long1 = long1;
@@ -38,12 +38,13 @@ public class ULong128Impl implements ULong128 {
 	}
 	
 	@Override
-	public ULong128 add(ULong128 ulong128) {
-		//this.getLong0()+ + ulong128.getLong0();
-		
-		return this;
-
-		
+	// we add the low bytes, detect the carry, add the high bytes and add the carry
+	public ULong128 add(ULong128 ulong128) {;
+		long temp0 = this.getLong0() + ulong128.getLong0();
+		// a smaller result means we experienced overflow
+		long carry0 = Long.compareUnsigned(temp0, this.getLong0()) < 0 ? 1L : 0L;
+		long temp1 = this.getLong1() + ulong128.getLong1() + carry0;
+		return new ULong128Impl(temp1, temp0);
 	}
 	
 	@Override
