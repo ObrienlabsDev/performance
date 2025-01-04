@@ -59,8 +59,13 @@ n / 2 + n + 1 = n >> 1 + n + 1
 When whe have for example a power of 2 like 256 - this will represent a straight path to 1 via 8 shift right operations.
 
 ### Optimization 4: Concurrent Multithreading - Parallel Processing
+In general with 8-12 performance cores per chip - parallelization at the CPU level is 5.1 times faster than single threaded CPU code.
+In general with 5120 to 32768 CUDA cores - parallelization at the GPU level is TBD times faster than parallel CPU code and TBD times faster than single threaded CPU code.
+Performance will vary widely up to 10x based on the algorithm and memory/heap architecture used.  For example Java BigInteger is 5 to 50x slower than Java native long code depending on the CPU P/E core ratio, ram size and CPU type (Apple Silicon ARM64 is more efficient with BigInteger usage than IA64 Intel architectures for a reason that I am determining)
+
 - We will use concurrency as each operation is independent of parallel searches.  Except for the case of global maximum records.  Since the code is concurrent - not all the maximums will be displayed.  The reason is the global maximum may be reached in an adjacent thread.  For example 27:111:9232 may be missed by 34177:187:1302532.  Use of Thread local maximums will solve this.
 - see https://github.com/ObrienlabsDev/performance/issues/26
+- 
 # Performance Numbers
 
 ## Criteria
