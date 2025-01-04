@@ -8,6 +8,7 @@ import java.util.stream.LongStream;
 /**
  * 20250101
  * Michael O'Brien michael at obrienlabs.dev
+ * https://github.com/ObrienlabsDev/performance
  * 
  * Architecture
  * map the search space by interleaved UOW (1,3,5,7) - to 4 threads
@@ -56,7 +57,6 @@ public class Collatz {
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
 					result = true;
-					//result = Long.valueOf(current);
 				}
 				if (path > globalMaxPath.get()) {
 					globalMaxPath.set(path);
@@ -64,7 +64,6 @@ public class Collatz {
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
 					result = true;
-					//result = Long.valueOf(current);
 				}
 
 				break;
@@ -107,16 +106,11 @@ public class Collatz {
 		System.out.println("Collatz multithreaded 2025 michael at obrienlabs.dev");
 		Collatz collatz = new Collatz();
 
-		//long oddSearchStart = 1L;        // must be odd
-		//long oddSearchEnd = 4294967295L; //18446744073709551615 // must be odd
-		//long oddSearchIncrement = 2L;
 		long oddSearchCurrent = 1L;
 		long secondsStart = System.currentTimeMillis();
 
 		collatz.searchCollatzParallel(oddSearchCurrent, secondsStart);
-		/*for(oddSearchCurrent = oddSearchStart; oddSearchCurrent < oddSearchEnd; oddSearchCurrent += oddSearchIncrement) {
-			collatz.searchCollatzParallel(oddSearchCurrent, secondsStart);
-		}*/
+
 		System.out.println("completed: " + (System.currentTimeMillis() - secondsStart));
 	}
 
