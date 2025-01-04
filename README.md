@@ -175,6 +175,12 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 - 689 sec 13900K a 3.0/5.7 GHz
 
 # Records stats
+## 128 bit Multi Threaded Java (Lambda/Streams) on native long - batch 13 bit - M4Pro 24g 8p4e
+20250103+
+```
+```
+## 128 bit Single Threaded C++ on native unsigned long long - 13900KS 128g 8p16e32t
+20241230+
 ```
 m0: 0:3 0:16: p: 7 sec: 0 dur: 0
 mp: 0:3 0:16: p: 7 sec: 0 dur: 0
@@ -325,6 +331,8 @@ mp: 0:989345275647 0:1219624271099764: p: 1348 sec: 24896 dur: 222542
 mp: 0:1122382791663 0:2662567439048656: p: 1356 sec: 30977 dur: 253519
 mp: 0:1444338092271 0:1219624271099764: p: 1408 sec: 75267 dur: 328786
 mp: 0:1899148184679 0:1037298361093936: p: 1411 sec: 107540 dur: 436326
+
+
 ```
 
 # Links
