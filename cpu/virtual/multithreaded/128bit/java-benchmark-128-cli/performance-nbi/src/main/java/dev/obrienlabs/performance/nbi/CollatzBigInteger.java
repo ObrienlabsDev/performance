@@ -74,7 +74,7 @@ public class CollatzBigInteger {
 	}
 	
 	public void searchCollatzParallel(BigInteger oddSearchCurrent, long secondsStart) {
-		long batchBits = 12; // adjust this based on the chip architecture 
+		long batchBits = 13; // adjust this based on the chip architecture 
 		
 		long searchBits = 32;
 		long batches = 1 << batchBits;
@@ -87,7 +87,7 @@ public class CollatzBigInteger {
 		for (long part = 0; part < (batches + 1) ; part++) {	
 			// generate a limited collection (CopyOnWriteArrayList not required as r/o) for the search space - 32 is a good
 			List<Long> oddNumbers = LongStream
-					.range(1L + (part * threads), ((1 + part) * threads) - 1)
+					.rangeClosed(1L + (part * threads), ((1 + part) * threads) - 1)
 					.filter(x -> x % 2 != 0) // TODO: find a way to avoid this filter using range above
 					.boxed()
 					.collect(Collectors.toList());
