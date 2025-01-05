@@ -65,23 +65,24 @@ void singleGPUSearch() {
     const int dev0 = 0;
     const int dev1 = 1;
 
-    int cores = 5120;// (argc > 1) ? atoi(argv[1]) : 5120; // get command
+    int cores = 16384;// (argc > 1) ? atoi(argv[1]) : 5120; // get command
     // exited with code -1073741571 any higher
     // VRAM related - cannot exceed 32k threads for dual 12g RTX-3500 - check 4090
-    const int threads = 32768;// 32768;// 7168 * 7;// 7168 * 4;// 32768 - (1536);// 32768 - 1536;// 7168 * 4;
+    const int threads = 32768;// 7168 * 7;// 7168 * 4;// 32768 - (1536);// 32768 - 1536;// 7168 * 4;
     // 22sec on 7168 * 6 = 43008 55% gpu
     // 21-24 sec on 7168*7
     // 24 sec on 7168 * 8
     // 32 sec on 16384
 
-    const int threadsPerBlock = 128;// 128; 128=50%, 256=66 on RTX-3500
+    const int threadsPerBlock = 512;// 128; 128=50%, 256=66 on RTX-3500
     // Host arrays
     unsigned long long host_input0[threads];
     
     unsigned long long startSequence = 1L;
     unsigned long long globalMaxValue = 1L;
     unsigned long long globalMaxStart = startSequence;
-    unsigned long long endSequence = 1 << 24; // 20 = 190 sec
+    unsigned long long endSequence = 1 << 16;
+    // compute batches
 
     unsigned long long host_result0[threads] = { 0 };
 
@@ -104,11 +105,12 @@ void singleGPUSearch() {
     cudaMalloc((void**)&device_output0, size);
 
     // prep for iteration
-    int x;
+    int batch;
     // 32k - 1.5k
     // GPU0: Iterations: 8388608 Threads: 31232 ThreadsPerBlock: 64 Blocks: 488
     printf("GPU0: Threads: %d ThreadsPerBlock: %d Blocks: %d\n", threads, threadsPerBlock, blocks);
-    for (x = 0; x < endSequence; x++) {
+    // Bug: vary batch depending on thread size
+    for (batch = 0; batch < endSequence; batch++) {
         for (int q = 0; q < threads; q++) {
             host_input0[q] = startSequence;
             startSequence += 2;
@@ -179,7 +181,7 @@ void dualGPUSearch() {
     int cores = 5120;// (argc > 1) ? atoi(argv[1]) : 5120; // get command
     // exited with code -1073741571 any higher
     // VRAM related - cannot exceed 32k threads for dual 12g RTX-3500 - check 4090
-    const int threads = 16384;// 32768;// 7168 * 7;// 7168 * 4;// 32768 - (1536);// 32768 - 1536;// 7168 * 4;
+    const int threads = 7168 * 4;// 32768;// 7168 * 7;// 7168 * 4;// 32768 - (1536);// 32768 - 1536;// 7168 * 4;
     // 22sec on 7168 * 6 = 43008 55% gpu
     // 21-24 sec on 7168*7
     // 24 sec on 7168 * 8
