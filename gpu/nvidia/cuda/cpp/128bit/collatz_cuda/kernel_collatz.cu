@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
     unsigned long long startSequence = 1L;
     unsigned long long globalMaxValue = 1L;
     unsigned long long globalMaxStart = startSequence;
-    unsigned long long endSequence = 1 << 15;
+    unsigned long long endSequence = 1 << 20;
 
     
 
@@ -204,11 +204,17 @@ int main(int argc, char* argv[])
             if (host_result0[i] > globalMaxValue) {
                 globalMaxValue = host_result0[i];
                 globalMaxStart = host_input0[i];
+                time(&timeEnd);
+                timeElapsed = difftime(timeEnd, timeStart);
+                std::cout << "Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart << ": " << globalMaxValue << " last search: " << startSequence << "\n";
             }
             if (dualDevice > 0) {
                 if (host_result1[i] > globalMaxValue) {
                     globalMaxValue = host_result1[i];
                     globalMaxStart = host_input1[i];
+                    time(&timeEnd);
+                    timeElapsed = difftime(timeEnd, timeStart);
+                    std::cout << "Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart << ": " << globalMaxValue << " last search: " << startSequence << "\n";
                 }
             }
         }
@@ -228,12 +234,12 @@ int main(int argc, char* argv[])
         }
     }
 
-        time(&timeEnd);
+    time(&timeEnd);
     timeElapsed = difftime(timeEnd, timeStart);
 
     //std::cout << "2 + 7 = " << c << std::endl;
     printf("duration: %.f\n", timeElapsed);
-    std::cout << "GlobalMax: " << globalMaxStart << ": " << globalMaxValue << " last search: " << startSequence << "\n";
+    std::cout << "Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart << " : " << globalMaxValue << " last search : " << startSequence << "\n";
 
     // Free GPU memory
     cudaSetDevice(dev0);
