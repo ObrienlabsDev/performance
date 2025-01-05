@@ -98,7 +98,10 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 
 
 ## GPU
-
+### Multi Threaded : 32 bit run
+#### 128 bit native
+##### CUDA 12.6: CPP
+- 24 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 50% GPU - 15 batch
 ## CPU
 ### Multi Threaded : 40 bit run
 #### 128 bit native
