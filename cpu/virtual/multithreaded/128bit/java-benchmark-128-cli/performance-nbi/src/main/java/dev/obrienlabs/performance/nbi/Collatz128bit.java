@@ -87,18 +87,19 @@ public class Collatz128bit {
 		return result;
 	}
 	
-	public void searchCollatzParallel(long oddSearchCurrent, long secondsStart, long searchBits, long batchBits) {
+	public void searchCollatzParallel(long oddSearchCurrent, long secondsStart, long searchBitsStart, long searchBitsEnd, long batchBits) {
 		long batches = 1 << batchBits;
-		long threadBits = searchBits - batchBits;
+		long threadBits = searchBitsEnd - searchBitsStart - batchBits;
 		long threads = 1 << threadBits;
+		long rangeStart = (1 << searchBitsStart) + 1L;
 		
-		System.out.println("Searching: " + searchBits + " space, batch " + "0" + " of " 
+		System.out.println("Searching: " + searchBitsStart + " to " + searchBitsEnd + " space, batch " + "0" + " of " 
 				+ batches + " with " + threadBits +" bits of " + threads + " threads over a " + batchBits + " batch size" );
 		
 		for (long part = 0; part < (batches + 1) ; part++) {	
 			// generate a limited collection (CopyOnWriteArrayList not required as r/o) for the search space - 32 is a good
 			List<ULong128> oddNumbers = LongStream
-					.rangeClosed(1L + (part * threads), ((1 + part) * threads) - 1)
+					.rangeClosed(rangeStart + (part * threads), ((1 + part) * threads) - 1)
 					.filter(x -> x % 2 != 0) // TODO: find a way to avoid this filter using range above
 					.boxed()
 					.map(ULong128Impl::new)
@@ -118,13 +119,15 @@ public class Collatz128bit {
 
 	public static void main(String[] args) {
 
-		System.out.println("Collatz multithreaded 2025 michael at obrienlabs.dev: args search batch (both in bits: ie: 32 13 for 32 bit search space");
+		System.out.println("Collatz multithreaded 2025 michael at obrienlabs.dev: args searchStart searchEnd batch (both in bits: ie: 0 32 13 for 32 bit search space");
 
 		long batchBits = 13; // adjust this based on the chip architecture 
-		long searchBits = 32;
-		if(args.length > 1) {
-			searchBits = Long.parseLong(args[0]);
-			batchBits = Long.parseLong(args[1]);
+		long searchBitsStart = 0;
+		long searchBitsEnd = 32;
+		if(args.length > 2) {
+			searchBitsStart = Long.parseLong(args[0]);
+			searchBitsEnd = Long.parseLong(args[1]);
+			batchBits = Long.parseLong(args[2]);
 		}
 		
 		Collatz128bit collatz = new Collatz128bit();
@@ -132,7 +135,7 @@ public class Collatz128bit {
 		long oddSearchCurrent = 1L;
 		long secondsStart = System.currentTimeMillis();
 
-		collatz.searchCollatzParallel(oddSearchCurrent, secondsStart, searchBits, batchBits);
+		collatz.searchCollatzParallel(oddSearchCurrent, secondsStart, searchBitsStart, searchBitsEnd, batchBits);
 
 		System.out.println("completed: " + (System.currentTimeMillis() - secondsStart));
 	}
