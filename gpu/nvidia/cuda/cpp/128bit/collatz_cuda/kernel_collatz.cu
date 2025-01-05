@@ -105,7 +105,9 @@ int main(int argc, char* argv[])
     unsigned long long host_input1[threads];
 
     unsigned long long startSequence = 1L;
-
+    unsigned long long globalMaxValue = 1L;
+    unsigned long long globalMaxStart = startSequence;
+    unsigned long long endSequence = 1 << 15;
 
     
 
@@ -149,7 +151,9 @@ int main(int argc, char* argv[])
         printf("GPU1: Threads: %d ThreadsPerBlock: %d Blocks: %d\n", threads, threadsPerBlock, blocks);
     }
 
-    for (x = 0; x < 200000; x++) {
+
+    for (x = 0; x < endSequence; x++) {
+
 
         for (int q = 0; q < threads; q++) {
             host_input0[q] = startSequence;// 8528817511;
@@ -194,10 +198,27 @@ int main(int argc, char* argv[])
             cudaMemcpy(host_result1, device_output1, size, cudaMemcpyDeviceToHost);
         }
 
+        // parallelize
+        for (int i = 0; i < threads; i++)
+        {
+            if (host_result0[i] > globalMaxValue) {
+                globalMaxValue = host_result0[i];
+                globalMaxStart = host_input0[i];
+            }
+            if (dualDevice > 0) {
+                if (host_result1[i] > globalMaxValue) {
+                    globalMaxValue = host_result1[i];
+                    globalMaxStart = host_input1[i];
+                }
+            }
+        }
+
      }
 
     // Print the result
     std::cout << "collatz:\n";
+
+
     int i = 0;
     for (int i = 0; i < 20/*threads*/; i++)
     {
@@ -212,6 +233,7 @@ int main(int argc, char* argv[])
 
     //std::cout << "2 + 7 = " << c << std::endl;
     printf("duration: %.f\n", timeElapsed);
+    std::cout << "GlobalMax: " << globalMaxStart << ": " << globalMaxValue << " last search: " << startSequence << "\n";
 
     // Free GPU memory
     cudaSetDevice(dev0);
