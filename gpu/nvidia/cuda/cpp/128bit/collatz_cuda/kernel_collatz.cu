@@ -140,61 +140,69 @@ int main(int argc, char* argv[])
     cudaSetDevice(dev0);
     cudaMalloc((void**)&device_input0, size);
     cudaMalloc((void**)&device_output0, size);
-    // Copy input data from host to device
-    cudaMemcpy(device_input0, host_input0, size, cudaMemcpyHostToDevice);
 
     if (dualDevice > 0) {
         cudaSetDevice(dev1);
         cudaMalloc((void**)&device_input1, size);
         cudaMalloc((void**)&device_output1, size);
-        // Copy input data from host to device
-        cudaMemcpy(device_input1, host_input1, size, cudaMemcpyHostToDevice);
     }
 
-    // maximums for 4090 single 2*28672 or split - 4.7A
-    // 32k - 1.5k
-    // GPU0: Iterations: 8388608 Threads: 31232 ThreadsPerBlock: 64 Blocks: 488
-    printf("GPU0: Threads: %d ThreadsPerBlock: %d Blocks: %d\n", threads, threadsPerBlock, blocks);
- 
-    // Launch kernel
-    cudaSetDevice(dev0);
-    // kernelName<<<numBlocks, threadsPerBlock>>>(parameters...);
-    addArrays << <blocks, threadsPerBlock >> > (device_input0, device_output0, threads);
+    // prep for iteration
+    int i;
+    for (i = 0; i < 100; i++) {
 
-    if (dualDevice > 0) {
-        printf("GPU1: Threads: %d ThreadsPerBlock: %d Blocks: %d\n", threads, threadsPerBlock, blocks);
-        cudaSetDevice(dev1);
-        // kernelName<<<numBlocks, threadsPerBlock>>>(parameters...);
-        addArrays << <blocks, threadsPerBlock >> > (device_input1, device_output1, threads);
-    }
+        cudaSetDevice(dev0);
+        cudaMemcpy(device_input0, host_input0, size, cudaMemcpyHostToDevice);
 
-    // Wait for GPU to finish before accessing on host
-    cudaSetDevice(dev0);
-    cudaDeviceSynchronize();
-    if (dualDevice > 0) {
-        cudaSetDevice(dev1);
-        cudaDeviceSynchronize();
-    }
-
-    // Copy result from device back to host
-    cudaMemcpy(host_result0, device_output0, size, cudaMemcpyDeviceToHost);
-    if (dualDevice > 0) {
-        cudaMemcpy(host_result1, device_output1, size, cudaMemcpyDeviceToHost);
-    }
-
-    // Print the result
-    std::cout << "collatz:\n";
-    int i = 0;
-    for (int i = 0; i < 20/*threads*/; i++)
-    {
-        std::cout << "GPU0: " << i << ": " << host_input0[i] << " = " << host_result0[i] << "\n";
         if (dualDevice > 0) {
-            std::cout << "GPU1: " << i << ": " << host_input1[i] << " = " << host_result1[i] << "\n";
+            cudaSetDevice(dev1);
+            cudaMemcpy(device_input1, host_input1, size, cudaMemcpyHostToDevice);
         }
-    }
+        // maximums for 4090 single 2*28672 or split - 4.7A
+        // 32k - 1.5k
+        // GPU0: Iterations: 8388608 Threads: 31232 ThreadsPerBlock: 64 Blocks: 488
+        printf("GPU0: Threads: %d ThreadsPerBlock: %d Blocks: %d\n", threads, threadsPerBlock, blocks);
 
-    time(&timeEnd);
-    timeElapsed = difftime(timeEnd, timeStart);
+        // Launch kernel
+        cudaSetDevice(dev0);
+        // kernelName<<<numBlocks, threadsPerBlock>>>(parameters...);
+        addArrays << <blocks, threadsPerBlock >> > (device_input0, device_output0, threads);
+
+        if (dualDevice > 0) {
+            printf("GPU1: Threads: %d ThreadsPerBlock: %d Blocks: %d\n", threads, threadsPerBlock, blocks);
+            cudaSetDevice(dev1);
+            // kernelName<<<numBlocks, threadsPerBlock>>>(parameters...);
+            addArrays << <blocks, threadsPerBlock >> > (device_input1, device_output1, threads);
+        }
+
+        // Wait for GPU to finish before accessing on host
+        cudaSetDevice(dev0);
+        cudaDeviceSynchronize();
+        if (dualDevice > 0) {
+            cudaSetDevice(dev1);
+            cudaDeviceSynchronize();
+        }
+
+        // Copy result from device back to host
+        cudaMemcpy(host_result0, device_output0, size, cudaMemcpyDeviceToHost);
+        if (dualDevice > 0) {
+            cudaMemcpy(host_result1, device_output1, size, cudaMemcpyDeviceToHost);
+        }
+
+        // Print the result
+        std::cout << "collatz:\n";
+        int i = 0;
+        for (int i = 0; i < 20/*threads*/; i++)
+        {
+            std::cout << "GPU0: " << i << ": " << host_input0[i] << " = " << host_result0[i] << "\n";
+            if (dualDevice > 0) {
+                std::cout << "GPU1: " << i << ": " << host_input1[i] << " = " << host_result1[i] << "\n";
+            }
+        }
+
+        time(&timeEnd);
+        timeElapsed = difftime(timeEnd, timeStart);
+    }
 
     //std::cout << "2 + 7 = " << c << std::endl;
     printf("duration: %.f\n", timeElapsed);
