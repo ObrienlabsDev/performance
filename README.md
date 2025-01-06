@@ -102,6 +102,12 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 #### 128 bit native
 ##### CUDA 12.6: CPP
 - 21 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 50% GPU - 15 batch
+#### 64 bit native
+Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
+
+- 10 sec 13900K b 4090 single 45% GPU 22% TDP .9g/24g 32k threads / 256 threads/block 
+- 12 sec 13900K a RTX-A4000 single 45% GPU 58% TDP .9g/16g
+
 ## CPU
 ### Multi Threaded : 40 bit run
 #### 128 bit native
