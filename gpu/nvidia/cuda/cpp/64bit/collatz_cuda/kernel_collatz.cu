@@ -20,8 +20,7 @@
 */
 
 
-/* CUDA Kernel runs on GPU device streaming core */
-__global__ void addArrays(unsigned long long* _input, unsigned long long* _output, int threads)//, unsigned long long iterations)
+__global__ void CollatzCudaKernel(unsigned long long* _input, unsigned long long* _output, int threads)//, unsigned long long iterations)
 {
     // Calculate this thread's index
     int threadIndex = blockDim.x * blockIdx.x + threadIdx.x;
@@ -74,7 +73,7 @@ void singleGPUSearch() {
     // 24 sec on 7168 * 8
     // 32 sec on 16384
 
-    const int threadsPerBlock = 512;// 128; 128=50%, 256=66 on RTX-3500
+    const int threadsPerBlock = 256;// 128; 128=50%, 256=66 on RTX-3500
     // Host arrays
     unsigned long long host_input0[threads];
     
@@ -121,7 +120,7 @@ void singleGPUSearch() {
         // Launch kernel
         cudaSetDevice(dev0);
         // kernelName<<<numBlocks, threadsPerBlock>>>(parameters...);
-        addArrays << <blocks, threadsPerBlock >> > (device_input0, device_output0, threads);
+        CollatzCudaKernel << <blocks, threadsPerBlock >> > (device_input0, device_output0, threads);
 
         // Wait for GPU to finish before accessing on host
         cudaSetDevice(dev0);
@@ -181,13 +180,13 @@ void dualGPUSearch() {
     int cores = 5120;// (argc > 1) ? atoi(argv[1]) : 5120; // get command
     // exited with code -1073741571 any higher
     // VRAM related - cannot exceed 32k threads for dual 12g RTX-3500 - check 4090
-    const int threads = 7168 * 4;// 32768;// 7168 * 7;// 7168 * 4;// 32768 - (1536);// 32768 - 1536;// 7168 * 4;
+    const int threads = 16384;// 7168 * 4;// 32768;// 7168 * 7;// 7168 * 4;// 32768 - (1536);// 32768 - 1536;// 7168 * 4;
     // 22sec on 7168 * 6 = 43008 55% gpu
     // 21-24 sec on 7168*7
     // 24 sec on 7168 * 8
     // 32 sec on 16384
 
-    const int threadsPerBlock = 128;// 128; 128=50%, 256=66 on RTX-3500
+    const int threadsPerBlock = 256;// 128; 128=50%, 256=66 on RTX-3500
     // Host arrays
     unsigned long long host_input0[threads];
     unsigned long long host_input1[threads];
@@ -195,7 +194,7 @@ void dualGPUSearch() {
     unsigned long long startSequence = 1L;
     unsigned long long globalMaxValue = 1L;
     unsigned long long globalMaxStart = startSequence;
-    unsigned long long endSequence = 1 << 24; // 20 = 190 sec
+    unsigned long long endSequence = 1 << 16; // 20 = 190 sec
 
     unsigned long long host_result0[threads] = { 0 };
     unsigned long long host_result1[threads] = { 0 };
@@ -257,11 +256,11 @@ void dualGPUSearch() {
         // Launch kernel
         cudaSetDevice(dev0);
         // kernelName<<<numBlocks, threadsPerBlock>>>(parameters...);
-        addArrays << <blocks, threadsPerBlock >> > (device_input0, device_output0, threads);
+        CollatzCudaKernel << <blocks, threadsPerBlock >> > (device_input0, device_output0, threads);
 
         if (dualDevice > 0) {
             cudaSetDevice(dev1);
-            addArrays << <blocks, threadsPerBlock >> > (device_input1, device_output1, threads);
+            CollatzCudaKernel << <blocks, threadsPerBlock >> > (device_input1, device_output1, threads);
         }
 
         // Wait for GPU to finish before accessing on host
