@@ -20,7 +20,7 @@
 */
 
 
-__global__ void CollatzCudaKernel(unsigned long long* _input, unsigned long long* _output, int threads)//, unsigned long long iterations)
+__global__ void CollatzCudaKernel(unsigned long long* _input, unsigned long long* _output, int threads)
 {
     // Calculate this thread's index
     int threadIndex = blockDim.x * blockIdx.x + threadIdx.x;
@@ -130,11 +130,11 @@ void singleGPUSearch() {
         cudaMemcpy(host_result0, device_output0, size, cudaMemcpyDeviceToHost);
 
         // parallelize
-        for (int i = 0; i < threads; i++)
+        for (int index = 0; index < threads; index++)
         {
-            if (host_result0[i] > globalMaxValue) {
-                globalMaxValue = host_result0[i];
-                globalMaxStart = host_input0[i];
+            if (host_result0[index] > globalMaxValue) {
+                globalMaxValue = host_result0[index];
+                globalMaxStart = host_input0[index];
                 time(&timeEnd);
                 timeElapsed = difftime(timeEnd, timeStart);
                 std::cout << "GPU0:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart << ": " << globalMaxValue << " last search: " << startSequence << "\n";
@@ -144,7 +144,6 @@ void singleGPUSearch() {
 
     // Print the result
     std::cout << "collatz:\n";
-    int i = 0;
     for (int i = 0; i < 20/*threads*/; i++)
     {
         std::cout << "GPU0: " << i << ": " << host_input0[i] << " = " << host_result0[i] << "\n";
@@ -301,7 +300,6 @@ void dualGPUSearch() {
 
     // Print the result
     std::cout << "collatz:\n";
-    int i = 0;
     for (int i = 0; i < 20/*threads*/; i++)
     {
         std::cout << "GPU0: " << i << ": " << host_input0[i] << " = " << host_result0[i] << "\n";
