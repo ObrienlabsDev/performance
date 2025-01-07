@@ -9,6 +9,7 @@
 /**
 * Michael O'Brien 20241223
 * michael at obrienlabs.dev
+* 128 bit version
 * Collatz sequence running on NVidia GPUs like the RTX-3500 ada,A4000,A4500,4090 ada and A6000
 * http://www.ericr.nl/wondrous/pathrecs.html
 * https://github.com/ObrienlabsDev/performance
@@ -21,7 +22,7 @@
 
 
 /* CUDA Kernel runs on GPU device streaming core */
-__global__ void addArrays(unsigned long long* _input, unsigned long long* _output, int threads)//, unsigned long long iterations)
+__global__ void collatzCUDAKernel(unsigned long long* _input, unsigned long long* _output, int threads)//, unsigned long long iterations)
 {
     // Calculate this thread's index
     int threadIndex = blockDim.x * blockIdx.x + threadIdx.x;
@@ -57,7 +58,7 @@ void singleGPUSearch() {
     int deviceCount = 0;
     int dualDevice = 0;
     cudaGetDeviceCount(&deviceCount);
-    printf("%d CUDA devices found - reallocating", deviceCount);
+    printf("%d CUDA devices found - reallocating\n", deviceCount);
     if (deviceCount > 1) {
         dualDevice = 1;
     }
@@ -74,17 +75,18 @@ void singleGPUSearch() {
     // 24 sec on 7168 * 8
     // 32 sec on 16384
 
-    const int threadsPerBlock = 128;// 128; 128=50%, 256=66 on RTX-3500
+    const int threadsPerBlock = 256;// 128;// 128; 128=50%, 256=66 on RTX-3500
     // Host arrays
     unsigned long long host_input0[threads];
     
     unsigned long long startSequence = 1L;
     unsigned long long globalMaxValue = 1L;
     unsigned long long globalMaxStart = startSequence;
-    unsigned long long endSequence = 1 << 24; // 20 = 190 sec
+    unsigned long long endSequence = 1 << 16; // 20 = 190 sec
+    unsigned long long batchNumber = (endSequence - startSequence + 1) ;
+    printf("%d\n", batchNumber);
 
     unsigned long long host_result0[threads] = { 0 };
-
     unsigned long long* device_input0 = nullptr;
     unsigned long long* device_output0 = nullptr;
 
@@ -103,14 +105,11 @@ void singleGPUSearch() {
     cudaMalloc((void**)&device_input0, size);
     cudaMalloc((void**)&device_output0, size);
 
-    // prep for iteration
-    int x;
-    // 32k - 1.5k
-    // GPU0: Iterations: 8388608 Threads: 31232 ThreadsPerBlock: 64 Blocks: 488
     printf("GPU0: Threads: %d ThreadsPerBlock: %d Blocks: %d\n", threads, threadsPerBlock, blocks);
-    for (x = 0; x < endSequence; x++) {
-        for (int q = 0; q < threads; q++) {
-            host_input0[q] = startSequence;
+    for (int batch = 0; batch < endSequence; batch++) {
+        // prepare inputs
+        for (int thread = 0; thread < threads; thread++) {
+            host_input0[thread] = startSequence;
             startSequence += 2;
         }
 
@@ -119,7 +118,7 @@ void singleGPUSearch() {
         // Launch kernel
         cudaSetDevice(dev0);
         // kernelName<<<numBlocks, threadsPerBlock>>>(parameters...);
-        addArrays << <blocks, threadsPerBlock >> > (device_input0, device_output0, threads);
+        collatzCUDAKernel << <blocks, threadsPerBlock >> > (device_input0, device_output0, threads);
 
         // Wait for GPU to finish before accessing on host
         cudaSetDevice(dev0);
@@ -128,12 +127,12 @@ void singleGPUSearch() {
         // Copy result from device back to host
         cudaMemcpy(host_result0, device_output0, size, cudaMemcpyDeviceToHost);
 
-        // parallelize
-        for (int i = 0; i < threads; i++)
+        // process reesults: parallelize with OpenMP
+        for (int thread = 0; thread < threads; thread++)
         {
-            if (host_result0[i] > globalMaxValue) {
-                globalMaxValue = host_result0[i];
-                globalMaxStart = host_input0[i];
+            if (host_result0[thread] > globalMaxValue) {
+                globalMaxValue = host_result0[thread];
+                globalMaxStart = host_input0[thread];
                 time(&timeEnd);
                 timeElapsed = difftime(timeEnd, timeStart);
                 std::cout << "GPU0:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart << ": " << globalMaxValue << " last search: " << startSequence << "\n";
@@ -141,7 +140,7 @@ void singleGPUSearch() {
         }
     }
 
-    // Print the result
+    // Print the result for the last run
     std::cout << "collatz:\n";
     int i = 0;
     for (int i = 0; i < 20/*threads*/; i++)
@@ -185,7 +184,7 @@ void dualGPUSearch() {
     // 24 sec on 7168 * 8
     // 32 sec on 16384
 
-    const int threadsPerBlock = 128;// 128; 128=50%, 256=66 on RTX-3500
+    const int threadsPerBlock = 256;// 128; 128=50%, 256=66 on RTX-3500
     // Host arrays
     unsigned long long host_input0[threads];
     unsigned long long host_input1[threads];
@@ -193,7 +192,7 @@ void dualGPUSearch() {
     unsigned long long startSequence = 1L;
     unsigned long long globalMaxValue = 1L;
     unsigned long long globalMaxStart = startSequence;
-    unsigned long long endSequence = 1 << 24; // 20 = 190 sec
+    unsigned long long endSequence = 1 << 16; // 20 = 190 sec
 
     unsigned long long host_result0[threads] = { 0 };
     unsigned long long host_result1[threads] = { 0 };
@@ -255,11 +254,11 @@ void dualGPUSearch() {
         // Launch kernel
         cudaSetDevice(dev0);
         // kernelName<<<numBlocks, threadsPerBlock>>>(parameters...);
-        addArrays << <blocks, threadsPerBlock >> > (device_input0, device_output0, threads);
+        collatzCUDAKernel << <blocks, threadsPerBlock >> > (device_input0, device_output0, threads);
 
         if (dualDevice > 0) {
             cudaSetDevice(dev1);
-            addArrays << <blocks, threadsPerBlock >> > (device_input1, device_output1, threads);
+            collatzCUDAKernel << <blocks, threadsPerBlock >> > (device_input1, device_output1, threads);
         }
 
         // Wait for GPU to finish before accessing on host
