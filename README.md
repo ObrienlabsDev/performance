@@ -98,10 +98,16 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 
 
 ## GPU
-### Multi Threaded : 32 bit run
+### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 #### 128 bit native
 ##### CUDA 12.6: CPP
 - 21 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 50% GPU - 15 batch
+#### 64 bit native
+Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
+-  9 sec 14900KS d RTX-A6000 single 45% GPU 24% TDP .9g/48g - 32k threads / 256 threads/block
+- 10 sec 13900K b 4090 single 45% GPU 22% TDP .9g/24g 32k threads / 256 threads/block 
+- 12 sec 13900K a RTX-A4000 single 45% GPU 58% TDP .9g/16g
+
 ## CPU
 ### Multi Threaded : 40 bit run
 #### 128 bit native
@@ -122,7 +128,7 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 15292 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch
 - 16988 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch
 - 
-### Multi Threaded : 32 bit run
+### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 #### 128 bit native
 ##### Java 
 - 114 sec Macbook 16 M4max 12p4e - 13 batch
@@ -334,19 +340,25 @@ m0: 0:567839862631 p: 789 m: 5450:5418023868929928788 ms: 7034895 dur: 32196
 mp: 0:568847878633 p: 1324 m: 0:2662567439048656 ms: 62590 dur: 32259
 20250104:0944
 mp: 0:674190078379 p: 1332 m: 0:2662567439048656 ms: 6148200 dur: 38407
-0:674190078379
 20250104:1040
 40/79 bit
 m0: 0:871673828443 p: 650 m: 21714:6140004720918243904 ms: 11642008 dur: 50049
-0:871673828443
 mp: 0:881715740415 p: 1335 m: 0:5234135688127384 ms: 597153 dur: 50646
-0:881715740415
 mp: 0:989345275647 p: 1348 m: 0:1219624271099764 ms: 6370486 dur: 57017
-0:989345275647
 20250104:1725
 20250105:1745
 last number: 1099511627776
 completed: 63554039
+
+continue with M1Max 929%
+
+mp: 0:1122382791663 p: 1356 m: 0:2662567439048656 ms: 11430189 dur: 93468
+mp: 0:1444338092271 p: 1408 m: 0:1219624271099764 ms: 27968005 dur: 121436
+mp: 0:1899148184679 p: 1411 m: 0:1037298361093936 ms: 39688329 dur: 161124
+mp: 0:2081751768559 p: 1437 m: 4:6202015729192499496 ms: 16038774 dur: 177163
+42/80 bit
+m0: 0:2674309547647 p: 1029 m: 41764:-8316388737050189968 ms: 51696273 dur: 228859
+20250106
 
 ```
 ## 128 bit Single Threaded C++ on native unsigned long long - 13900KS 128g 8p16e32t
