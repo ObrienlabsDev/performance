@@ -84,7 +84,9 @@ void singleGPUSearch() {
     unsigned long long globalMaxStart = startSequence;
     unsigned long long endSequence = 1 << 16; // 20 = 190 sec
     unsigned long long batchNumber = (endSequence - startSequence + 1) ;
-    printf("%d\n", batchNumber);
+    unsigned long long iterations = endSequence * threads;
+    printf("BatchNumber: %llu\n", batchNumber);
+    printf("Iterations: %llu\n", iterations);
 
     unsigned long long host_result0[threads] = { 0 };
     unsigned long long* device_input0 = nullptr;
@@ -97,7 +99,7 @@ void singleGPUSearch() {
 
     // Allocate memory on the GPU
     size_t size = threads * sizeof(unsigned long long);
-    printf("array allocation bytes per GPU: %d * %d is %d maxSearch: %lld\n", sizeof(unsigned long long), threads, size, startSequence);
+    printf("array allocation bytes per GPU: %d * %d is %d maxSearch: %llu\n", sizeof(unsigned long long), threads, size, startSequence);
     // Number of blocks = ceiling(N / threadsPerBlock)
     int blocks = (threads + threadsPerBlock - 1) / threadsPerBlock;
 
@@ -105,7 +107,9 @@ void singleGPUSearch() {
     cudaMalloc((void**)&device_input0, size);
     cudaMalloc((void**)&device_output0, size);
 
-    printf("GPU0: Threads: %d ThreadsPerBlock: %d Blocks: %d\n", threads, threadsPerBlock, blocks);
+    // Iterations = 2 ^ (15(threads) + 16(endSequence = runs) + 1(odd multiplier))
+
+    printf("GPU0: Iterations: %llu via (Threads: %llu * Batches: %d * 2 (odd mult)) ThreadsPerBlock: %d Blocks: %d\n", iterations, threads, batchNumber, threadsPerBlock, blocks);
     for (int batch = 0; batch < endSequence; batch++) {
         // prepare inputs
         for (int thread = 0; thread < threads; thread++) {
