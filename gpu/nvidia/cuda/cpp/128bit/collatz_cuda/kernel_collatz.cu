@@ -22,6 +22,7 @@
 __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long* _input0,
     unsigned long long* _output1, unsigned long long* _output0, int threads)
 {
+    const unsigned long long MAXBIT = 9223372036854775808;
     // Calculate this thread's index
     int threadIndex = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -31,6 +32,9 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
     unsigned long long current0 = _input0[threadIndex];
     unsigned long long max1 = 0ULL;// _input1[threadIndex];
     unsigned long long current1 = 0ULL; //_input1[threadIndex];
+    unsigned long long temp1 = 0ULL;
+    unsigned long long temp0_sh = 0ULL;
+    unsigned long long temp0_ad = 0ULL;
 
     if (threadIndex < threads) {
             path = 0;
@@ -40,15 +44,44 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                 path += 1;
                 if (current0 % 2 == 0) {
                     current0 = current0 >> 1;
-                }
-                else {
-                    current0 = (current0 << 1) + current0 + 1;
-                    //path += 1;
-                    if (current0 > max0) {
-                        max0 = current0;
+                    // shift high byte if not odd
+                    if (current1 % 2 != 0) {
+                        current0 += MAXBIT;
+                    }
+                    else {
+                        current1 = current1 >> 1;
                     }
                 }
-            } while (current0 > 1);
+                else {
+                    temp1 = 3 * current1;// + (current1 << 1);
+                    current1 = temp1;
+
+                    // shift first - calc overflow 1
+                    temp0_sh = 1 + (current0 << 1);
+                    if (!(current0 < MAXBIT)) {
+                        current1 = current1 + 1;
+                    }
+                    // add second - calc overflow 2
+                    temp0_ad = temp0_sh + current0;
+                    if (temp0_ad < current0) { // overflow
+                        current1 = current1 + 1;
+                    }
+                    current0 = temp0_ad;
+
+                    // check for max
+                    if (max1 < current1) {
+                        max1 = current1;
+                        max0 = current0;
+                    }
+                    else {
+                        if (max1 == current1) {
+                            if (max0 < current0) {
+                                max0 = current0;
+                            }
+                        }
+                    }
+                }
+            } while (!(current0 == 1) && (current1 == 0));
     }
     _output0[threadIndex] = max0;
 }
