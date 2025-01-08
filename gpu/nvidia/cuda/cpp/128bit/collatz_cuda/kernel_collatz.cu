@@ -43,7 +43,8 @@ __global__ void collatzCUDAKernel(unsigned long long* _input, unsigned long long
                     current = current >> 1;
                 }
                 else {
-                    current = 1 + current * 3;
+                    current = (current >> 1) + current + 1;
+                    path += 1;
                     if (current > max) {
                         max = current;
                     }
@@ -67,8 +68,6 @@ void singleGPUSearch() {
     const int dev1 = 1;
     const unsigned long long threadsPerBlock = 256ULL;// 128;// 128; 128=50%, 256=66 on RTX-3500
     unsigned long long cores = 5120ULL;// (argc > 1) ? atoi(argv[1]) : 5120; // get command
-    // exited with code -1073741571 any higher
-    // VRAM related - cannot exceed 32k threads for dual 12g RTX-3500 - check 4090
 
     // variables
     // keep these 2 in sync
@@ -138,7 +137,7 @@ void singleGPUSearch() {
         for (int thread = 0; thread < threads; thread++)
         {
             if (host_result0[thread] > globalMaxValue) {
-                globalMaxValue = host_result0[thread];
+                globalMaxValue = host_result0[thread] * 2;
                 globalMaxStart = host_input0[thread];
                 time(&timeEnd);
                 timeElapsed = difftime(timeEnd, timeStart);
