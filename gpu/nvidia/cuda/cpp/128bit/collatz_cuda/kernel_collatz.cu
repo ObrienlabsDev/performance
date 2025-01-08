@@ -46,25 +46,24 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                     current0 = current0 >> 1;
                     // shift high byte if not odd
                     if (current1 % 2 != 0) {
+                        // add carry
                         current0 += MAXBIT;
                     }
-                    else {
-                        current1 = current1 >> 1;
-                    }
+                    current1 = current1 >> 1;
                 }
                 else {
-                    temp1 = 3 * current1;// + (current1 << 1);
+                    temp1 = 3ULL * current1;// + (current1 << 1);
                     current1 = temp1;
 
                     // shift first - calc overflow 1
-                    temp0_sh = 1 + (current0 << 1);
+                    temp0_sh = 1ULL + (current0 << 1);
                     if (!(current0 < MAXBIT)) {
-                        current1 = current1 + 1;
+                        current1 = current1 + 1ULL;
                     }
                     // add second - calc overflow 2
                     temp0_ad = temp0_sh + current0;
                     if (temp0_ad < current0) { // overflow
-                        current1 = current1 + 1;
+                        current1 = current1 + 1ULL;
                     }
                     current0 = temp0_ad;
 
@@ -107,7 +106,7 @@ void singleGPUSearch() {
     const unsigned long long threads = 32768;
     // diff should be 31 bits (minus oddOffsetOptimization)
     unsigned int startSequencePower = 1;  // do not use 0
-    unsigned int endSequencePower = 32; 
+    unsigned int endSequencePower = 34; 
 
     // derived
     unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
