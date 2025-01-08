@@ -178,47 +178,49 @@ void dualGPUSearch() {
         dualDevice = 1;
     }
 
+
+
+    const unsigned long long oddOffsetOptimization = 2ULL;
     const int dev0 = 0;
     const int dev1 = 1;
-
-    int cores = 5120;// (argc > 1) ? atoi(argv[1]) : 5120; // get command
+    const unsigned long long threadsPerBlock = 256ULL;// 128;// 128; 128=50%, 256=66 on RTX-3500
+    unsigned long long cores = 5120ULL;// (argc > 1) ? atoi(argv[1]) : 5120; // get command
     // exited with code -1073741571 any higher
     // VRAM related - cannot exceed 32k threads for dual 12g RTX-3500 - check 4090
-    const int threads = 16384;// 32768;// 7168 * 7;// 7168 * 4;// 32768 - (1536);// 32768 - 1536;// 7168 * 4;
-    // 22sec on 7168 * 6 = 43008 55% gpu
-    // 21-24 sec on 7168*7
-    // 24 sec on 7168 * 8
-    // 32 sec on 16384
-
-    const int threadsPerBlock = 256;// 128; 128=50%, 256=66 on RTX-3500
-    // Host arrays
-    unsigned long long host_input0[threads];
-    unsigned long long host_input1[threads];
-    unsigned long long host_result0[threads] = { 0 };
-    unsigned long long host_result1[threads] = { 0 };
-    // Device pointers
-    unsigned long long* device_input0 = nullptr;
-    unsigned long long* device_output0 = nullptr;
-    unsigned long long* device_input1 = nullptr;
-    unsigned long long* device_output1 = nullptr;
 
     // variables
-    unsigned long long startSequencePower = 1;  // do not use 0
-    unsigned long long endSequencePower = 16;
-    unsigned long long startSequenceNumber = 1L + (1 << startSequencePower);
-    unsigned long long endSequenceNumber = 1 << endSequencePower;
+    // keep these 2 in sync
+    unsigned int threadsPower = 14;
+    const unsigned long long threads = 16384;
+    // diff should be 31 bits (minus oddOffsetOptimization)
+    unsigned int startSequencePower = 1;  // do not use 0
+    unsigned int endSequencePower = 32;
 
     // derived
+    unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
+    unsigned long long endSequenceNumber = (1ULL << endSequencePower) - 1ULL;
+    printf("endSequenceNumber: %llu\n", endSequenceNumber);
     // Number of blocks = ceiling(N / threadsPerBlock)
-    int blocks = (threads + threadsPerBlock - 1) / threadsPerBlock;
+    unsigned int blocks = (threads + threadsPerBlock - 1) / threadsPerBlock;
     size_t size = threads * sizeof(unsigned long long);
     unsigned long long globalMaxValue = startSequenceNumber;
     unsigned long long globalMaxStart = startSequenceNumber;
-    unsigned long long iterations = (endSequenceNumber - startSequenceNumber + 1);
-    unsigned long long batchNumber = 31 - (endSequenceNumber - startSequenceNumber + 1); // fix
-    //unsigned long long iterations = endSequenceNumber * threads;
+    unsigned long long iterations = (endSequenceNumber - startSequenceNumber) / oddOffsetOptimization;// +1);
+    unsigned long long batchNumberPower = (endSequencePower - startSequencePower) - threadsPower;
+    unsigned long long batchNumber = iterations / threads; // 1ULL << batchNumberPower;
+    printf("BatchNumberPower: %llu\n", batchNumberPower);
     printf("BatchNumber: %llu\n", batchNumber);
     printf("Iterations: %llu\n", iterations);
+
+    // Host arrays
+    unsigned long long host_input0[threads];
+    unsigned long long host_result0[threads] = { 0 };
+    unsigned long long* device_input0 = nullptr;
+    unsigned long long* device_output0 = nullptr;
+    unsigned long long host_input1[threads];
+    unsigned long long host_result1[threads] = { 0 };
+    unsigned long long* device_input1 = nullptr;
+    unsigned long long* device_output1 = nullptr;
 
     time_t timeStart, timeEnd;
     double timeElapsed;
@@ -246,10 +248,10 @@ void dualGPUSearch() {
         for (int q = 0; q < threads; q++) {
             host_input0[q] = startSequenceNumber;
             if (dualDevice > 0) {
-                startSequenceNumber += 2;
+                startSequenceNumber += oddOffsetOptimization;
                 host_input1[q] = startSequenceNumber;
             }
-            startSequenceNumber += 2;
+            startSequenceNumber += oddOffsetOptimization;
         }
 
         cudaSetDevice(dev0);
