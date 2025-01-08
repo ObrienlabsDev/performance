@@ -106,8 +106,8 @@ void singleGPUSearch() {
     unsigned int threadsPower = 15;
     const unsigned long long threads = 32768;
     // diff should be 31 bits (minus oddOffsetOptimization)
-    unsigned int startSequencePower = 1;  // do not use 0
-    unsigned int endSequencePower = 32; 
+    unsigned int startSequencePower = 5;  // do not use 0
+    unsigned int endSequencePower = 36; 
 
     // derived
     unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
@@ -120,7 +120,7 @@ void singleGPUSearch() {
     unsigned long long globalMaxStart0 = startSequenceNumber;
     unsigned long long globalMaxValue1 = 0ULL;
     unsigned long long globalMaxStart1 = 0ULL;
-    unsigned long long iterations = (endSequenceNumber - startSequenceNumber) / oddOffsetOptimization;
+    unsigned long long iterations = (endSequenceNumber - startSequenceNumber) / oddOffsetOptimization * 4;
     unsigned long long batchNumberPower = (endSequencePower - startSequencePower) - threadsPower;
     unsigned long long batchNumber = iterations / threads; // 1ULL << batchNumberPower;
     printf("BatchNumberPower: %llu\n", batchNumberPower);
@@ -184,16 +184,18 @@ void singleGPUSearch() {
 
                 time(&timeEnd);
                 timeElapsed = difftime(timeEnd, timeStart);
-                std::cout << "GPU0:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1 
+                std::cout << "GPU01:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1 
                     << ":" <<globalMaxValue0 << " last search: " << startSequenceNumber << "\n";
             } else {
                 // handle only lsb gt
                 if (host_result1[thread] == globalMaxValue1) {
                     if(host_result0[thread] > globalMaxValue0) {
                         globalMaxValue0 = host_result0[thread];
+                        globalMaxStart0 = host_input0[thread];
+                        globalMaxStart1 = 0ULL;// host_input1[thread];
                         time(&timeEnd);
                         timeElapsed = difftime(timeEnd, timeStart);
-                        std::cout << "GPU0:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1
+                        std::cout << "GPU00:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1
                             << ":" << globalMaxValue0 << " last search: " << startSequenceNumber << "\n";
                     }
                 }
