@@ -17,7 +17,6 @@
 * https://github.com/obrienlabs/benchmark/blob/master/collatz_vs10/collatz_vs10/collatz_vs10.cpp
 * https://github.com/ObrienlabsDev/cuda/blob/main/add_example/kernel_collatz.cu
 * https://github.com/ObrienlabsDev/collatz/blob/main/src/main/java/dev/obrienlabs/collatz/service/CollatzUnitOfWork.java
-* 
 */
 
 __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long* _input0,
@@ -105,8 +104,8 @@ void singleGPUSearch() {
     unsigned long long* device_output0 = nullptr;
     // for 128 not 2nd GPU
     //unsigned long long* device_input1 = nullptr;
-    //unsigned long long* device_output1 = nullptr;
-    //unsigned long long host_result1[threads] = { 0 };
+    unsigned long long* device_output1 = nullptr;
+    unsigned long long host_result1[threads] = { 0 };
 
     time_t timeStart, timeEnd;
     double timeElapsed;
@@ -118,7 +117,7 @@ void singleGPUSearch() {
     cudaMalloc((void**)&device_input0, size);
     //cudaMalloc((void**)&device_input1, size);
     cudaMalloc((void**)&device_output0, size);
-    //cudaMalloc((void**)&device_output1, size);
+    cudaMalloc((void**)&device_output1, size);
 
     // Iterations = 2 ^ (15(threads) + 16(endSequence = runs) + 1(odd multiplier))
     printf("GPU0: Iterations: %llu via (Threads: %llu * Batches: %d * 2 (odd mult)) ThreadsPerBlock: %d Blocks: %d\n", 
@@ -190,12 +189,12 @@ void singleGPUSearch() {
     cudaFree(device_input0);
     //cudaFree(device_input1);
     cudaFree(device_output0);
-    //cudaFree(device_output1);
+    cudaFree(device_output1);
 
     free(host_input0);
     //free(host_input1);
     free(host_result0);
-    //free(host_result1);
+    free(host_result1);
     return;
 }
 
