@@ -20,7 +20,7 @@
 */
 
 __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long* _input0,
-    /*unsigned long long* _output1, */unsigned long long* _output0, int threads)
+    unsigned long long* _output1, unsigned long long* _output0, int threads)
 {
     // Calculate this thread's index
     int threadIndex = blockDim.x * blockIdx.x + threadIdx.x;
@@ -29,15 +29,13 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
     int path = 0;
     unsigned long long max0 = _input0[threadIndex];
     unsigned long long current0 = _input0[threadIndex];
-    //unsigned long long max1 = _input1[threadIndex];
-    //unsigned long long current1 = _input1[threadIndex];
+    unsigned long long max1 = 0ULL;// _input1[threadIndex];
+    unsigned long long current1 = 0ULL; //_input1[threadIndex];
 
-    if (threadIndex < threads)
-    {
+    if (threadIndex < threads) {
             path = 0;
             max0 = _input0[threadIndex];
             current0 = _input0[threadIndex];
-
             do {
                 path += 1;
                 if (current0 % 2 == 0) {
@@ -134,30 +132,30 @@ void singleGPUSearch() {
         //cudaMemcpy(device_input1, host_input1, size, cudaMemcpyHostToDevice);
         // Launch kernel
         // kernelName<<<numBlocks, threadsPerBlock>>>(parameters...);
-        collatzCUDAKernel << <blocks, threadsPerBlock >> > (/*device_input1, */device_input0, /*device_output1, */device_output0, threads);
+        collatzCUDAKernel << <blocks, threadsPerBlock >> > (/*device_input1, */device_input0, device_output1, device_output0, threads);
 
         // Wait for GPU to finish before accessing on host
         cudaDeviceSynchronize();
 
         // Copy result from device back to host
         cudaMemcpy(host_result0, device_output0, size, cudaMemcpyDeviceToHost);
-        //cudaMemcpy(host_result1, device_output1, size, cudaMemcpyDeviceToHost);
+        cudaMemcpy(host_result1, device_output1, size, cudaMemcpyDeviceToHost);
 
         // process reesults: parallelize with OpenMP
         for (int thread = 0; thread < threads; thread++) {
-            /*if (host_result1[thread] > globalMaxValue1) {
+            if (host_result1[thread] > globalMaxValue1) {
                 globalMaxValue0 = host_result0[thread];
                 globalMaxValue1 = host_result1[thread];
                 globalMaxStart0 = host_input0[thread];
-                globalMaxStart1 = host_input1[thread];
+                globalMaxStart1 = 0ULL;// host_input1[thread];
 
                 time(&timeEnd);
                 timeElapsed = difftime(timeEnd, timeStart);
                 std::cout << "GPU0:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1 
                     << ":" <<globalMaxValue0 << " last search: " << startSequenceNumber << "\n";
-            } else {*/
+            } else {
                 // handle only lsb gt
-                //if (host_result1[thread] == globalMaxValue1) {
+                if (host_result1[thread] == globalMaxValue1) {
                     if(host_result0[thread] > globalMaxValue0) {
                         globalMaxValue0 = host_result0[thread];
                         time(&timeEnd);
@@ -165,8 +163,8 @@ void singleGPUSearch() {
                         std::cout << "GPU0:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1
                             << ":" << globalMaxValue0 << " last search: " << startSequenceNumber << "\n";
                     }
-                //}
-            //}
+                }
+            }
             // TODO: maxPath
         }
     }
@@ -175,7 +173,7 @@ void singleGPUSearch() {
     std::cout << "collatz:\n";
     for (int i = 0; i < 20/*threads*/; i++)
     {
-        std::cout << "GPU0: " << i << ": " << /*host_input1[i] <<*/ ":" << host_input0[i] << " = " << /*host_result1[i] <<*/ host_result0[i] << "\n";
+        std::cout << "GPU0: " << i << ": " << /*host_input1[i] <<*/ ":" << host_input0[i] << " = " << host_result1[i] << host_result0[i] << "\n";
     }
 
     time(&timeEnd);
