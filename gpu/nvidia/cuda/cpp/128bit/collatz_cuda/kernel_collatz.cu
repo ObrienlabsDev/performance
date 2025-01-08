@@ -106,8 +106,8 @@ void singleGPUSearch() {
     unsigned int threadsPower = 15;
     const unsigned long long threads = 32768;
     // diff should be 31 bits (minus oddOffsetOptimization)
-    unsigned int startSequencePower = 5;  // do not use 0
-    unsigned int endSequencePower = 36; 
+    unsigned int startSequencePower = 1;  // do not use 0
+    unsigned int endSequencePower = 32; 
 
     // derived
     unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
@@ -120,7 +120,7 @@ void singleGPUSearch() {
     unsigned long long globalMaxStart0 = startSequenceNumber;
     unsigned long long globalMaxValue1 = 0ULL;
     unsigned long long globalMaxStart1 = 0ULL;
-    unsigned long long iterations = (endSequenceNumber - startSequenceNumber) / oddOffsetOptimization * 4;
+    unsigned long long iterations = (endSequenceNumber - startSequenceNumber) / oddOffsetOptimization * ((1ULL << (endSequencePower - 32)));// >> 1);
     unsigned long long batchNumberPower = (endSequencePower - startSequencePower) - threadsPower;
     unsigned long long batchNumber = iterations / threads; // 1ULL << batchNumberPower;
     printf("BatchNumberPower: %llu\n", batchNumberPower);
