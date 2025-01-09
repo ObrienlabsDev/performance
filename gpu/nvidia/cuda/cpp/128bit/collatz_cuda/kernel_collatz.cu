@@ -59,9 +59,31 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
             current0 = _input0[threadIndex];
             do {
                 path += 1;
-                /* Logic:
-                - 
-                */
+                if (current0 % 2 == 0) {
+                    current0 = current0 >> 1;
+                    // shift high byte first
+                    if (current1 % 2 != 0) {
+                        current0 += MAXBIT;
+                    }
+                    current1 = current1 >> 1;
+                }
+                else {
+                    temp1 = 3 * current1;// + (current1 << 1);
+                    current1 = temp1;
+
+                    // shift first - calc overflow 1
+                    temp0_sh = 1 + (current0 << 1);
+                    if (!(current0 < MAXBIT)) {
+                        current1 = current1 + 1;
+                    }
+                    // add second - calc overflow 2
+                    temp0_ad = temp0_sh + current0;
+                    if (temp0_ad < current0) { // overflow
+                        current1 = current1 + 1;
+                    }
+                    current0 = temp0_ad;
+                
+                /*
                 if (current0 % 2 == 0) {
                     //shiftRight(current1, current0);
                     current0 = current0 >> 1;
@@ -94,8 +116,8 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                     if (current0 < temp0) {
                         current1 += 1ULL;
                     }
-                    current0 += 1ULL;
-                    */
+                    current0 += 1ULL; // check overflow
+                    
                     
                     temp1 = current1 + current1 + current1;// + (current1 << 1);
                     current1 = temp1;
@@ -113,6 +135,9 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                     // finally add 1
                     current0 = temp0_ad + 1ULL;
                     
+                    */
+
+
                     // check for max
                     if (max1 < current1) {
                         max1 = current1;
