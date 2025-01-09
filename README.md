@@ -363,7 +363,7 @@ m0: 0:2674309547647 p: 1029 m: 41764:-8316388737050189968 ms: 51696273 dur: 2288
 20250106
 mp: 0:2775669024745 p: 1440 m: 4:6202015729192499496 ms: 9130971 dur: 237990
 
-continue with M2Pro 970%
+continue with M2Pro 970% - down tto 500 during heap work 
 PID    COMMAND      %CPU      TIME     #TH    #WQ   #PORT MEM    PURG   CMPRS  PGRP  PPID  STATE    BOOSTS                 %CPU_ME %CPU_OTHRS UID  FAULTS      COW   
 41970  java         525.4     932 hrs  39/1   1     145   4259M- 0B     35M-   41970 1248  running  *0[1]                  0.00000 0.00000    501  2147483647  3252
 
@@ -375,6 +375,11 @@ m0: 0:3716509988199 p: 802 m: 11272258:4885724866165006536 ms: 1447490 dur: 3362
 mp: 0:3743559068799 p: 1549 m: 4:6202015729192499496 ms: 2489022 dur: 338786
 42/88 bit
 20250109
+1500h
+last number: 4398046511104
+completed: 399318132
+for 42/16
+50 bit...
 ```
 ## 128 bit Single Threaded C++ on native unsigned long long - 13900KS 128g 8p16e32t
 20241230+
