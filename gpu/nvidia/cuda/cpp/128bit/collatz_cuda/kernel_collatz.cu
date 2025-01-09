@@ -38,7 +38,7 @@ __global__ void shiftRight(unsigned long long _current1, unsigned long long _cur
 __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long* _input0,
     unsigned long long* _output1, unsigned long long* _output0, int threads)
 {
-    const unsigned long long MAXBIT = 9223372036854775808;
+    const unsigned long long MAXBIT = 9223372036854775808ULL;
     // Calculate this thread's index
     int threadIndex = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -72,7 +72,7 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                     }
                     current1 = current1 >> 1;
                 }
-                else {
+                else {/*
                     // use (n >> 1) + n + 1
                     // keep copy of n
                     temp0 = current0;
@@ -88,20 +88,21 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                     current1 = current1 >> 1;
 
                     // add n + 1
-                    current0 = current0 + temp0 + 1ULL;
+                    current0 = current0 + temp0;
                     current1 = current1 + temp1;
                     // if lt - we have overflow
                     if (current0 < temp0) {
                         current1 += 1ULL;
                     }
-
-                    /*
+                    current0 += 1ULL;
+                    */
+                    
                     temp1 = 3ULL * current1;// + (current1 << 1);
                     current1 = temp1;
                 
                     // shift first - calc overflow 1
-                    temp0_sh = 1ULL + (current0 << 1);
-                    if (!(current0 < MAXBIT)) {
+                    temp0_sh = (current0 << 1);
+                    if (temp0_sh < current0) {
                         current1 = current1 + 1ULL;
                     }
                     // add second - calc overflow 2
@@ -109,8 +110,8 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                     if (temp0_ad < current0) { // overflow
                         current1 = current1 + 1ULL;
                     }
-                    current0 = temp0_ad;
-                    */
+                    current0 = 1ULL + temp0_ad;
+                    
                     // check for max
                     if (max1 < current1) {
                         max1 = current1;
@@ -127,6 +128,7 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
             } while (!(current0 == 1) && (current1 == 0));
     }
     _output0[threadIndex] = max0;
+    _output1[threadIndex] = max1;
 }
 
 void singleGPUSearch() {
