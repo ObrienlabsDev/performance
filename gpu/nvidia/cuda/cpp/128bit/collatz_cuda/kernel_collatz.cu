@@ -97,20 +97,21 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                     current0 += 1ULL;
                     */
                     
-                    temp1 = 3ULL * current1;// + (current1 << 1);
+                    temp1 = current1 + current1 + current1;// + (current1 << 1);
                     current1 = temp1;
                 
                     // shift first - calc overflow 1
-                    temp0_sh = (current0 << 1);
+                    temp0_sh = current0 + current0;// 1ULL + (current0 << 1);
                     if (temp0_sh < current0) {
-                        current1 = current1 + 1ULL;
+                        current1 = current1 + 1ULL; // check overflow
                     }
                     // add second - calc overflow 2
                     temp0_ad = temp0_sh + current0;
-                    if (temp0_ad < current0) { // overflow
-                        current1 = current1 + 1ULL;
+                    if (temp0_ad < temp0_sh) { // overflow
+                        current1 = current1 + 1ULL; // check overflow
                     }
-                    current0 = 1ULL + temp0_ad;
+                    // finally add 1
+                    current0 = temp0_ad + 1ULL;
                     
                     // check for max
                     if (max1 < current1) {
