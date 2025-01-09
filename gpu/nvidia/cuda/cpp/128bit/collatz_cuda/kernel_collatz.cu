@@ -19,6 +19,22 @@
 * https://github.com/ObrienlabsDev/collatz/blob/main/src/main/java/dev/obrienlabs/collatz/service/CollatzUnitOfWork.java
 */
 
+
+
+__global__ void shiftRight(unsigned long long _current1, unsigned long long _current0) {
+    const unsigned long long MAXBIT = 9223372036854775808;
+    if (_current0 % 2 == 0) {
+       _current0 = _current0 >> 1;
+        // shift high byte if not odd
+        if (_current1 % 2 != 0) {
+            // add carry
+            _current0 += MAXBIT;
+        }
+        _current1 = _current1 >> 1;
+    }
+
+}
+
 __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long* _input0,
     unsigned long long* _output1, unsigned long long* _output0, int threads)
 {
@@ -32,6 +48,7 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
     unsigned long long current0 = _input0[threadIndex];
     unsigned long long max1 = 0ULL;// _input1[threadIndex];
     unsigned long long current1 = 0ULL; //_input1[threadIndex];
+    unsigned long long temp0 = 0ULL;
     unsigned long long temp1 = 0ULL;
     unsigned long long temp0_sh = 0ULL;
     unsigned long long temp0_ad = 0ULL;
@@ -42,7 +59,11 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
             current0 = _input0[threadIndex];
             do {
                 path += 1;
+                /* Logic:
+                - 
+                */
                 if (current0 % 2 == 0) {
+                    //shiftRight(current1, current0);
                     current0 = current0 >> 1;
                     // shift high byte if not odd
                     if (current1 % 2 != 0) {
@@ -52,9 +73,32 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                     current1 = current1 >> 1;
                 }
                 else {
+                    // use (n >> 1) + n + 1
+                    // keep copy of n
+                    temp0 = current0;
+                    temp1 = current1;
+                    // shift right
+                    //shiftRight(current1, current0);
+                    current0 = current0 >> 1;
+                    // shift high byte if not odd
+                    if (current1 % 2 != 0) {
+                        // add carry
+                        current0 += MAXBIT;
+                    }
+                    current1 = current1 >> 1;
+
+                    // add n + 1
+                    current0 = current0 + temp0 + 1ULL;
+                    current1 = current1 + temp1;
+                    // if lt - we have overflow
+                    if (current0 < temp0) {
+                        current1 += 1ULL;
+                    }
+
+                    /*
                     temp1 = 3ULL * current1;// + (current1 << 1);
                     current1 = temp1;
-
+                
                     // shift first - calc overflow 1
                     temp0_sh = 1ULL + (current0 << 1);
                     if (!(current0 < MAXBIT)) {
@@ -66,7 +110,7 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                         current1 = current1 + 1ULL;
                     }
                     current0 = temp0_ad;
-
+                    */
                     // check for max
                     if (max1 < current1) {
                         max1 = current1;
