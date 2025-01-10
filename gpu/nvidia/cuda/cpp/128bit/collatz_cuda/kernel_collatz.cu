@@ -19,21 +19,6 @@
 * https://github.com/ObrienlabsDev/collatz/blob/main/src/main/java/dev/obrienlabs/collatz/service/CollatzUnitOfWork.java
 */
 
-
-
-__global__ void shiftRight(unsigned long long _current1, unsigned long long _current0) {
-    const unsigned long long MAXBIT = 9223372036854775808;
-    if (_current0 % 2 == 0) {
-       _current0 = _current0 >> 1;
-        // shift high byte if not odd
-        if (_current1 % 2 != 0) {
-            // add carry
-            _current0 += MAXBIT;
-        }
-        _current1 = _current1 >> 1;
-    }
-}
-
 __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long* _input0,
     unsigned long long* _output1, unsigned long long* _output0, int threads)
 {
@@ -95,7 +80,7 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                     current0 += MAXBIT;
                 }
                 current1 = current1 >> 1;
-                if (current0 % 2 != 0) {
+                if (temp0 % 2 != 0) {
                     path += 1;
                     // use (n >> 1) + n + 1
                     // add n
@@ -235,8 +220,8 @@ void singleGPUSearch() {
         // process reesults: parallelize with OpenMP
         for (int thread = 0; thread < threads; thread++) {
             if (host_result1[thread] > globalMaxValue1) {
-                globalMaxValue0 = host_result0[thread];
-                globalMaxValue1 = host_result1[thread];
+                globalMaxValue0 = host_result0[thread] << 1;
+                globalMaxValue1 = host_result1[thread] << 1;
                 globalMaxStart0 = host_input0[thread];
                 globalMaxStart1 = 0ULL;// host_input1[thread];
 
@@ -248,7 +233,7 @@ void singleGPUSearch() {
                 // handle only lsb gt
                 if (host_result1[thread] == globalMaxValue1) {
                     if(host_result0[thread] > globalMaxValue0) {
-                        globalMaxValue0 = host_result0[thread];
+                        globalMaxValue0 = host_result0[thread] << 1;
                         globalMaxStart0 = host_input0[thread];
                         globalMaxStart1 = 0ULL;// host_input1[thread];
                         time(&timeEnd);
@@ -534,7 +519,7 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
 int main(int argc, char* argv[])
 {
     int cores = (argc > 1) ? atoi(argv[1]) : 5120; // get command
- //   singleGPUSearch();
+    singleGPUSearch();
     //dualGPUSearch();
     unsigned long long _input0 = 27ULL;
     unsigned long long _output1 = 0ULL;
