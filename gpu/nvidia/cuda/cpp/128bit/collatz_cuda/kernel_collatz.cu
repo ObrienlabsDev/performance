@@ -54,7 +54,7 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                     current0 += MAXBIT;
                 }
                 current1 = current1 >> 1;
-                if (temp0 % 2 != 0) {
+                if (temp0 % 2ULL != 0) {
                     path += 1;
                     // use (n >> 1) + n + 1
                     // add n
@@ -131,13 +131,13 @@ void singleGPUSearch() {
     // Host arrays
     unsigned long long host_input0[threads];
     //unsigned long long host_input1[threads];
-    unsigned long long host_result0[threads] = { 0 };
+    unsigned long long host_result0[threads] = { 0ULL };
     unsigned long long* device_input0 = nullptr;
     unsigned long long* device_output0 = nullptr;
     // for 128 not 2nd GPU
     //unsigned long long* device_input1 = nullptr;
     unsigned long long* device_output1 = nullptr;
-    unsigned long long host_result1[threads] = { 0 };
+    unsigned long long host_result1[threads] = { 0ULL };
 
     time_t timeStart, timeEnd;
     double timeElapsed;
@@ -429,7 +429,7 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
 
     // Check boundary (in case N is not a multiple of blockDim.x)
     int path = 0;
-    unsigned long long max0 = 0; _input0;// [threadIndex] ;
+    unsigned long long max0 = 0ULL; _input0;// [threadIndex] ;
     unsigned long long current0 = _input0;// [threadIndex] ;
     unsigned long long max1 = 0ULL;// _input1[threadIndex];
     unsigned long long current1 = 0ULL; //_input1[threadIndex];
@@ -456,7 +456,7 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
                 current0 += MAXBIT;
             }
             current1 = current1 >> 1;
-            if (temp0 % 2 != 0) {
+            if (temp0 % 2ULL != 0) {
                 path += 1; // if we combine odd/even
                 // use (n >> 1) + ceil(n) + 1
                 // add n
@@ -464,7 +464,7 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
                 current1 += temp1;
                 // if lt - we have overflow
                 if (current0 < temp0) {
-                    current1 += 2ULL;
+                    current1 += 1ULL;
                 }
                 current0 += 1ULL; // check overflow
 
@@ -485,7 +485,15 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
             }
         } while (!(current0 == 1) && (current1 == 0));
 
-        printf("path: %lld actual max: %lld\n", path, max0 << 1);
+        // double max
+        unsigned long long _max1 = 0ULL;
+        unsigned long long _max0 = 0ULL;
+        _max1 = max1 << 1;
+        _max0 = max0 << 1;
+        if (_max0 < max0) {
+            _max1 += 1ULL; // add carry
+        }
+        printf("path: %lld actual max: %lld:%lld\n", path, _max1, _max0 );
     //}
     _output0 = max0;
     _output1 = max1;
@@ -494,9 +502,10 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
 int main(int argc, char* argv[])
 {
     int cores = (argc > 1) ? atoi(argv[1]) : 5120; // get command
-    singleGPUSearch();
+ //   singleGPUSearch();
     //dualGPUSearch();
-    unsigned long long _input0 = 27ULL;
+    //unsigned long long _input0 = 12327829503ULL; // 1:2275654840695500112
+    unsigned long long _input0 = 23035537407ULL; // 3:13497924420419572192
     unsigned long long _output1 = 0ULL;
     unsigned long long _output0 = 0ULL;
     testCollatzCUDAKernel(_input0, _output1, _output0);
