@@ -19,7 +19,7 @@
 * https://github.com/ObrienlabsDev/collatz/blob/main/src/main/java/dev/obrienlabs/collatz/service/CollatzUnitOfWork.java
 */
 
-__global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long* _input0,
+__global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned long long* _input0,
     unsigned long long* _output1, unsigned long long* _output0, int threads)
 {
     const unsigned long long MAXBIT = 9223372036854775808ULL;
@@ -31,11 +31,11 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
     unsigned long long max0 = _input0[threadIndex];
     unsigned long long current0 = _input0[threadIndex];
     unsigned long long max1 = 0ULL;// _input1[threadIndex];
-    unsigned long long current1 = 0ULL; //_input1[threadIndex];
+    unsigned long long current1 = 0ULL;// _input1[threadIndex];
     unsigned long long temp0 = 0ULL;
     unsigned long long temp1 = 0ULL;
-    unsigned long long temp0_sh = 0ULL;
-    unsigned long long temp0_ad = 0ULL;
+    unsigned long long temp0_shift = 0ULL;
+    unsigned long long temp0_add = 0ULL;
 
     if (threadIndex < threads) {
             path = 0;
@@ -43,35 +43,46 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
             current0 = _input0[threadIndex];
             do {
                 path += 1;
-                // keep copy of n
-                temp0 = current0;
-                temp1 = current1;
-                // both even odd include a shift right
-                current0 = current0 >> 1;
-                // shift high byte if not odd
-                if (current1 % 2ULL != 0) {
-                    // add carry
-                    current0 += MAXBIT;
-                }
-                current1 = current1 >> 1;
-                if (temp0 % 2ULL != 0) {
-                    path += 1;
-                    // use (n >> 1) + n + 1
-                    // add n
-                    current0 += temp0;
-                    current1 += temp1;
-                    // if lt - we have overflow
-                    if (current0 < temp0) {
-                        current1 += 1ULL;
+                // both even odd include a shift right - but 128 bit 2 bit carry math is required for large numbers at the 64 bit boundary
+                // even
+                if (current0 % 2ULL == 0) {
+                    current0 = current0 >> 1;
+                    // shift high byte if not odd (we already have a 0 in the MSB of the low word - no overflow will occur
+                    if (current1 % 2ULL != 0) {
+                        // add carry to avoid - overflow during the msb add to the low word
+                        //temp0_sh = current0;
+                        current0 += MAXBIT; // check overflow - will be none
                     }
-                    current0 += 1ULL; // check overflow
-                    
+                    current1 = current1 >> 1;
+                }
+                else {
+                    // odd n << 1 + n + 1
+                    // use (n >> 1) + ceil(n) + 1 - only if 128 2 bit carry handling between
+                    // do only 128-64 bit 3n part of 3n+1 (don't worry about overflow past 128bit into 256 bit space until we get past 64 bit inputs)
+                    // HIGH (3N)
+                    current1 *= 3ULL;
 
-                    // check for max
+                    // LOW (3N + 1) with 2 bit overflow
+                    // shift first plus carry in (do add n later)
+                    temp0_shift = (current0 << 1) + 1ULL;
+                    // if lt - we have overflow
+                    if (!(current0 < MAXBIT)) {
+                        current1 += 1ULL; // add overflow
+                    }
+
+                    // add n step for odd - separate to break out possible 2 bit 64 bit boundary overflow
+                    temp0_add = temp0_shift + current0;
+                    if (temp0_add < current0) {
+                        current1 += 1ULL; // add overflow
+                    }
+                    current0 = temp0_add;
+
+                    // check for max (if combined odd/even mult by 2)
                     if (max1 < current1) {
                         max1 = current1;
                         max0 = current0;
-                    } else {
+                    }
+                    else {
                         if (max1 == current1) {
                             if (max0 < current0) {
                                 max0 = current0;
@@ -79,7 +90,7 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                         }
                     }
                 }
-            } while (!(current0 == 1) && (current1 == 0));
+            } while (!((current0 == 1ULL) && (current1 == 0ULL)));
     }
     _output0[threadIndex] = max0;
     _output1[threadIndex] = max1;
@@ -166,7 +177,7 @@ void singleGPUSearch() {
         //cudaMemcpy(device_input1, host_input1, size, cudaMemcpyHostToDevice);
         // Launch kernel
         // kernelName<<<numBlocks, threadsPerBlock>>>(parameters...);
-        collatzCUDAKernel << <blocks, threadsPerBlock >> > (/*device_input1, */device_input0, device_output1, device_output0, threads);
+        collatzCUDAKernel << <blocks, threadsPerBlock >> > (/*device_input1,*/ device_input0, device_output1, device_output0, threads);
 
         // Wait for GPU to finish before accessing on host
         cudaDeviceSynchronize();
@@ -184,12 +195,12 @@ void singleGPUSearch() {
                 globalMaxStart1 = 0ULL;// host_input1[thread];
 
                 // double max (we are using for odd: n >> 1 + n + 1 (we only print double but do not store it)
-                doubleMax0 = globalMaxValue0 << 1;
-                doubleMax1 += globalMaxValue1 << 1;
+                doubleMax0 = globalMaxValue0;// << 1;
+                doubleMax1 = globalMaxValue1;// << 1;
                 // if lt - we have overflow
-                if (doubleMax0 < globalMaxValue0) {
-                    doubleMax1 += 1ULL;
-                }
+                //if (doubleMax0 < globalMaxValue0) {
+                //    doubleMax1 += 1ULL;
+                //}
 
                 time(&timeEnd);
                 timeElapsed = difftime(timeEnd, timeStart);
@@ -204,12 +215,12 @@ void singleGPUSearch() {
                         globalMaxStart1 = 0ULL;// host_input1[thread];
 
                         // double max (we are using for odd: n >> 1 + n + 1 (we only print double but do not store it)
-                        doubleMax0 = globalMaxValue0 << 1;
-                        doubleMax1 += globalMaxValue1 << 1;
+                        doubleMax0 = globalMaxValue0;// << 1;
+                        doubleMax1 = globalMaxValue1;// << 1;
                         // if lt - we have overflow
-                        if (doubleMax0 < globalMaxValue0) {
-                            doubleMax1 += 1ULL;
-                        }
+                        //if (doubleMax0 < globalMaxValue0) {
+                        //    doubleMax1 += 1ULL;
+                        //}
 
                         time(&timeEnd);
                         timeElapsed = difftime(timeEnd, timeStart);
@@ -524,7 +535,7 @@ void testCollatzCUDAKernel(unsigned long long _input1, unsigned long long _input
 int main(int argc, char* argv[])
 {
     int cores = (argc > 1) ? atoi(argv[1]) : 5120; // get command
- //   singleGPUSearch();
+    singleGPUSearch();
     //dualGPUSearch();
     //unsigned long long _input0 = 12327829503ULL; // 1:2275654840695500112
     unsigned long long _input0 = 23035537407ULL; // 3:13497924420419572192
@@ -532,7 +543,7 @@ int main(int argc, char* argv[])
     unsigned long long _input1 = 0ULL;// 65536ULL;
     unsigned long long _output1 = 0ULL;
     unsigned long long _output0 = 0ULL;
-    testCollatzCUDAKernel(_input1, _input0, _output1, _output0);
+    //testCollatzCUDAKernel(_input1, _input0, _output1, _output0);
 
     return 0;
 }
