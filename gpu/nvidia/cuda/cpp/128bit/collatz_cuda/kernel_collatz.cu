@@ -505,7 +505,7 @@ void testCollatzCUDAKernel(unsigned long long _input1, unsigned long long _input
                     }
                 }
             }
-        } while (!(current0 == 1ULL) && (current1 == 0ULL));
+        } while (!((current0 == 1ULL) && (current1 == 0ULL)));
 
         // double max
         //unsigned long long _max1 = 0ULL;
@@ -527,9 +527,9 @@ int main(int argc, char* argv[])
  //   singleGPUSearch();
     //dualGPUSearch();
     //unsigned long long _input0 = 12327829503ULL; // 1:2275654840695500112
-    //unsigned long long _input0 = 23035537407ULL; // 3:13497924420419572192
-    unsigned long long _input0 = 65536ULL;
-    unsigned long long _input1 = 65536ULL;
+    unsigned long long _input0 = 23035537407ULL; // 3:13497924420419572192
+    //unsigned long long _input0 = 65536ULL;
+    unsigned long long _input1 = 0ULL;// 65536ULL;
     unsigned long long _output1 = 0ULL;
     unsigned long long _output0 = 0ULL;
     testCollatzCUDAKernel(_input1, _input0, _output1, _output0);
