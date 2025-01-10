@@ -468,7 +468,7 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
                 current0 += temp0;
                 current1 += temp1;
                 // if lt - we have overflow
-                if (current0 < temp0) {
+                if (!(current0 < MAXBIT)) {//current0 < temp0) {
                     current1 += 1ULL;
                 }
                 current0 += 1ULL; // check overflow
@@ -482,9 +482,6 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
                 else {
                     if (max1 == current1) {
                         if (max0 < current0) {
-                            if (current0 < 0) {
-                                printf("negative\n");
-                            }
                             max0 = current0;
                             printf("Max0: %llu:%llu\n", current1, current0);
                         }
@@ -498,7 +495,7 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
         unsigned long long _max0 = 0ULL;
         _max1 = max1 << 1;
         _max0 = max0 << 1;
-        if (_max0 < max0) {
+        if (!(max0 < MAXBIT)) {// _max0 < max0) {
             _max1 += 1ULL; // add carry
         }
         printf("path: %llu actual max: %llu:%llu\n", path, _max1, _max0 );
