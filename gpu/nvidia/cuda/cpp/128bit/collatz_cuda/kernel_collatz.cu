@@ -43,36 +43,10 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
             current0 = _input0[threadIndex];
             do {
                 path += 1;
-                /*if (current0 % 2 == 0) {
-                    current0 = current0 >> 1;
-                    // shift high byte first
-                    if (current1 % 2 != 0) {
-                        current0 += MAXBIT;
-                    }
-                    current1 = current1 >> 1;
-                }
-                else {
-                    temp1 = 3ULL * current1;// + (current1 << 1);
-                    current1 = temp1;
-
-                    // shift first - calc overflow 1
-                    temp0_sh = current0 << 1;
-                    if (temp0_sh < current0) { // not yet
-                        current1 = current1 + 1ULL;
-                    }
-                    // add second - calc overflow 2
-                    temp0_ad = temp0_sh + current0;
-                    if (temp0_ad < temp0_sh) { // overflow - needs temp0sh
-                        current1 = current1 + 1ULL;
-                    }
-                    current0 = temp0_ad + 1ULL; // check overflow
-                */
-
                 // keep copy of n
                 temp0 = current0;
                 temp1 = current1;
                 // both even odd include a shift right
-                //shiftRight(current1, current0);
                 current0 = current0 >> 1;
                 // shift high byte if not odd
                 if (current1 % 2ULL != 0) {
@@ -90,26 +64,8 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                     if (current0 < temp0) {
                         current1 += 1ULL;
                     }
-
-                    
-                    /*temp1 = current1 + current1 + current1;// + (current1 << 1);
-                    current1 = temp1;
-                
-                    // shift first - calc overflow 1
-                    temp0_sh = current0 + current0;// 1ULL + (current0 << 1);
-                    if (temp0_sh < current0) {
-                        current1 = current1 + 1ULL; // check overflow
-                    }
-                    // add second - calc overflow 2
-                    temp0_ad = temp0_sh + current0;
-                    if (temp0_ad < temp0_sh) { // overflow
-                        current1 = current1 + 1ULL; // check overflow
-                    }*/
-                    // finally add 1
                     current0 += 1ULL; // check overflow
                     
-                    
-
 
                     // check for max
                     if (max1 < current1) {
@@ -131,6 +87,8 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
 
 void singleGPUSearch() {
     unsigned long long MAXBIT = 9223372036854775808;
+    unsigned long long doubleMax0 = 0;
+    unsigned long long doubleMax1 = 0;
     int deviceCount = 0;
     int dualDevice = 0;
     cudaGetDeviceCount(&deviceCount);
@@ -220,26 +178,43 @@ void singleGPUSearch() {
         // process reesults: parallelize with OpenMP
         for (int thread = 0; thread < threads; thread++) {
             if (host_result1[thread] > globalMaxValue1) {
-                globalMaxValue0 = host_result0[thread] << 1;
-                globalMaxValue1 = host_result1[thread] << 1;
+                globalMaxValue0 = host_result0[thread];
+                globalMaxValue1 = host_result1[thread];
                 globalMaxStart0 = host_input0[thread];
                 globalMaxStart1 = 0ULL;// host_input1[thread];
 
+                // double max (we are using for odd: n >> 1 + n + 1 (we only print double but do not store it)
+                doubleMax0 = globalMaxValue0 << 1;
+                doubleMax1 += globalMaxValue1 << 1;
+                // if lt - we have overflow
+                if (doubleMax0 < globalMaxValue0) {
+                    doubleMax1 += 1ULL;
+                }
+
                 time(&timeEnd);
                 timeElapsed = difftime(timeEnd, timeStart);
-                std::cout << "GPU01:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1 
-                    << ":" <<globalMaxValue0 << " last search: " << startSequenceNumber << "\n";
+                std::cout << "GPU01:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << doubleMax1 
+                    << ":" << doubleMax0 << " last search: " << startSequenceNumber << "\n";
             } else {
                 // handle only lsb gt
                 if (host_result1[thread] == globalMaxValue1) {
                     if(host_result0[thread] > globalMaxValue0) {
-                        globalMaxValue0 = host_result0[thread] << 1;
+                        globalMaxValue0 = host_result0[thread];
                         globalMaxStart0 = host_input0[thread];
                         globalMaxStart1 = 0ULL;// host_input1[thread];
+
+                        // double max (we are using for odd: n >> 1 + n + 1 (we only print double but do not store it)
+                        doubleMax0 = globalMaxValue0 << 1;
+                        doubleMax1 += globalMaxValue1 << 1;
+                        // if lt - we have overflow
+                        if (doubleMax0 < globalMaxValue0) {
+                            doubleMax1 += 1ULL;
+                        }
+
                         time(&timeEnd);
                         timeElapsed = difftime(timeEnd, timeStart);
-                        std::cout << "GPU00:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1
-                            << ":" << globalMaxValue0 << " last search: " << startSequenceNumber << "\n";
+                        std::cout << "GPU00:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << doubleMax1
+                            << ":" << doubleMax0 << " last search: " << startSequenceNumber << "\n";
                     }
                 }
             }
