@@ -420,7 +420,7 @@ void dualGPUSearch() {
     return;
 }
 
-void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _input0,
+void testCollatzCUDAKernel(unsigned long long _input1, unsigned long long _input0,
     unsigned long long _output1, unsigned long long _output0)//, int threads)
 {
     const unsigned long long MAXBIT = 9223372036854775808ULL;
@@ -429,14 +429,14 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
 
     // Check boundary (in case N is not a multiple of blockDim.x)
     int path = 0;
-    unsigned long long max0 = 0ULL; _input0;// [threadIndex] ;
+    unsigned long long max0 = _input0;// [threadIndex] ;
     unsigned long long current0 = _input0;// [threadIndex] ;
-    unsigned long long max1 = 0ULL;// _input1[threadIndex];
-    unsigned long long current1 = 0ULL; //_input1[threadIndex];
+    unsigned long long max1 = _input1;// [threadIndex] ;
+    unsigned long long current1 = _input1;// [threadIndex] ;
     unsigned long long temp0 = 0ULL;
     unsigned long long temp1 = 0ULL;
-    unsigned long long temp0_sh = 0ULL;
-    unsigned long long temp0_ad = 0ULL;
+    unsigned long long temp0_shift = 0ULL;
+    unsigned long long temp0_add = 0ULL;
    
 
    // if (threadIndex < threads) {
@@ -446,33 +446,50 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
         do {
             path += 1;
             // keep copy of n
-            temp0 = current0;
-            temp1 = current1;
-            // both even odd include a shift right
-            //shiftRight(current1, current0);
-            current0 = current0 >> 1;
-            // shift high byte if not odd (we already have a 0 in the MSB of the low word - no overflow will occur
-            if (current1 % 2ULL != 0) {
-                // add carry to avoid - overflow during the msb add to the low word
-                //temp0_sh = current0;
-                current0 += MAXBIT; // check overflow - will be none
-                //if (current0 < temp0_sh) {
-                //    current1 += 1ULL;
-                //}
-            }
-            current1 = current1 >> 1;
-            if (temp0 % 2ULL != 0) {
-                path += 1; // if we combine odd/even
-                // use (n >> 1) + ceil(n) + 1
-                // add n
-                current0 += temp0;
-                current1 += temp1;
-                // if lt - we have overflow
-                if (!(current0 < MAXBIT)) {//current0 < temp0) {
-                    current1 += 1ULL;
+            //temp0 = current0;
+            //temp1 = current1;
+            // both even odd include a shift right - but 128 bit 2 bit carry math is required for large numbers at the 64 bit boundary
+            // even
+            if (current0 % 2ULL == 0) {
+                current0 = current0 >> 1;
+                // shift high byte if not odd (we already have a 0 in the MSB of the low word - no overflow will occur
+                if (current1 % 2ULL != 0) {
+                    // add carry to avoid - overflow during the msb add to the low word
+                    //temp0_sh = current0;
+                    current0 += MAXBIT; // check overflow - will be none
+                    //if (current0 < temp0_sh) {
+                    //    current1 += 1ULL;
+                    //}
                 }
-                current0 += 1ULL; // check overflow
+                current1 = current1 >> 1;
+                printf("even: %llu:%llu\n", current1, current0);
+            } else {
+                // odd n << 1 + n + 1
+                //path += 1; // if we combine odd/even
+                // use (n >> 1) + ceil(n) + 1 - only if 128 2 bit carry handling between
+                // do only 128-64 bit 3n part of 3n+1 (don't worry about overflow past 128bit into 256 bit space until we get past 64 bit inputs)
+                // HIGH (3N)
+                if (current0 > MAXBIT) {
+                    printf("msb non-zero: %llu:%llu\n", current1, current0);
+                }
+                current1 *= 3ULL; 
 
+                // LOW (3N + 1) with 2 bit overflow
+                // shift first plus carry in (do add n later)
+                temp0_shift = (current0 << 1) + 1ULL;
+                // if lt - we have overflow
+                if (!(current0 < MAXBIT)) {
+                    current1 += 1ULL; // add overflow
+                }
+
+                // add n step for odd - separate to break out possible 2 bit 64 bit boundary overflow
+                temp0_add = temp0_shift + current0;
+                if (temp0_add < current0) {
+                    current1 += 1ULL; // add overflow
+                }
+                current0 = temp0_add;
+                
+                printf("odd:  %llu:%llu\n", current1, current0);
                 // check for max (if combined odd/even mult by 2)
                 if (max1 < current1) {
                     max1 = current1;
@@ -488,17 +505,17 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
                     }
                 }
             }
-        } while (!(current0 == 1) && (current1 == 0));
+        } while (!(current0 == 1ULL) && (current1 == 0ULL));
 
         // double max
-        unsigned long long _max1 = 0ULL;
-        unsigned long long _max0 = 0ULL;
-        _max1 = max1 << 1;
-        _max0 = max0 << 1;
-        if (!(max0 < MAXBIT)) {// _max0 < max0) {
-            _max1 += 1ULL; // add carry
-        }
-        printf("path: %llu actual max: %llu:%llu\n", path, _max1, _max0 );
+        //unsigned long long _max1 = 0ULL;
+        //unsigned long long _max0 = 0ULL;
+        //_max1 = max1 << 1;
+        //_max0 = max0 << 1;
+        //if (!(max0 < MAXBIT)) {// _max0 < max0) {
+        //    _max1 += 1ULL; // add carry
+        //}
+        printf("path: %llu actual max: %llu:%llu\n", path, max1, max0);// _max1, _max0 );
     //}
     _output0 = max0;
     _output1 = max1;
@@ -510,10 +527,12 @@ int main(int argc, char* argv[])
  //   singleGPUSearch();
     //dualGPUSearch();
     //unsigned long long _input0 = 12327829503ULL; // 1:2275654840695500112
-    unsigned long long _input0 = 23035537407ULL; // 3:13497924420419572192
+    //unsigned long long _input0 = 23035537407ULL; // 3:13497924420419572192
+    unsigned long long _input0 = 65536ULL;
+    unsigned long long _input1 = 65536ULL;
     unsigned long long _output1 = 0ULL;
     unsigned long long _output0 = 0ULL;
-    testCollatzCUDAKernel(_input0, _output1, _output0);
+    testCollatzCUDAKernel(_input1, _input0, _output1, _output0);
 
     return 0;
 }
