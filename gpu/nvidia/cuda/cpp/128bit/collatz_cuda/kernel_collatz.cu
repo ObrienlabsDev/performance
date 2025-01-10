@@ -32,7 +32,6 @@ __global__ void shiftRight(unsigned long long _current1, unsigned long long _cur
         }
         _current1 = _current1 >> 1;
     }
-
 }
 
 __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long* _input0,
@@ -59,7 +58,7 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
             current0 = _input0[threadIndex];
             do {
                 path += 1;
-                if (current0 % 2 == 0) {
+                /*if (current0 % 2 == 0) {
                     current0 = current0 >> 1;
                     // shift high byte first
                     if (current1 % 2 != 0) {
@@ -68,58 +67,47 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                     current1 = current1 >> 1;
                 }
                 else {
-                    temp1 = 3 * current1;// + (current1 << 1);
+                    temp1 = 3ULL * current1;// + (current1 << 1);
                     current1 = temp1;
 
                     // shift first - calc overflow 1
-                    temp0_sh = 1 + (current0 << 1);
-                    if (!(current0 < MAXBIT)) {
-                        current1 = current1 + 1;
+                    temp0_sh = current0 << 1;
+                    if (temp0_sh < current0) { // not yet
+                        current1 = current1 + 1ULL;
                     }
                     // add second - calc overflow 2
                     temp0_ad = temp0_sh + current0;
-                    if (temp0_ad < current0) { // overflow
-                        current1 = current1 + 1;
+                    if (temp0_ad < temp0_sh) { // overflow - needs temp0sh
+                        current1 = current1 + 1ULL;
                     }
-                    current0 = temp0_ad;
-                
-                /*
-                if (current0 % 2 == 0) {
-                    //shiftRight(current1, current0);
-                    current0 = current0 >> 1;
-                    // shift high byte if not odd
-                    if (current1 % 2 != 0) {
-                        // add carry
-                        current0 += MAXBIT;
-                    }
-                    current1 = current1 >> 1;
-                }
-                else {/*
-                    // use (n >> 1) + n + 1
-                    // keep copy of n
-                    temp0 = current0;
-                    temp1 = current1;
-                    // shift right
-                    //shiftRight(current1, current0);
-                    current0 = current0 >> 1;
-                    // shift high byte if not odd
-                    if (current1 % 2 != 0) {
-                        // add carry
-                        current0 += MAXBIT;
-                    }
-                    current1 = current1 >> 1;
+                    current0 = temp0_ad + 1ULL; // check overflow
+                */
 
-                    // add n + 1
-                    current0 = current0 + temp0;
-                    current1 = current1 + temp1;
+                // keep copy of n
+                temp0 = current0;
+                temp1 = current1;
+                // both even odd include a shift right
+                //shiftRight(current1, current0);
+                current0 = current0 >> 1;
+                // shift high byte if not odd
+                if (current1 % 2ULL != 0) {
+                    // add carry
+                    current0 += MAXBIT;
+                }
+                current1 = current1 >> 1;
+                if (current0 % 2 != 0) {
+                    path += 1;
+                    // use (n >> 1) + n + 1
+                    // add n
+                    current0 += temp0;
+                    current1 += temp1;
                     // if lt - we have overflow
                     if (current0 < temp0) {
                         current1 += 1ULL;
                     }
-                    current0 += 1ULL; // check overflow
+
                     
-                    
-                    temp1 = current1 + current1 + current1;// + (current1 << 1);
+                    /*temp1 = current1 + current1 + current1;// + (current1 << 1);
                     current1 = temp1;
                 
                     // shift first - calc overflow 1
@@ -131,19 +119,18 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */unsigned long
                     temp0_ad = temp0_sh + current0;
                     if (temp0_ad < temp0_sh) { // overflow
                         current1 = current1 + 1ULL; // check overflow
-                    }
+                    }*/
                     // finally add 1
-                    current0 = temp0_ad + 1ULL;
+                    current0 += 1ULL; // check overflow
                     
-                    */
+                    
 
 
                     // check for max
                     if (max1 < current1) {
                         max1 = current1;
                         max0 = current0;
-                    }
-                    else {
+                    } else {
                         if (max1 == current1) {
                             if (max0 < current0) {
                                 max0 = current0;
@@ -178,7 +165,7 @@ void singleGPUSearch() {
     const unsigned long long threads = 32768;
     // diff should be 31 bits (minus oddOffsetOptimization)
     unsigned int startSequencePower = 1;  // do not use 0
-    unsigned int endSequencePower = 34; 
+    unsigned int endSequencePower = 36; 
 
     // derived
     unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
@@ -473,11 +460,131 @@ void dualGPUSearch() {
     return;
 }
 
+void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _input0,
+    unsigned long long _output1, unsigned long long _output0)//, int threads)
+{
+    const unsigned long long MAXBIT = 9223372036854775808ULL;
+    // Calculate this thread's index
+    int threadIndex = 0; //blockDim.x* blockIdx.x + threadIdx.x;
+
+    // Check boundary (in case N is not a multiple of blockDim.x)
+    int path = 0;
+    unsigned long long max0 = 0; _input0;// [threadIndex] ;
+    unsigned long long current0 = _input0;// [threadIndex] ;
+    unsigned long long max1 = 0ULL;// _input1[threadIndex];
+    unsigned long long current1 = 0ULL; //_input1[threadIndex];
+    unsigned long long temp0 = 0ULL;
+    unsigned long long temp1 = 0ULL;
+    unsigned long long temp0_sh = 0ULL;
+    unsigned long long temp0_ad = 0ULL;
+
+   // if (threadIndex < threads) {
+        path = 0;
+        max0 = _input0;// [threadIndex] ;
+        current0 = _input0;// [threadIndex] ;
+        do {
+            path += 1;
+            /*if (current0 % 2 == 0) {
+                current0 = current0 >> 1;
+                // shift high byte first
+                if (current1 % 2 != 0) {
+                    current0 += MAXBIT;
+                }
+                current1 = current1 >> 1;
+            }
+            else {
+                temp1 = 3ULL * current1;// + (current1 << 1);
+                current1 = temp1;
+
+                // shift first - calc overflow 1
+                temp0_sh = current0 << 1;
+                if (temp0_sh < current0) { // not yet
+                    current1 = current1 + 1ULL;
+                }
+                // add second - calc overflow 2
+                temp0_ad = temp0_sh + current0;
+                if (temp0_ad < temp0_sh) { // overflow - needs temp0sh
+                    current1 = current1 + 1ULL;
+                }
+                current0 = temp0_ad + 1ULL; // check overflow
+            */
+
+            // keep copy of n
+            temp0 = current0;
+            temp1 = current1;
+            // both even odd include a shift right
+            //shiftRight(current1, current0);
+            current0 = current0 >> 1;
+            // shift high byte if not odd
+            if (current1 % 2ULL != 0) {
+                // add carry
+                current0 += MAXBIT;
+            }
+            current1 = current1 >> 1;
+            if (temp0 % 2 != 0) {
+                path += 1; // if we combine odd/even
+                // use (n >> 1) + ceil(n) + 1
+                // add n
+                current0 += temp0;
+                current1 += temp1;
+                // if lt - we have overflow
+                if (current0 < temp0) {
+                    current1 += 2ULL;
+                }
+
+
+                /*temp1 = current1 + current1 + current1;// + (current1 << 1);
+                current1 = temp1;
+
+                // shift first - calc overflow 1
+                temp0_sh = current0 + current0;// 1ULL + (current0 << 1);
+                if (temp0_sh < current0) {
+                    current1 = current1 + 1ULL; // check overflow
+                }
+                // add second - calc overflow 2
+                temp0_ad = temp0_sh + current0;
+                if (temp0_ad < temp0_sh) { // overflow
+                    current1 = current1 + 1ULL; // check overflow
+                }*/
+                // finally add 2 (if we combine odd/even) - otherwise 2
+                current0 += 1ULL; // check overflow
+
+
+
+
+                // check for max (if combined odd/even mult by 2)
+                if (max1 < current1) {
+                    max1 = current1;
+                    max0 = current0;
+                    printf("Max1: %lld:%lld\n", current0, current1);
+                }
+                else {
+                    if (max1 == current1) {
+                        if (max0 < current0) {
+                            max0 = current0;
+                            printf("Max0: %lld:%lld\n", current0, current1);
+                        }
+                    }
+                }
+            }
+        } while (!(current0 == 1) && (current1 == 0));
+
+        printf("path: %lld actual max: %lld\n", path, max0 << 1);
+    //}
+    _output0 = max0;
+    _output1 = max1;
+}
+
 int main(int argc, char* argv[])
 {
     int cores = (argc > 1) ? atoi(argv[1]) : 5120; // get command
-    singleGPUSearch();
+ //   singleGPUSearch();
     //dualGPUSearch();
+    unsigned long long _input0 = 27ULL;
+    unsigned long long _output1 = 0ULL;
+    unsigned long long _output0 = 0ULL;
+    testCollatzCUDAKernel(_input0, _output1, _output0);
+
     return 0;
 }
 
