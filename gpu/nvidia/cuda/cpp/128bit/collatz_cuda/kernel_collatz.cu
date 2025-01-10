@@ -307,7 +307,7 @@ void dualGPUSearch() {
     time(&timeStart);
 
     // Allocate memory on the GPU
-    printf("array allocation bytes per GPU: %d * %d is %d maxSearch: %lld\n", sizeof(unsigned long long), threads, size, endSequenceNumber);
+    printf("array allocation bytes per GPU: %d * %d is %d maxSearch: %llu\n", sizeof(unsigned long long), threads, size, endSequenceNumber);
     cudaSetDevice(dev0);
     cudaMalloc((void**)&device_input0, size);
     cudaMalloc((void**)&device_output0, size);
@@ -437,6 +437,7 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
     unsigned long long temp1 = 0ULL;
     unsigned long long temp0_sh = 0ULL;
     unsigned long long temp0_ad = 0ULL;
+   
 
    // if (threadIndex < threads) {
         path = 0;
@@ -450,10 +451,14 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
             // both even odd include a shift right
             //shiftRight(current1, current0);
             current0 = current0 >> 1;
-            // shift high byte if not odd
+            // shift high byte if not odd (we already have a 0 in the MSB of the low word - no overflow will occur
             if (current1 % 2ULL != 0) {
-                // add carry
-                current0 += MAXBIT;
+                // add carry to avoid - overflow during the msb add to the low word
+                //temp0_sh = current0;
+                current0 += MAXBIT; // check overflow - will be none
+                //if (current0 < temp0_sh) {
+                //    current1 += 1ULL;
+                //}
             }
             current1 = current1 >> 1;
             if (temp0 % 2ULL != 0) {
@@ -472,13 +477,16 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
                 if (max1 < current1) {
                     max1 = current1;
                     max0 = current0;
-                    printf("Max1: %lld:%lld\n", current0, current1);
+                    printf("Max1: %llu:%llu\n", current1, current0);
                 }
                 else {
                     if (max1 == current1) {
                         if (max0 < current0) {
+                            if (current0 < 0) {
+                                printf("negative\n");
+                            }
                             max0 = current0;
-                            printf("Max0: %lld:%lld\n", current0, current1);
+                            printf("Max0: %llu:%llu\n", current1, current0);
                         }
                     }
                 }
@@ -493,7 +501,7 @@ void testCollatzCUDAKernel(/*unsigned long long* _input1, */unsigned long long _
         if (_max0 < max0) {
             _max1 += 1ULL; // add carry
         }
-        printf("path: %lld actual max: %lld:%lld\n", path, _max1, _max0 );
+        printf("path: %llu actual max: %llu:%llu\n", path, _max1, _max0 );
     //}
     _output0 = max0;
     _output1 = max1;
