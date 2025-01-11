@@ -102,8 +102,12 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 ### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 #### 128 bit native
 ##### CUDA 12.6: CPP
-- 18 sec 14900KS d RTX-A6000 single 45% GPU 24% TDP .9g/48g - 32k threads / 256 threads/block
-- 21 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 50% GPU - 15 batch
+- 14 sec 14900KS d RTX-A6000 single 55% GPU 45% TDP .5g/48g - 32k threads / 512 threads/block
+- 14 sec RTX-4090 single 16384 cores 48% GPU 24% TDP- 20 batch 40960 threads 512 threads/block 80 blocks
+- 17 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 40960 threads
+- 18 sec RTX-A4500 single
+- 18 sec RTX-A4000 single
+- 20 sec RTX-5000 TU104 16g mobile P17gen1
 #### 64 bit native
 Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 -  9 sec 14900KS d RTX-A6000 single 45% GPU 24% TDP .9g/48g - 32k threads / 256 threads/block
