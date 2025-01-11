@@ -144,6 +144,7 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 - 232 sec MacMini M2pro 6p4e 16g - 15 batch
 - 235 sec MacMini M2pro 6p4e 16g - 16 batch
 - 243 sec MacMini M2pro 6p4e 16g - 14 batch
+- 259 sec MacMini M4 4p6e/10v 16g - 14 batch
 - 299 sec MacMini M2pro 6p4e 16g - 13 batch
 - 308 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch noAV
 - 315 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
