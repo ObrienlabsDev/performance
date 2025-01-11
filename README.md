@@ -3,11 +3,30 @@ This article attempts to systematically determine the optimized spot where we ca
 Multithreaded optimization depends on multiple factors including CPU/GPU type (M4Max vs 14900 or MetalCUDA.  Operations involving space-time tradeoffs like heap usage need to be fine tuned around batch sizes.
 
 A secondary requirement of this multi-language work is to demonstrate, test and learn about concurrency and throughput of various languages under various types of bound workloads - https://github.com/ObrienlabsDev/blog/blob/main/programming_language_index.md
+
+# Records
+20250111:
+Using the CUDA code at https://github.com/ObrienlabsDev/performance/blob/main/gpu/nvidia/cuda/cpp/128bit/collatz_cuda/kernel_collatz.cu
+Top GPU is an RTX-A6000 48G GA102 ampere card running on a 14900K system.  The current performance is 24% TDP or 55% GPU saturation.
+
+At 9h we are at record 63 of http://www.ericr.nl/wondrous/pathrecs.html and switching from those created by "Leavens & Vermuelen" up to bit 44 to "Tomás Oliveira e Silva" at bit 46.
+
+```
+63	9,016346,070511	252,229527,183443,335194,424192	3.103	44	88	Leavens & Vermeulen
+Time duration: 29652 seconds or 8.3h
+GPU01:Sec: 29652 GlobalMax: 0:9016346070511: 13673390:1233423889223725952 last search: 9016346132483
+
+= 13673390:1233423889223725952
+= 13673390 * (18446744073709551616) + 1233423889223725952
+= 2.52229526e26 + 1233423889223725952
+= 2.52229527e26
+```
 # Architecture
 see https://github.com/ObrienlabsDev/blog/wiki/Performance
 The 3n+1, collatz or hailstone numbers problem - https://en.wikipedia.org/wiki/Collatz_conjecture
 - Path/Delay - http://www.ericr.nl/wondrous/delrecs.html
 - Maximums - http://www.ericr.nl/wondrous/pathrecs.html
+
 ## Optimizations
   The focus here is on the base algorithm which is independent of the programming language used.  However, there are 'architecture aware' optimizations that we will detail as we get closer to the hardware using AVX, CUDA or Metal.
 ### Optimization 1: Skip even numbers
@@ -320,12 +339,6 @@ GPU01:Sec: 8745 GlobalMax: 0:2674309547647: 41764:10130355336659361648 last sear
 overnight 20250111:0900
 GPU01:Sec: 12173 GlobalMax: 0:3716509988199: 11272258:4885724866165006536 last search: 3716510023683
 GPU01:Sec: 29652 GlobalMax: 0:9016346070511: 13673390:1233423889223725952 last search: 9016346132483
-```
-20250111: within 9h of at 55% GPU or 24% TDP of an RTX-A6000 GPU we are at record 63 of http://www.ericr.nl/wondrous/pathrecs.html and switching from those created by "Leavens & Vermuelen" up to bit 44 to "Tomás Oliveira e Silva" at bit 46.
-
-```
-63	9,016346,070511	252,229527,183443,335194,424192	3.103	44	88	Leavens & Vermeulen
-Time duration: 29652 seconds or 8.3h
 ```
 
 ## 128 bit Multi Threaded Java (Lambda/Streams) on native long - batch 13 bit - M4Pro 24g 8p4e
