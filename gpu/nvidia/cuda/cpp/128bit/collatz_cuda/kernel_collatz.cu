@@ -23,6 +23,7 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned lon
     unsigned long long* _output1, unsigned long long* _output0, int threads)
 {
     const unsigned long long MAXBIT = 9223372036854775808ULL;
+    const unsigned long long MAX64 = 18446744073709551615ULL;
     // Calculate this thread's index
     int threadIndex = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -36,6 +37,7 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned lon
     unsigned long long temp1 = 0ULL;
     unsigned long long temp0_shift = 0ULL;
     unsigned long long temp0_add = 0ULL;
+    unsigned long long temp0_carry = 0ULL;
 
     if (threadIndex < threads) {
             path = 0;
@@ -57,19 +59,28 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned lon
                     // use combined odd/even (n >> 1) + ceil(n) + 1 - only if 128 2 bit carry handling between
                     // do only 128-64 bit 3n part of 3n+1 (don't worry about overflow past 128bit into 256 bit space until we get past 64 bit inputs)
                     current1 *= 3ULL; // HIGH (3N)
+                
                     // LOW (3N + 1) with 2 bit overflow
-                    temp0_shift = (current0 << 1) + 1ULL; // shift first plus carry in (do add n later)
+                    temp0_shift = (current0 << 1) + 1ULL; // shift first without bit0 carry in (do add n later)
                     // if lt - we have overflow
+                    ///if (temp0_shift < current0) {// !(current0 < MAXBIT)) {//temp0_shift < current0
                     if (!(current0 < MAXBIT)) {//temp0_shift < current0
                         current1 += 1ULL; // add overflow carry
                     }
 
                     // add n step for odd - separate to break out possible 2 bit 64 bit boundary overflow
                     temp0_add = temp0_shift + current0;
-                    if (temp0_add < current0) { // check shift left along with +1 instead of !(current0 < MAXBIT)
+                    if (temp0_add < current0) { // check shift left along with +1 instead of 
                         current1 += 1ULL; // add overflow carry
                     }
-                    current0 = temp0_add;
+
+                    // add 1 to word 0 - check on upcoming overflow
+                    temp0_carry = temp0_add;// +1ULL;
+                    //if (temp0_shift == MAX64) {
+                     //   current1 += 1ULL;
+                    //}
+
+                    current0 = temp0_carry;
 
                     // check for max (if combined odd/even mult by 2)
                     if (max1 < current1) {
