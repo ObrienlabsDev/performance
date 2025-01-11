@@ -128,8 +128,8 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 #### 128 bit native
 ##### Java 
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
-- sec MacMini M4pro 8p4e 24g - 13 batch
-- sec MacMini M4 4p6e/10v 16g - 13 batch
+- 6701 sec MacMini M4pro 8p4e 24g - 13 batch
+- 10274 sec MacMini M4 4p6e/10v 16g - 13 batch
 - sec MacBook 16 M1max 8p2e 32g - 13 batch
 - sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
 - 15292 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch
