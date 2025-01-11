@@ -44,36 +44,30 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned lon
             do {
                 path += 1;
                 // both even odd include a shift right - but 128 bit 2 bit carry math is required for large numbers at the 64 bit boundary
-                // even
-                if (current0 % 2ULL == 0) {
+                if (current0 % 2ULL == 0) { // even
                     current0 = current0 >> 1;
                     // shift high byte if not odd (we already have a 0 in the MSB of the low word - no overflow will occur
                     if (current1 % 2ULL != 0) {
                         // add carry to avoid - overflow during the msb add to the low word
-                        //temp0_sh = current0;
                         current0 += MAXBIT; // check overflow - will be none
                     }
                     current1 = current1 >> 1;
-                }
-                else {
+                } else { // odd
                     // odd n << 1 + n + 1
-                    // use (n >> 1) + ceil(n) + 1 - only if 128 2 bit carry handling between
+                    // use combined odd/even (n >> 1) + ceil(n) + 1 - only if 128 2 bit carry handling between
                     // do only 128-64 bit 3n part of 3n+1 (don't worry about overflow past 128bit into 256 bit space until we get past 64 bit inputs)
-                    // HIGH (3N)
-                    current1 *= 3ULL;
-
+                    current1 *= 3ULL; // HIGH (3N)
                     // LOW (3N + 1) with 2 bit overflow
-                    // shift first plus carry in (do add n later)
-                    temp0_shift = (current0 << 1) + 1ULL;
+                    temp0_shift = (current0 << 1) + 1ULL; // shift first plus carry in (do add n later)
                     // if lt - we have overflow
-                    if (!(current0 < MAXBIT)) {
-                        current1 += 1ULL; // add overflow
+                    if (!(current0 < MAXBIT)) {//temp0_shift < current0
+                        current1 += 1ULL; // add overflow carry
                     }
 
                     // add n step for odd - separate to break out possible 2 bit 64 bit boundary overflow
                     temp0_add = temp0_shift + current0;
-                    if (temp0_add < current0) {
-                        current1 += 1ULL; // add overflow
+                    if (temp0_add < current0) { // check shift left along with +1 instead of !(current0 < MAXBIT)
+                        current1 += 1ULL; // add overflow carry
                     }
                     current0 = temp0_add;
 
@@ -110,16 +104,17 @@ void singleGPUSearch() {
 
     const unsigned long long oddOffsetOptimization = 2ULL;
     const int dev0 = 0;
-    const unsigned long long threadsPerBlock = 256ULL;// 128;// 128; 128=50%, 256=66 on RTX-3500
+    const unsigned long long threadsPerBlock = 512ULL;// 128;// 128; 128=50%, 256=66 on RTX-3500
     unsigned long long cores = 5120ULL;// (argc > 1) ? atoi(argv[1]) : 5120; // get command
 
     // variables
     // keep these 2 in sync
-    unsigned int threadsPower = 15;
-    const unsigned long long threads = 32768;
+    unsigned int threadsPower = 16; // 15
+    const unsigned long long threads = 40960;// 7168 * 5;// 32768; // maximize threads below 64k
+    // 43008 crash rtx-3500
     // diff should be 31 bits (minus oddOffsetOptimization)
     unsigned int startSequencePower = 1;  // do not use 0
-    unsigned int endSequencePower = 36; 
+    unsigned int endSequencePower = 44; 
 
     // derived
     unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
