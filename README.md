@@ -138,15 +138,19 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 #### 128 bit native
 ##### Java
 - 114 sec Macbook 16 M4max 12p4e - 13 batch
-- 153 sec MacMini M4pro 8p4e 24g - 13 batch
+- 151 sec MacMini M4pro 8p4e16v 24g - 14 batch
+- 153 sec MacMini M4pro 8p4e16v 24g - 11/13 batch
 - 225 sec MacBook 16 M1max 8p2e 32g - 13 batch
 - 232 sec MacMini M2pro 6p4e 16g - 15 batch
 - 235 sec MacMini M2pro 6p4e 16g - 16 batch
 - 243 sec MacMini M2pro 6p4e 16g - 14 batch
 - 299 sec MacMini M2pro 6p4e 16g - 13 batch
 - 308 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch noAV
-- 315 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch 
-- 339 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch noAV
+- 315 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
+- 318 sec MacMini M4 4p6e/10v 16g - 11 batch
+- 324 sec MacMini M4 4p6e/10v 16g - 12 batch
+- 327 sec MacMini M4 4p6e/10v 16g - 10/13 batch
+- 339 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13/ batch noAV
 - 360 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 15 batch noAV
 - 360 sec MacMini M2pro 6p4e 16g - 11 batch
 - 392 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch noAV
@@ -190,9 +194,11 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 - 108 sec MacBook 16 M1max/8c 32g - 12 batch
 - 110 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 10 batch
 - 111 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 5 batch
-- 128 sec MacBook 16 M1max/8c 32g - 5 batch
+- 115 sec MacMini M4 4p6e/10v 16g - 12 batch
 - 127 sec MacMini M2pro 6p2e 16g - 12 batch
+- 128 sec MacBook 16 M1max/8c 32g - 5 batch
 - 129 sec MacMini M2pro 6p2e 16g - 5 batch
+
 -     sec 13900KS d 3.2/5.9 GHz
 ### Single Threaded : 32 bit run
 #### 64 bit native
