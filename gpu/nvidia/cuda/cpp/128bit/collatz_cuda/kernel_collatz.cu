@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <time.h>
+#include <omp.h>
 
 /**
 * Michael O'Brien 20241223
@@ -112,12 +113,12 @@ void singleGPUSearch() {
 
     // variables
     // keep these 2 in sync
-    unsigned int threadsPower = 16; // 15
-    const unsigned long long threads = 7168 * 5;// 40960;// 7168 * 5;// 32768; // maximize threads below 64k
+    unsigned int threadsPower = 20;//20;// 16; // 15
+    const unsigned long long threads = 40960;// 7168 * 2;// 40960;// 7168 * 5;// 32768; // maximize threads below 64k
     // 43008 crash rtx-3500
     // diff should be 31 bits (minus oddOffsetOptimization)
     unsigned int startSequencePower = 1;  // do not use 0
-    unsigned int endSequencePower = 44; 
+    unsigned int endSequencePower = 33; 
 
     // derived
     unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
@@ -184,33 +185,43 @@ void singleGPUSearch() {
         cudaMemcpy(host_result0, device_output0, size, cudaMemcpyDeviceToHost);
         cudaMemcpy(host_result1, device_output1, size, cudaMemcpyDeviceToHost);
 
-        // process reesults: parallelize with OpenMP
-        for (int thread = 0; thread < threads; thread++) {
-            if (host_result1[thread] > globalMaxValue1) {
-                globalMaxValue0 = host_result0[thread];
-                globalMaxValue1 = host_result1[thread];
-                globalMaxStart0 = host_input0[thread];
-                globalMaxStart1 = 0ULL;// host_input1[thread];
-
-                time(&timeEnd);
-                timeElapsed = difftime(timeEnd, timeStart);
-                std::cout << "GPU01:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1 
-                    << ":" << globalMaxValue0 << " last search: " << startSequenceNumber << "\n";
-            } else {
-                // handle only lsb gt
-                if (host_result1[thread] == globalMaxValue1) {
-                    if(host_result0[thread] > globalMaxValue0) {
+        // process reesults: parallelize with OpenMP // no effect yet
+        omp_set_num_threads(threads);
+        #pragma omp parallel for reduction (+:globalMaxValue0, globalMaxValue1)
+            for (int thread = 0; thread < threads; thread++) {
+                if (host_result1[thread] > globalMaxValue1) {
+//#pragma omp critical
+                   // {
                         globalMaxValue0 = host_result0[thread];
+                        globalMaxValue1 = host_result1[thread];
                         globalMaxStart0 = host_input0[thread];
                         globalMaxStart1 = 0ULL;// host_input1[thread];
 
                         time(&timeEnd);
                         timeElapsed = difftime(timeEnd, timeStart);
-                        std::cout << "GPU00:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1
+                        std::cout << "GPU01:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1
                             << ":" << globalMaxValue0 << " last search: " << startSequenceNumber << "\n";
+                    //}
+                }
+                else {
+                    // handle only lsb gt
+                    if (host_result1[thread] == globalMaxValue1) {
+                        if (host_result0[thread] > globalMaxValue0) {
+//#pragma omp critical 
+                            //{
+                                globalMaxValue0 = host_result0[thread];
+                                globalMaxStart0 = host_input0[thread];
+                                globalMaxStart1 = 0ULL;// host_input1[thread];
+
+                                time(&timeEnd);
+                                timeElapsed = difftime(timeEnd, timeStart);
+                                std::cout << "GPU00:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1
+                                    << ":" << globalMaxValue0 << " last search: " << startSequenceNumber << "\n";
+                            //}
+                        }
                     }
                 }
-            }
+
             // TODO: maxPath
         }
     }
@@ -267,7 +278,7 @@ void dualGPUSearch() {
     const unsigned long long threads = 16384;
     // diff should be 31 bits (minus oddOffsetOptimization)
     unsigned int startSequencePower = 1;  // do not use 0
-    unsigned int endSequencePower = 32;
+    unsigned int endSequencePower = 33;
 
     // derived
     unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
