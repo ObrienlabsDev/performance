@@ -3,11 +3,30 @@ This article attempts to systematically determine the optimized spot where we ca
 Multithreaded optimization depends on multiple factors including CPU/GPU type (M4Max vs 14900 or MetalCUDA.  Operations involving space-time tradeoffs like heap usage need to be fine tuned around batch sizes.
 
 A secondary requirement of this multi-language work is to demonstrate, test and learn about concurrency and throughput of various languages under various types of bound workloads - https://github.com/ObrienlabsDev/blog/blob/main/programming_language_index.md
+
+# Records
+20250111:
+Using the CUDA code at https://github.com/ObrienlabsDev/performance/blob/main/gpu/nvidia/cuda/cpp/128bit/collatz_cuda/kernel_collatz.cu
+Top GPU is an RTX-A6000 48G GA102 ampere card running on a 14900K system.  The current performance is 24% TDP or 55% GPU saturation.
+
+At 9h we are at record 63 of "Eric Roosendaal"'s http://www.ericr.nl/wondrous/pathrecs.html and switching from those created by "Leavens & Vermuelen" up to bit 44 to "Tomás Oliveira e Silva" at bit 46.
+
+```
+63	9,016346,070511	252,229527,183443,335194,424192	3.103	44	88	Leavens & Vermeulen
+Time duration: 29652 seconds or 8.3h
+GPU01:Sec: 29652 GlobalMax: 0:9016346070511: 13673390:1233423889223725952 last search: 9016346132483
+
+= 13673390:1233423889223725952
+= 13673390 * (18446744073709551616) + 1233423889223725952
+= 2.52229526e26 + 1233423889223725952
+= 2.52229527e26
+```
 # Architecture
 see https://github.com/ObrienlabsDev/blog/wiki/Performance
 The 3n+1, collatz or hailstone numbers problem - https://en.wikipedia.org/wiki/Collatz_conjecture
 - Path/Delay - http://www.ericr.nl/wondrous/delrecs.html
 - Maximums - http://www.ericr.nl/wondrous/pathrecs.html
+
 ## Optimizations
   The focus here is on the base algorithm which is independent of the programming language used.  However, there are 'architecture aware' optimizations that we will detail as we get closer to the hardware using AVX, CUDA or Metal.
 ### Optimization 1: Skip even numbers
@@ -102,8 +121,12 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 ### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 #### 128 bit native
 ##### CUDA 12.6: CPP
-- 18 sec 14900KS d RTX-A6000 single 45% GPU 24% TDP .9g/48g - 32k threads / 256 threads/block
-- 21 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 50% GPU - 15 batch
+- 14 sec 14900KS d RTX-A6000 single 55% GPU 45% TDP .5g/48g - 32k threads / 512 threads/block
+- 14 sec RTX-4090 single 16384 cores 48% GPU 24% TDP- 20 batch 40960 threads 512 threads/block 80 blocks
+- 17 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 40960 threads
+- 18 sec RTX-A4500 single
+- 18 sec RTX-A4000 single
+- 20 sec RTX-5000 TU104 16g mobile P17gen1
 #### 64 bit native
 Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 -  9 sec 14900KS d RTX-A6000 single 45% GPU 24% TDP .9g/48g - 32k threads / 256 threads/block
@@ -113,7 +136,8 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 ## CPU
 ### Multi Threaded : 40 bit run
 #### 128 bit native
-##### Java 
+##### Java
+Increase batch depending on search space to avoid excessive heap ops.
 - sec Macbook 16 M4max 12p4e - 13 batch
 - 63554 sec MacMini M4pro 8p4e 24g - 13 batch
 - sec MacBook 16 M1max 8p2e 32g - 13 batch
@@ -124,7 +148,10 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 #### 128 bit native
 ##### Java 
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
-- sec MacMini M4pro 8p4e 24g - 13 batch
+- sec MacMini M4pro 8p4e 24g - 24 batch
+- ssec MacMini M4 4p6e/10v 16g - 24 batch
+- 6701 sec MacMini M4pro 8p4e 24g - 13 batch
+- 10274 sec MacMini M4 4p6e/10v 16g - 13 batch
 - sec MacBook 16 M1max 8p2e 32g - 13 batch
 - sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
 - 15292 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch
@@ -134,15 +161,20 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 #### 128 bit native
 ##### Java
 - 114 sec Macbook 16 M4max 12p4e - 13 batch
-- 153 sec MacMini M4pro 8p4e 24g - 13 batch
+- 151 sec MacMini M4pro 8p4e16v 24g - 14 batch
+- 153 sec MacMini M4pro 8p4e16v 24g - 11/13 batch
 - 225 sec MacBook 16 M1max 8p2e 32g - 13 batch
 - 232 sec MacMini M2pro 6p4e 16g - 15 batch
 - 235 sec MacMini M2pro 6p4e 16g - 16 batch
 - 243 sec MacMini M2pro 6p4e 16g - 14 batch
+- 259 sec MacMini M4 4p6e/10v 16g - 14 batch
 - 299 sec MacMini M2pro 6p4e 16g - 13 batch
 - 308 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch noAV
-- 315 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch 
-- 339 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch noAV
+- 315 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
+- 318 sec MacMini M4 4p6e/10v 16g - 11 batch
+- 324 sec MacMini M4 4p6e/10v 16g - 12 batch
+- 327 sec MacMini M4 4p6e/10v 16g - 10/13 batch
+- 339 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13/ batch noAV
 - 360 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 15 batch noAV
 - 360 sec MacMini M2pro 6p4e 16g - 11 batch
 - 392 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch noAV
@@ -186,9 +218,11 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 - 108 sec MacBook 16 M1max/8c 32g - 12 batch
 - 110 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 10 batch
 - 111 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 5 batch
-- 128 sec MacBook 16 M1max/8c 32g - 5 batch
+- 115 sec MacMini M4 4p6e/10v 16g - 12 batch
 - 127 sec MacMini M2pro 6p2e 16g - 12 batch
+- 128 sec MacBook 16 M1max/8c 32g - 5 batch
 - 129 sec MacMini M2pro 6p2e 16g - 5 batch
+
 -     sec 13900KS d 3.2/5.9 GHz
 ### Single Threaded : 32 bit run
 #### 64 bit native
@@ -240,6 +274,76 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 - 689 sec 13900K a 3.0/5.7 GHz
 
 # Records stats
+## 128 bit CUDA (5120 to 32768 cores) - RTX-A6000 or dual RTX-4090
+55% GPU at 24% TDP
+
+```
+20250110:0130
+GPU00:Sec: 0 GlobalMax: 0:3: 0:16 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:7: 0:52 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:15: 0:160 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:27: 0:9232 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:255: 0:13120 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:447: 0:39364 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:639: 0:41524 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:703: 0:250504 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:1819: 0:1276936 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:4255: 0:6810136 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:4591: 0:8153620 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:9663: 0:27114424 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:20895: 0:50143264 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:26623: 0:106358020 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:31911: 0:121012864 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:60975: 0:593279152 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:77671: 0:1570824736 last search: 81923
+GPU00:Sec: 0 GlobalMax: 0:113383: 0:2482111348 last search: 163843
+GPU00:Sec: 0 GlobalMax: 0:138367: 0:2798323360 last search: 163843
+GPU00:Sec: 0 GlobalMax: 0:159487: 0:17202377752 last search: 163843
+GPU00:Sec: 0 GlobalMax: 0:270271: 0:24648077896 last search: 327683
+GPU00:Sec: 0 GlobalMax: 0:665215: 0:52483285312 last search: 737283
+GPU00:Sec: 0 GlobalMax: 0:704511: 0:56991483520 last search: 737283
+GPU00:Sec: 0 GlobalMax: 0:1042431: 0:90239155648 last search: 1064963
+GPU00:Sec: 0 GlobalMax: 0:1212415: 0:139646736808 last search: 1228803
+GPU00:Sec: 0 GlobalMax: 0:1441407: 0:151629574372 last search: 1474563
+GPU00:Sec: 0 GlobalMax: 0:1875711: 0:155904349696 last search: 1884163
+GPU00:Sec: 0 GlobalMax: 0:1988859: 0:156914378224 last search: 2048003
+GPU00:Sec: 0 GlobalMax: 0:2643183: 0:190459818484 last search: 2703363
+GPU00:Sec: 0 GlobalMax: 0:2684647: 0:352617812944 last search: 2703363
+GPU00:Sec: 0 GlobalMax: 0:3041127: 0:622717901620 last search: 3112963
+GPU00:Sec: 0 GlobalMax: 0:3873535: 0:858555169576 last search: 3932163
+GPU00:Sec: 0 GlobalMax: 0:4637979: 0:1318802294932 last search: 4669443
+GPU00:Sec: 0 GlobalMax: 0:5656191: 0:2412493616608 last search: 5734403
+GPU00:Sec: 0 GlobalMax: 0:6416623: 0:4799996945368 last search: 6471683
+GPU00:Sec: 0 GlobalMax: 0:6631675: 0:60342610919632 last search: 6635523
+GPU00:Sec: 0 GlobalMax: 0:19638399: 0:306296925203752 last search: 19660803
+GPU00:Sec: 0 GlobalMax: 0:38595583: 0:474637698851092 last search: 38666243
+GPU00:Sec: 0 GlobalMax: 0:80049391: 0:2185143829170100 last search: 80117763
+GPU00:Sec: 0 GlobalMax: 0:120080895: 0:3277901576118580 last search: 120094723
+GPU00:Sec: 1 GlobalMax: 0:210964383: 0:6404797161121264 last search: 211025923
+GPU00:Sec: 1 GlobalMax: 0:319804831: 0:1414236446719942480 last search: 319815683
+GPU00:Sec: 4 GlobalMax: 0:1410123943: 0:7125885122794452160 last search: 1410170883
+GPU00:Sec: 28 GlobalMax: 0:8528817511: 0:18144594937356598024 last search: 8528855043
+GPU01:Sec: 40 GlobalMax: 0:12327829503: 1:2275654840695500112 last search: 12327895043
+GPU01:Sec: 74 GlobalMax: 0:23035537407: 3:13497924420419572192 last search: 23035576323
+GPU01:Sec: 147 GlobalMax: 0:45871962271: 4:8554672607184627540 last search: 45872005123
+GPU01:Sec: 166 GlobalMax: 0:51739336447: 6:3959152699356688744 last search: 51739361283
+GPU01:Sec: 189 GlobalMax: 0:59152641055: 8:3925412472713788616 last search: 59152711683
+GPU01:Sec: 190 GlobalMax: 0:59436135663: 11:2822204561036784392 last search: 59436154883
+GPU01:Sec: 225 GlobalMax: 0:70141259775: 22:15138744166779694152 last search: 70141296643
+GPU01:Sec: 248 GlobalMax: 0:77566362559: 49:12722569465099770672 last search: 77566443523
+GPU01:Sec: 354 GlobalMax: 0:110243094271: 74:7394588111761560776 last search: 110243102723
+GPU01:Sec: 658 GlobalMax: 0:204430613247: 76:13308243407729068272 last search: 204430622723
+GPU01:Sec: 747 GlobalMax: 0:231913730799: 118:13628023185147422868 last search: 231913799683
+GPU01:Sec: 877 GlobalMax: 0:272025660543: 1189:15304932029761092324 last search: 272025681923
+GPU01:Sec: 1443 GlobalMax: 0:446559217279: 2143:1904360818491267984 last search: 446559272963
+GPU01:Sec: 1838 GlobalMax: 0:567839862631: 5450:5418023868929928788 last search: 567839866883
+GPU01:Sec: 2830 GlobalMax: 0:871673828443: 21714:6140004720918243904 last search: 871673856003
+GPU01:Sec: 8745 GlobalMax: 0:2674309547647: 41764:10130355336659361648 last search: 2674309611523
+overnight 20250111:0900
+GPU01:Sec: 12173 GlobalMax: 0:3716509988199: 11272258:4885724866165006536 last search: 3716510023683
+GPU01:Sec: 29652 GlobalMax: 0:9016346070511: 13673390:1233423889223725952 last search: 9016346132483
+```
+
 ## 128 bit Multi Threaded Java (Lambda/Streams) on native long - batch 13 bit - M4Pro 24g 8p4e
 20250104:0000+
 ```
