@@ -29,10 +29,10 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned lon
 
     // Check boundary (in case N is not a multiple of blockDim.x)
     int path = 0;
-    unsigned long long max0 = _input0[threadIndex];
-    unsigned long long current0 = _input0[threadIndex];
-    unsigned long long max1 = 0ULL;// _input1[threadIndex];
-    unsigned long long current1 = 0ULL;// _input1[threadIndex];
+    unsigned long long max0 = _input0[threadIndex]; //0ULL;
+    unsigned long long current0 = _input0[threadIndex]; //0ULL;
+    unsigned long long max1 = 0ULL;
+    unsigned long long current1 = 0ULL;
     unsigned long long temp0 = 0ULL;
     unsigned long long temp1 = 0ULL;
     unsigned long long temp0_shift = 0ULL;
@@ -63,7 +63,6 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned lon
                     // LOW (3N + 1) with 2 bit overflow
                     temp0_shift = (current0 << 1) + 1ULL; // shift first without bit0 carry in (do add n later)
                     // if lt - we have overflow
-                    ///if (temp0_shift < current0) {// !(current0 < MAXBIT)) {//temp0_shift < current0
                     if (!(current0 < MAXBIT)) {//temp0_shift < current0
                         current1 += 1ULL; // add overflow carry
                     }
@@ -74,20 +73,12 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned lon
                         current1 += 1ULL; // add overflow carry
                     }
 
-                    // add 1 to word 0 - check on upcoming overflow
-                    temp0_carry = temp0_add;// +1ULL;
-                    //if (temp0_shift == MAX64) {
-                     //   current1 += 1ULL;
-                    //}
-
-                    current0 = temp0_carry;
-
+                    current0 = temp0_add;
                     // check for max (if combined odd/even mult by 2)
                     if (max1 < current1) {
                         max1 = current1;
                         max0 = current0;
-                    }
-                    else {
+                    } else {
                         if (max1 == current1) {
                             if (max0 < current0) {
                                 max0 = current0;
@@ -96,12 +87,10 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned lon
                     }
                 }
             } while (!((current0 == 1ULL) && (current1 == 0ULL)));
-            // move max copy inside the thread if check (to avoid concurrency issues)
-            // #31
+            // #31 move max copy inside the thread if check (to avoid concurrency issues)
             _output0[threadIndex] = max0;
             _output1[threadIndex] = max1;
     }
-
 }
 
 void singleGPUSearch() {
@@ -124,7 +113,7 @@ void singleGPUSearch() {
     // variables
     // keep these 2 in sync
     unsigned int threadsPower = 16; // 15
-    const unsigned long long threads = 40960;// 7168 * 5;// 32768; // maximize threads below 64k
+    const unsigned long long threads = 7168 * 5;// 40960;// 7168 * 5;// 32768; // maximize threads below 64k
     // 43008 crash rtx-3500
     // diff should be 31 bits (minus oddOffsetOptimization)
     unsigned int startSequencePower = 1;  // do not use 0
@@ -141,7 +130,7 @@ void singleGPUSearch() {
     unsigned long long globalMaxStart0 = startSequenceNumber;
     unsigned long long globalMaxValue1 = 0ULL;
     unsigned long long globalMaxStart1 = 0ULL;
-    unsigned long long iterations = (endSequenceNumber - startSequenceNumber) / oddOffsetOptimization * ((1ULL << (endSequencePower - 32)));// >> 1);
+    unsigned long long iterations = (endSequenceNumber - startSequenceNumber) / oddOffsetOptimization * ((1ULL << (endSequencePower - 32)));
     unsigned long long batchNumberPower = (endSequencePower - startSequencePower) - threadsPower;
     unsigned long long batchNumber = iterations / threads; // 1ULL << batchNumberPower;
     printf("BatchNumberPower: %llu\n", batchNumberPower);
@@ -172,7 +161,7 @@ void singleGPUSearch() {
     cudaMalloc((void**)&device_output1, size);
 
     // Iterations = 2 ^ (15(threads) + 16(endSequence = runs) + 1(odd multiplier))
-    printf("GPU0: Iterations: %llu via (Threads: %llu * Batches: %d * 2 (odd mult)) ThreadsPerBlock: %d Blocks: %d\n", 
+    printf("GPU0: Iterations: %llu via (Threads: %llu * Batches: %llu * 2 (odd mult)) ThreadsPerBlock: %d Blocks: %d\n", 
         iterations, threads, batchNumber, threadsPerBlock, blocks);
     for (int batch = 0; batch < batchNumber; batch++) {
         // prepare inputs
@@ -203,18 +192,10 @@ void singleGPUSearch() {
                 globalMaxStart0 = host_input0[thread];
                 globalMaxStart1 = 0ULL;// host_input1[thread];
 
-                // double max (we are using for odd: n >> 1 + n + 1 (we only print double but do not store it)
-                doubleMax0 = globalMaxValue0;// << 1;
-                doubleMax1 = globalMaxValue1;// << 1;
-                // if lt - we have overflow
-                //if (doubleMax0 < globalMaxValue0) {
-                //    doubleMax1 += 1ULL;
-                //}
-
                 time(&timeEnd);
                 timeElapsed = difftime(timeEnd, timeStart);
-                std::cout << "GPU01:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << doubleMax1 
-                    << ":" << doubleMax0 << " last search: " << startSequenceNumber << "\n";
+                std::cout << "GPU01:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1 
+                    << ":" << globalMaxValue0 << " last search: " << startSequenceNumber << "\n";
             } else {
                 // handle only lsb gt
                 if (host_result1[thread] == globalMaxValue1) {
@@ -223,18 +204,10 @@ void singleGPUSearch() {
                         globalMaxStart0 = host_input0[thread];
                         globalMaxStart1 = 0ULL;// host_input1[thread];
 
-                        // double max (we are using for odd: n >> 1 + n + 1 (we only print double but do not store it)
-                        doubleMax0 = globalMaxValue0;// << 1;
-                        doubleMax1 = globalMaxValue1;// << 1;
-                        // if lt - we have overflow
-                        //if (doubleMax0 < globalMaxValue0) {
-                        //    doubleMax1 += 1ULL;
-                        //}
-
                         time(&timeEnd);
                         timeElapsed = difftime(timeEnd, timeStart);
-                        std::cout << "GPU00:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << doubleMax1
-                            << ":" << doubleMax0 << " last search: " << startSequenceNumber << "\n";
+                        std::cout << "GPU00:Sec: " << timeElapsed << " GlobalMax: " << globalMaxStart1 << ":" << globalMaxStart0 << ": " << globalMaxValue1
+                            << ":" << globalMaxValue0 << " last search: " << startSequenceNumber << "\n";
                     }
                 }
             }
