@@ -91,9 +91,12 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned lon
                     }
                 }
             } while (!((current0 == 1ULL) && (current1 == 0ULL)));
+            // move max copy inside the thread if check (to avoid concurrency issues)
+            // #31
+            _output0[threadIndex] = max0;
+            _output1[threadIndex] = max1;
     }
-    _output0[threadIndex] = max0;
-    _output1[threadIndex] = max1;
+
 }
 
 void singleGPUSearch() {
@@ -110,16 +113,16 @@ void singleGPUSearch() {
 
     const unsigned long long oddOffsetOptimization = 2ULL;
     const int dev0 = 0;
-    const unsigned long long threadsPerBlock = 256ULL;// 128;// 128; 128=50%, 256=66 on RTX-3500
+    const unsigned long long threadsPerBlock = 512ULL;// 128;// 128; 128=50%, 256=66 on RTX-3500
     unsigned long long cores = 5120ULL;// (argc > 1) ? atoi(argv[1]) : 5120; // get command
 
     // variables
     // keep these 2 in sync
-    unsigned int threadsPower = 15;
-    const unsigned long long threads = 32768;
+    unsigned int threadsPower = 16;
+    const unsigned long long threads = 40960;
     // diff should be 31 bits (minus oddOffsetOptimization)
     unsigned int startSequencePower = 1;  // do not use 0
-    unsigned int endSequencePower = 36; 
+    unsigned int endSequencePower = 44; 
 
     // derived
     unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
