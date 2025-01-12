@@ -136,7 +136,8 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 ## CPU
 ### Multi Threaded : 40 bit run
 #### 128 bit native
-##### Java 
+##### Java
+Increase batch depending on search space to avoid excessive heap ops.
 - sec Macbook 16 M4max 12p4e - 13 batch
 - 63554 sec MacMini M4pro 8p4e 24g - 13 batch
 - sec MacBook 16 M1max 8p2e 32g - 13 batch
@@ -147,6 +148,8 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 #### 128 bit native
 ##### Java 
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
+- sec MacMini M4pro 8p4e 24g - 24 batch
+- ssec MacMini M4 4p6e/10v 16g - 24 batch
 - 6701 sec MacMini M4pro 8p4e 24g - 13 batch
 - 10274 sec MacMini M4 4p6e/10v 16g - 13 batch
 - sec MacBook 16 M1max 8p2e 32g - 13 batch
