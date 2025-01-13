@@ -5,13 +5,18 @@ Multithreaded optimization depends on multiple factors including CPU/GPU type (M
 A secondary requirement of this multi-language work is to demonstrate, test and learn about concurrency and throughput of various languages under various types of bound workloads - https://github.com/ObrienlabsDev/blog/blob/main/programming_language_index.md
 
 # Records
-20250111:
 Using the CUDA code at https://github.com/ObrienlabsDev/performance/blob/main/gpu/nvidia/cuda/cpp/128bit/collatz_cuda/kernel_collatz.cu
 Top GPU is an RTX-A6000 48G GA102 ampere card running on a 14900K system.  The current performance is 24% TDP or 55% GPU saturation.
 
 At 9h we are at record 63 of "Eric Roosendaal"'s http://www.ericr.nl/wondrous/pathrecs.html and switching from those created by "Leavens & Vermuelen" up to bit 44 to "Tomás Oliveira e Silva" at bit 46.
 
 ```
+20250113:1000 - record 64 at 46 bits and 91 max
+64,848224,337147	1274,106920,208158,465786,267728	0.303	46	91	Tomás Oliveira e Silva
+Time duration: 215057 sec, 60h, 2.5d
+GPU01:Sec: 215857 GlobalMax: 0:64848224337147: 69069474:10024422506893297744 last search: 64848224337923
+
+20250111
 63	9,016346,070511	252,229527,183443,335194,424192	3.103	44	88	Leavens & Vermeulen
 Time duration: 29652 seconds or 8.3h
 GPU01:Sec: 29652 GlobalMax: 0:9016346070511: 13673390:1233423889223725952 last search: 9016346132483
@@ -345,6 +350,8 @@ GPU01:Sec: 8745 GlobalMax: 0:2674309547647: 41764:10130355336659361648 last sear
 overnight 20250111:0900
 GPU01:Sec: 12173 GlobalMax: 0:3716509988199: 11272258:4885724866165006536 last search: 3716510023683
 GPU01:Sec: 29652 GlobalMax: 0:9016346070511: 13673390:1233423889223725952 last search: 9016346132483
+20250113:1000 - record 64 at 46 bits and 91 max - 3.5 days
+GPU01:Sec: 215857 GlobalMax: 0:64848224337147: 69069474:10024422506893297744 last search: 64848224337923
 ```
 
 ## 128 bit Multi Threaded Java (Lambda/Streams) on native long - batch 13 bit - M4Pro 24g 8p4e
