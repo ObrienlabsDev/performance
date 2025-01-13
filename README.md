@@ -27,7 +27,7 @@ operations/sec = 129240459 runs/sec * 2250 ops/iteration = 290791032639 IPS or 2
 
 # Records
 Using the CUDA code at https://github.com/ObrienlabsDev/performance/blob/main/gpu/nvidia/cuda/cpp/128bit/collatz_cuda/kernel_collatz.cu
-Top GPU is an RTX-A6000 48G GA102 ampere card running on a 14900K system.  The current performance is 24% TDP or 55% GPU saturation.
+Top GPU is an RTX-A6000 48G GA102 ampere 10752 core 786 GB/s card running on a 14900K system.  The current performance is 24% TDP or 55% GPU saturation.
 
 At 9h we are at record 63 of "Eric Roosendaal"'s http://www.ericr.nl/wondrous/pathrecs.html and switching from those created by "Leavens & Vermuelen" up to bit 44 to "Tomás Oliveira e Silva" at bit 46.
 
