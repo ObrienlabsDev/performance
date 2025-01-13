@@ -8,7 +8,7 @@ A secondary requirement of this multi-language work is to demonstrate, test and 
 Several orders of magnitude slower than optimum (4x higher GPU allocation), multi GPU, Assembly optimization....
 - 1 hour / quadrillion runs
 - 2^27 search/sec around the 45 bit space (2^32 search/30-sec)
-- 0.3 TerraOPS/sec
+- 0.3 TeraOPS/sec (the goal would be at least 30 TFLOPS level - the RTX-A6000 FP8 maxiumum)
 
 On an RTX-A6000 running CUDA C code at a 55% GPU saturation (24% TDP) we are getting around 3370 seconds per bit from bit 44 to 46 which is around 64-9 = 55 quadrillion search space.  If we divide 3370 by 3600 we 0.94 h/quadrillion.  Now we are checking only odd numbers so performance is double this.
 
