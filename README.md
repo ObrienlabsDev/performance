@@ -4,7 +4,7 @@ Multithreaded optimization depends on multiple factors including CPU/GPU type (M
 
 A secondary requirement of this multi-language work is to demonstrate, test and learn about concurrency and throughput of various languages under various types of bound workloads - https://github.com/ObrienlabsDev/blog/blob/main/programming_language_index.md
 
-# Performance
+# Performance Numbers
 Several orders of magnitude slower than optimum (4x higher GPU allocation), multi GPU, Assembly optimization....
 - 1 hour / quadrillion runs
 - 2^27 search/sec around the 45 bit space (2^32 search/30-sec)
@@ -23,9 +23,7 @@ We do on average one shift left and one shift right + an add - which averages to
 With an average path of 1500 per run we are doing around 2250 ops/run.
 operations/sec = 129240459 runs/sec * 2250 ops/iteration = 290791032639 IPS or 290791 MIPS or ~ 290 GigaFLOPS FP0 or .3 TerraFLOPS
 
-
-
-# Records
+## Records
 Using the CUDA code at https://github.com/ObrienlabsDev/performance/blob/main/gpu/nvidia/cuda/cpp/128bit/collatz_cuda/kernel_collatz.cu
 Top GPU is an RTX-A6000 48G GA102 ampere 10752 core 786 GB/s card running on a 14900K system.  The current performance is 24% TDP or 55% GPU saturation.
 
@@ -46,6 +44,11 @@ GPU01:Sec: 29652 GlobalMax: 0:9016346070511: 13673390:1233423889223725952 last s
 = 13673390 * (18446744073709551616) + 1233423889223725952
 = 2.52229526e26 + 1233423889223725952
 = 2.52229527e26
+```
+
+- 17.6h on an M4Pro 8p4e to check up to 40 bits (79 bit max) #60 on http://www.ericr.nl/wondrous/pathrecs.html
+```
+60	871673,828443	400558,740821,250122,033728	0.527	40	79	Leavens & Vermeulen
 ```
 # Architecture
 see https://github.com/ObrienlabsDev/blog/wiki/Performance
@@ -127,12 +130,7 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 ```
 ![image](https://github.com/user-attachments/assets/b0bf1241-48bb-4119-adf4-81a445849c03)
 
-# Performance Numbers
 
-- 17.6h on an M4Pro 8p4e to check up to 40 bits (79 bit max) #60 on http://www.ericr.nl/wondrous/pathrecs.html
-```
-60	871673,828443	400558,740821,250122,033728	0.527	40	79	Leavens & Vermeulen
-```
 
 ## Criteria
 - CON: Single / Multi threaded (both CPU and GPU (you can use just 1 ALU core in a GPU)
