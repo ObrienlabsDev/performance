@@ -4,6 +4,27 @@ Multithreaded optimization depends on multiple factors including CPU/GPU type (M
 
 A secondary requirement of this multi-language work is to demonstrate, test and learn about concurrency and throughput of various languages under various types of bound workloads - https://github.com/ObrienlabsDev/blog/blob/main/programming_language_index.md
 
+# Performance
+Several orders of magnitude slower than optimum (4x higher GPU allocation), multi GPU, Assembly optimization....
+- 1 hour / quadrillion runs
+- 2^27 search/sec around the 45 bit space (2^32 search/30-sec)
+- 0.3 TerraOPS/sec
+
+On an RTX-A6000 running CUDA C code at a 55% GPU saturation (24% TDP) we are getting around 3370 seconds per bit from bit 44 to 46 which is around 64-9 = 55 quadrillion search space.  If we divide 3370 by 3600 we 0.94 h/quadrillion.  Now we are checking only odd numbers so performance is double this.
+
+Throughput
+(bit 46 max - bit 44 max) = 55831878266636 / 2(odd optimization) = 27915939133318 runs 
+27915939133318 / 60h = 465265652222 runs/hr = 129240459 runs/sec = 2 *  2^27 = 2^28 search space / sec	
+
+Operations
+We do on average one shift left and one shift right + an add - which averages to 1.5 operations * 1500 average path = 2250 ops/run
+129240459 runs/sec * 1500 path = 193860688426 rough iterations/sec 
+
+With an average path of 1500 per run we are doing around 2250 ops/run.
+operations/sec = 129240459 runs/sec * 2250 ops/iteration = 290791032639 IPS or 290791 MIPS or ~ 290 GigaFLOPS FP0 or .3 TerraFLOPS
+
+
+
 # Records
 Using the CUDA code at https://github.com/ObrienlabsDev/performance/blob/main/gpu/nvidia/cuda/cpp/128bit/collatz_cuda/kernel_collatz.cu
 Top GPU is an RTX-A6000 48G GA102 ampere card running on a 14900K system.  The current performance is 24% TDP or 55% GPU saturation.
