@@ -176,8 +176,10 @@ last number: 1099511627776
 ##### Java 
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
+- 6023 sec MacMini M4pro 8p4e 24g - 22 batch
 - 6052 sec MacMini M4pro 8p4e 24g - 24 batch
 - 6701 sec MacMini M4pro 8p4e 24g - 13 batch
+- 9147 sec MacMini M4 4p6e/10v 16g - 22 batch
 - 10031 sec MacMini M4 4p6e/10v 16g - 24 batch
 - 10274 sec MacMini M4 4p6e/10v 16g - 13 batch
 - sec MacBook 16 M1max 8p2e 32g - 13 batch
