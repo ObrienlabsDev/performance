@@ -163,7 +163,7 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 ##### Java
 Increase batch depending on search space to avoid excessive heap ops.
 last number: 1099511627776
-- sec Macbook 16 M4max 12p4e - 13 batch
+- sec Macbook 16 M4max 12p4e - 22 batch
 - 50477 sec MacMini M4pro 8p4e 24g - 24 batch
 - 63554 sec MacMini M4pro 8p4e 24g - 13 batch
 - 79076 sec MacMini M4 4p6e/10v 16g - 24 batch
@@ -174,6 +174,7 @@ last number: 1099511627776
 ### Multi Threaded : 37 bit run
 #### 128 bit native
 ##### Java 
+- 4796 sec Macbook 16 M4max 12p4e - 22 batch
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
 - 6052 sec MacMini M4pro 8p4e 24g - 24 batch
 - 6701 sec MacMini M4pro 8p4e 24g - 13 batch
