@@ -5,6 +5,8 @@ Multithreaded optimization depends on multiple factors including CPU/GPU type (M
 A secondary requirement of this multi-language work is to demonstrate, test and learn about concurrency and throughput of various languages under various types of bound workloads - https://github.com/ObrienlabsDev/blog/blob/main/programming_language_index.md
 
 # Performance Numbers
+I am getting 7.2 times the speedup using an RTX-A6000 GPU over the best multithreaded Java performance on an M4Max mobile - ideally we should be seeing 20-100x
+
 Several orders of magnitude slower than optimum (4x higher GPU allocation), multi GPU, Assembly optimization....
 - 1 hour / quadrillion runs
 - 2^27 search/sec around the 45 bit space (2^32 search/30-sec)
@@ -143,14 +145,19 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 
 ## GPU
 20250116: GPU code is CPU bound for thread processing - at 100% cpu (other process) GPU slows by 4-10 times.  I need to increase the threads sent to the GPU past 64k
+### Multi Threaded : 40 bit run 
+#### 128 bit native
+##### CUDA 12.6: CPP
+-  sec 14900K d RTX-A6000 single 60% GPU 54% TDP .5g/48g - 35840k threads / 256 threads/block batch 20 no av
+  
 ### Multi Threaded : 37 bit run 
 #### 128 bit native
 ##### CUDA 12.6: CPP
-
+- 658 sec 14900K d RTX-A6000 single 55% GPU 45% TDP .5g/48g - 35840k threads / 256 threads/block no av
 ### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 #### 128 bit native
 ##### CUDA 12.6: CPP
-- 14 sec 14900KS d RTX-A6000 single 55% GPU 45% TDP .5g/48g - 32k threads / 512 threads/block
+- 14 sec 14900K d RTX-A6000 single 55% GPU 45% TDP .5g/48g - 32k threads / 512 threads/block
 - 14 sec RTX-4090 single 16384 cores 48% GPU 24% TDP- 20 batch 40960 threads 512 threads/block 80 blocks
 - 17 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 40960 threads
 - 18 sec RTX-A4500 single
@@ -158,7 +165,7 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 20 sec RTX-5000 TU104 16g mobile P17gen1
 #### 64 bit native
 Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
--  9 sec 14900KS d RTX-A6000 single 45% GPU 24% TDP .9g/48g - 32k threads / 256 threads/block
+-  9 sec 14900K d RTX-A6000 8/32c single 45% GPU 24% TDP .9g/48g - 32k threads / 256 threads/block
 - 10 sec 13900K b 4090 single 45% GPU 22% TDP .9g/24g 32k threads / 256 threads/block 
 - 12 sec 13900K a RTX-A4000 single 45% GPU 58% TDP .9g/16g
 
@@ -211,7 +218,7 @@ last number: 1099511627776
 - 318 sec MacMini M4 4p6e/10v 16g - 11 batch
 - 324 sec MacMini M4 4p6e/10v 16g - 12 batch
 - 327 sec MacMini M4 4p6e/10v 16g - 10/13 batch
-- 339 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13/ batch noAV
+- 338 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13/ batch noAV
 - 360 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 15 batch noAV
 - 360 sec MacMini M2pro 6p4e 16g - 11 batch
 - 392 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch noAV
