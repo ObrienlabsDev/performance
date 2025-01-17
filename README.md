@@ -5,7 +5,7 @@ Multithreaded optimization depends on multiple factors including CPU/GPU type (M
 A secondary requirement of this multi-language work is to demonstrate, test and learn about concurrency and throughput of various languages under various types of bound workloads - https://github.com/ObrienlabsDev/blog/blob/main/programming_language_index.md
 
 # Performance Numbers
-I am getting 7.2 times the speedup using an RTX-A6000 GPU over the best multithreaded Java performance on an M4Max mobile - ideally we should be seeing 20-100x
+I am getting 7.2 times the speedup using an RTX-A6000 GPU over the best multithreaded Java performance on an M4Max CPU-only mobile - ideally we should be seeing 20-100x
 
 Several orders of magnitude slower than optimum (4x higher GPU allocation), multi GPU, Assembly optimization....
 - 1 hour / quadrillion runs
