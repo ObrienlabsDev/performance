@@ -151,13 +151,17 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 ##### CUDA 12.6: CPP
 - 4232 sec 13900K b 32 core RTX-4090 Ada gpu 0 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
 - 5347 sec 14900K c RTX-A6000 single 60% GPU 54% TDP .5g/48g - 35840k threads / 256 threads/block batch 20 no av
-- 5508 sec 13900KS d RTX-A4500 gpu 1 single 3.2/5.9 GHz - 20 batch - no av 
+- 5508 sec 13900KS d RTX-A4500 gpu 1 single 3.2/5.9 GHz - 20 batch - no av
+- sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av
   
 ### Multi Threaded : 37 bit run 
 #### 128 bit native
 ##### CUDA 12.6: CPP
 - 528 sec 13900K b 32 core RTX-4090 Ada single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
-- 658 sec 14900K c RTX-A6000 single 55% GPU 45% TDP .5g/48g - 35840k threads / 256 threads/block no av - batch 20?
+-  sec 13900KS d RTX-A4500 gpu 0 single 3.2/5.9 GHz - 20 batch - no av 
+- 641 sec 13900KS d RTX-A4500 gpu 1 single 3.2/5.9 GHz - 20 batch - no av 
+- 658 sec 14900K c RTX-A6000 single 55% GPU 45% TDP .5g/48g - 35840k threads / 256 threads/block no av - batch 20? (rerun)
+- 799 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av
 - 
 ### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 #### 128 bit native
@@ -165,10 +169,12 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 14 sec 14900K c RTX-A6000 single 55% GPU 45% TDP .5g/48g - 32k threads / 512 threads/block
 - 14 sec RTX-4090 Ada single 16384 cores 48% GPU 24% TDP 40960 threads 512 threads/block 80 blocks - batch 20
 - 17 sec RTX-4090 Ada single 16384 cores 48% GPU 24% TDP 35840 threads 256/512 threads/block 160 blocks - batch 20
-- 17 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 40960 threads
+- 17 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 40960 threads (without path tracking - older)
 - 18 sec RTX-A4500 single
 - 18 sec RTX-A4000 single
 - 20 sec RTX-5000 TU104 16g mobile P17gen1
+- 24 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av - cold start no thermal throttling
+- 
 #### 64 bit native
 Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 -  9 sec 14900K c RTX-A6000 8/32c single 45% GPU 24% TDP .9g/48g - 32k threads / 256 threads/block
@@ -183,7 +189,9 @@ Increase batch depending on search space to avoid excessive heap ops.
 last number: 1099511627776
 - 39814 sec Macbook 16 M4max 12p4e - 22 batch
 - 50477 sec MacMini M4pro 8p4e 24g - 24 batch
+- 50477 sec MacMini M4pro 8p4e 24g - 22 batch
 - 63554 sec MacMini M4pro 8p4e 24g - 13 batch
+- sec MacMini M4 4p6e/10v 16g - 22 batch
 - 79076 sec MacMini M4 4p6e/10v 16g - 24 batch
 - sec MacBook 16 M1max 8p2e 32g - 13 batch
 - sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
@@ -194,10 +202,10 @@ last number: 1099511627776
 ##### Java 
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
-- 6023 sec MacMini M4pro 8p4e 24g - 22 batch
+- 5985 sec MacMini M4pro 8p4e 24g - 22 batch
 - 6052 sec MacMini M4pro 8p4e 24g - 24 batch
 - 6701 sec MacMini M4pro 8p4e 24g - 13 batch
-- 9147 sec MacMini M4 4p6e/10v 16g - 22 batch
+- 9049 sec MacMini M4 4p6e/10v 16g - 22 batch
 - 10031 sec MacMini M4 4p6e/10v 16g - 24 batch
 - 10274 sec MacMini M4 4p6e/10v 16g - 13 batch
 - 12335 sec 13900KS d 3.2/5.9 GHz - 22 batch - no av
