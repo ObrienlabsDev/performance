@@ -142,6 +142,11 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 
 
 ## GPU
+20250116: GPU code is CPU bound for thread processing - at 100% cpu (other process) GPU slows by 4-10 times.  I need to increase the threads sent to the GPU past 64k
+### Multi Threaded : 37 bit run 
+#### 128 bit native
+##### CUDA 12.6: CPP
+
 ### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 #### 128 bit native
 ##### CUDA 12.6: CPP
@@ -163,7 +168,7 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 ##### Java
 Increase batch depending on search space to avoid excessive heap ops.
 last number: 1099511627776
-- sec Macbook 16 M4max 12p4e - 22 batch
+- 39814 sec Macbook 16 M4max 12p4e - 22 batch
 - 50477 sec MacMini M4pro 8p4e 24g - 24 batch
 - 63554 sec MacMini M4pro 8p4e 24g - 13 batch
 - 79076 sec MacMini M4 4p6e/10v 16g - 24 batch
@@ -211,7 +216,7 @@ last number: 1099511627776
 - 360 sec MacMini M2pro 6p4e 16g - 11 batch
 - 392 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch noAV
 - 455 sec Hyperv Ubuntu 24 on 13900k a 3.0/5.7 GHz 16 of 8p/16e/32t 128g
-
+- 674 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 24 batch noAV
 
 ##### Go
 
