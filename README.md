@@ -183,6 +183,7 @@ last number: 1099511627776
 - 10031 sec MacMini M4 4p6e/10v 16g - 24 batch
 - 10274 sec MacMini M4 4p6e/10v 16g - 13 batch
 - 12335 sec 13900KS d 3.2/5.9 GHz - 22 batch - no av
+- 12400 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 22 batch - no av
 - sec MacBook 16 M1max 8p2e 32g - 13 batch
 - sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
 - 15292 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch
