@@ -198,12 +198,14 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 Increase batch depending on search space to avoid excessive heap ops.
 last number: 1099511627776
 - 39814 sec Macbook 16 M4max 12p4e - 22 batch
+-  sec MacMini M4pro 8p4e 24g - 26 batch
 - 50477 sec MacMini M4pro 8p4e 24g - 24 batch
 - 50477 sec MacMini M4pro 8p4e 24g - 22 batch
 - 63554 sec MacMini M4pro 8p4e 24g - 13 batch
 - sec MacMini M4 4p6e/10v 16g - 22 batch
+- 75313 sec MacBook 16 M1max 8p2e 32g - 22 batch
 - 79076 sec MacMini M4 4p6e/10v 16g - 24 batch
-- sec MacBook 16 M1max 8p2e 32g - 13 batch
+- 80153 sec MacMini M4 4p6e/10v 16g - 22 batch
 - sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
 - sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch
 - sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch
