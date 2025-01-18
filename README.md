@@ -148,21 +148,23 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 ### 128 bit native
 #### CUDA 12.6: CPP
 ##### Multi Threaded : 42 bit run 
-- sec 13900K b 32 core RTX-4090 Ada gpu 0 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
+- 18378 sec 13900K b 32 core RTX-4090 Ada gpu 1 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
+- sec 13900K b 32 core RTX-4090 Ada gpu 1 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
+- 
 ##### Multi Threaded : 40 bit run 
 - 4232 sec 13900K b 32 core RTX-4090 Ada gpu 0 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
 - 5347 sec 14900K c RTX-A6000 single 60% GPU 54% TDP .5g/48g - 35840k threads / 256 threads/block batch 20 no av
 - 5508 sec 13900KS d RTX-A4500 gpu 1 single 3.2/5.9 GHz - 20 batch - no av
-- 6596 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av
+- 6596/6611 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20/22 batch, 256 7168*5 threads - with path - no av
 - sec RTX-5000 TU104 16g mobile P17gen1 256  7168 * 5 batch 22 - with path - no av
   
 ### Multi Threaded : 37 bit run 
 - 528 sec 13900K b 32 core RTX-4090 Ada single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
--  sec 13900KS d RTX-A4500 gpu 0 single 3.2/5.9 GHz - 20 batch - no av 
+- 638 sec 13900KS d RTX-A4500 gpu 0 single 3.2/5.9 GHz - 22 batch - no av 
 - 641 sec 13900KS d RTX-A4500 gpu 1 single 3.2/5.9 GHz - 20 batch - no av 
 - 658 sec 14900K c RTX-A6000 single 55% GPU 45% TDP .5g/48g - 35840k threads / 256 threads/block no av - batch 20? (rerun)
 - 799 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av
-- 812 sec RTX-5000 TU104 16g mobile P17gen1 256  7168 * 5 batch 22 - with path - no av
+- 805 sec RTX-5000 TU104 16g mobile P17gen1 256  7168 * 5 batch 20 - with path - no av
 - 
 ### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 - 14 sec 14900K c RTX-A6000 single 55% GPU 45% TDP .5g/48g - 32k threads / 512 threads/block
@@ -202,7 +204,7 @@ last number: 1099511627776
 ##### Java 
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
-- 5985 sec MacMini M4pro 8p4e 24g - 22 batch
+- 5985/6394 sec MacMini M4pro 8p4e 24g - 22 batch
 - 6052 sec MacMini M4pro 8p4e 24g - 24 batch
 - 6701 sec MacMini M4pro 8p4e 24g - 13 batch
 - 9049 sec MacMini M4 4p6e/10v 16g - 22 batch
