@@ -143,25 +143,25 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - ARC: Architecture (IA64/AMD64 or ARM64 - or agnostic (JIT compiled Go))
 - 
 
-## GPU
+# GPU
 20250116: GPU code is CPU bound for thread processing - at 100% cpu (other process) GPU slows by 4-10 times.  I need to increase the threads sent to the GPU past 64k
-### 128 bit native
-#### CUDA 12.6: CPP
-##### Multi Threaded : 44 bit run 
+## 128 bit native
+### CUDA 12.6: CPP
+#### Multi Threaded : 44 bit run 
 - sec 13900K b 32 core RTX-4090 Ada gpu 0 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 22
 
-##### Multi Threaded : 42 bit run 
+#### Multi Threaded : 42 bit run 
 - 18378 sec 13900K b 32 core RTX-4090 Ada gpu 1 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
 - 18659 sec 13900K b 32 core RTX-4090 Ada gpu 1 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 24
 - 
-##### Multi Threaded : 40 bit run 
+#### Multi Threaded : 40 bit run 
 - 4232 sec 13900K b 32 core RTX-4090 Ada gpu 0 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
 - 5347 sec 14900K c RTX-A6000 single 60% GPU 54% TDP .5g/48g - 35840k threads / 256 threads/block batch 20 no av
 - 5508 sec 13900KS d RTX-A4500 gpu 1 single 3.2/5.9 GHz - 20 batch - no av
 - 6596/6611 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20/22 batch, 256 7168*5 threads - with path - no av
 - sec RTX-5000 TU104 16g mobile P17gen1 256  7168 * 5 batch 22 - with path - no av
   
-### Multi Threaded : 37 bit run 
+#### Multi Threaded : 37 bit run 
 - 528 sec 13900K b 32 core RTX-4090 Ada single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
 - 638 sec 13900KS d RTX-A4500 gpu 0 single 3.2/5.9 GHz - 22 batch - no av 
 - 641 sec 13900KS d RTX-A4500 gpu 1 single 3.2/5.9 GHz - 20 batch - no av 
@@ -169,7 +169,7 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 799 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av
 - 805 sec RTX-5000 TU104 16g mobile P17gen1 256  7168 * 5 batch 20 - with path - no av
 - 
-### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
+#### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 - 14 sec 14900K c RTX-A6000 single 55% GPU 45% TDP .5g/48g - 32k threads / 512 threads/block
 - 14 sec RTX-4090 Ada single 16384 cores 48% GPU 24% TDP 40960 threads 512 threads/block 80 blocks - batch 20
 - 17 sec RTX-4090 Ada single 16384 cores 48% GPU 24% TDP 35840 threads 256/512 threads/block 160 blocks - batch 20
@@ -180,16 +180,16 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 24 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av - cold start no thermal throttling
 - 25 sec RTX-5000 TU104 16g mobile P17gen1 256 7168 * 5 batch 16 - with path
 -  
-### 64 bit native
+## 64 bit native
 Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 -  9 sec 14900K c RTX-A6000 8/32c single 45% GPU 24% TDP .9g/48g - 32k threads / 256 threads/block
 - 10 sec 13900K b RTX-4090 Ada single 45% GPU 22% TDP .9g/24g 32k threads / 256 threads/block 
 - 12 sec 13900K a RTX-A4000 single 45% GPU 58% TDP .9g/16g
 
-## CPU
-### Multi Threaded : 40 bit run
-#### 128 bit native
-##### Java
+# CPU
+## Multi Threaded : 40 bit run
+### 128 bit native
+#### Java
 Increase batch depending on search space to avoid excessive heap ops.
 last number: 1099511627776
 - 39814 sec Macbook 16 M4max 12p4e - 22 batch
@@ -202,9 +202,9 @@ last number: 1099511627776
 - sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
 - sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch
 - sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch
-### Multi Threaded : 37 bit run
-#### 128 bit native
-##### Java 
+## Multi Threaded : 37 bit run
+### 128 bit native
+#### Java 
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
 - 5985/6394 sec MacMini M4pro 8p4e 24g - 22 batch
@@ -220,9 +220,9 @@ last number: 1099511627776
 - 15292 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch
 - 16988 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch
 - 
-### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
-#### 128 bit native
-##### Java
+## Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
+### 128 bit native
+#### Java
 - 114 sec Macbook 16 M4max 12p4e - 13 batch
 - 151 sec MacMini M4pro 8p4e16v 24g - 14 batch
 - 153 sec MacMini M4pro 8p4e16v 24g - 11/13 batch
@@ -244,17 +244,17 @@ last number: 1099511627776
 - 455 sec Hyperv Ubuntu 24 on 13900k a 3.0/5.7 GHz 16 of 8p/16e/32t 128g
 - 674 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 24 batch noAV
 
-##### Go
+#### Go
 
-##### CPP
+#### CPP
 - https://github.com/ObrienlabsDev/performance/tree/main/cpu/ia64/singlethread/128bit/collatz_cpp_single
 - 828 sec 14900K c 3.2/5.9 GHz
 - 846 sec 13900KS d 3.2/5.9 GHz
 - 873 sec 13900K a 3.0/5.7 GHz
 - 960 sec P1Gen6 13800H 2.5/4.1 GHz
 
-#### 64 bit native
-##### Java | 2 step odd/even 5% optimized - lambda/streams - heap/max-ram bound
+### 64 bit native
+#### Java | 2 step odd/even 5% optimized - lambda/streams - heap/max-ram bound
 - https://github.com/ObrienlabsDev/performance/tree/main/cpu/virtual/multithreaded/64bit/java-benchmark-cli
 large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes down, thread ram overhead reduced
 - 41 sec 13900K a 3.0/5.7 GHz 6g heap 23/128g - 11/12 bit batch
@@ -287,21 +287,21 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 - 129 sec MacMini M2pro 6p2e 16g - 5 batch
 
 -     sec 13900KS d 3.2/5.9 GHz
-### Single Threaded : 32 bit run
-#### 64 bit native
-##### CPP | 2 step odd/even 21% optimized
+## Single Threaded : 32 bit run
+### 64 bit native
+#### CPP | 2 step odd/even 21% optimized
 - https://github.com/ObrienlabsDev/performance/tree/main/cpu/ia64/singlethread/64bit/collatz_cpp_single
 - 429 sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 - 447 sec 13900K a 3.0/5.7 GHz
 - 489 sec P1Gen6 13800H 2.5/4.1 GHz
-##### CPP
+#### CPP
 -  sec Macbook 16 M4max/12c
 - 514 sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
 - 535 sec 13900K a 3.0/5.7 GHz
 - 592 sec P1Gen6 13800H 2.5/4.1 GHz
-##### Go | 2 step odd/even 6% optimized
+#### Go | 2 step odd/even 6% optimized
 - https://github.com/ObrienlabsDev/performance/tree/main/cpu/virtual/singlethread/go-benchmark-cli
 - 399 sec MacMini M4pro 8p4e
 - 445 sec MacBook 16 M4max/12c
@@ -311,7 +311,7 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 - 475 sec MacMini M2pro 6p2e
 -  sec P1Gen6 13800H 2.5/4.1 GHz
 - 527 sec MacBook 16 M1max/8c
-##### Go 
+#### Go 
 - 508 sec MacBook 16 M4max/12c
 -     sec 14900K c 3.2/5.9 GHz
 -     sec 13900KS d 3.2/5.9 GHz
@@ -319,7 +319,7 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 - 587 sec MacMini M2pro 6p2e
 - 626 sec P1Gen6 13800H 2.5/4.1 GHz
 - 639 sec MacBook 16 M1max/8c
-##### Java | 2 step odd/even 5% optimized
+#### Java | 2 step odd/even 5% optimized
 - https://github.com/ObrienlabsDev/performance/tree/main/cpu/virtual/singlethread/java-benchmark-cli
 - 476 sec MacMini M4pro 8p/4e
 - 507 sec MacBook 16 M4max/12c
@@ -328,7 +328,7 @@ large batch 12-14 up from 5 sizes for larger memory 64-128g, cpu for Pcores goes
 -     sec 13900KS d 3.2/5.9 GHz
 -  sec 13900K a 3.0/5.7 GHz
 - 589 sec MacBook 16 M1max/8c
-##### Java
+#### Java
 - 544 sec MacBook 16 M4max/12c
 -  sec MacMini M2pro 6p/2e
 - 648 sec MacBook 16 M1max/8c
