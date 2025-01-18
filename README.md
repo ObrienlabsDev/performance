@@ -153,7 +153,8 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 4232 sec 13900K b 32 core RTX-4090 Ada gpu 0 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
 - 5347 sec 14900K c RTX-A6000 single 60% GPU 54% TDP .5g/48g - 35840k threads / 256 threads/block batch 20 no av
 - 5508 sec 13900KS d RTX-A4500 gpu 1 single 3.2/5.9 GHz - 20 batch - no av
--  sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av
+- 6596 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av
+- sec RTX-5000 TU104 16g mobile P17gen1 256  7168 * 5 batch 22 - with path - no av
   
 ### Multi Threaded : 37 bit run 
 - 528 sec 13900K b 32 core RTX-4090 Ada single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
@@ -161,6 +162,7 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 641 sec 13900KS d RTX-A4500 gpu 1 single 3.2/5.9 GHz - 20 batch - no av 
 - 658 sec 14900K c RTX-A6000 single 55% GPU 45% TDP .5g/48g - 35840k threads / 256 threads/block no av - batch 20? (rerun)
 - 799 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av
+- 812 sec RTX-5000 TU104 16g mobile P17gen1 256  7168 * 5 batch 22 - with path - no av
 - 
 ### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 - 14 sec 14900K c RTX-A6000 single 55% GPU 45% TDP .5g/48g - 32k threads / 512 threads/block
@@ -169,9 +171,10 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 17 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 40960 threads (without path tracking - older)
 - 18 sec RTX-A4500 single
 - 18 sec RTX-A4000 single
-- 20 sec RTX-5000 TU104 16g mobile P17gen1
+- 20 sec RTX-5000 TU104 16g mobile P17gen1 - no path
 - 24 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av - cold start no thermal throttling
-- 
+- 25 sec RTX-5000 TU104 16g mobile P17gen1 256 7168 * 5 batch 16 - with path
+-  
 ### 64 bit native
 Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 -  9 sec 14900K c RTX-A6000 8/32c single 45% GPU 24% TDP .9g/48g - 32k threads / 256 threads/block
