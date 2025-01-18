@@ -147,9 +147,12 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 20250116: GPU code is CPU bound for thread processing - at 100% cpu (other process) GPU slows by 4-10 times.  I need to increase the threads sent to the GPU past 64k
 ### 128 bit native
 #### CUDA 12.6: CPP
+##### Multi Threaded : 44 bit run 
+- sec 13900K b 32 core RTX-4090 Ada gpu 0 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 22
+
 ##### Multi Threaded : 42 bit run 
 - 18378 sec 13900K b 32 core RTX-4090 Ada gpu 1 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
-- sec 13900K b 32 core RTX-4090 Ada gpu 1 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
+- 18659 sec 13900K b 32 core RTX-4090 Ada gpu 1 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 24
 - 
 ##### Multi Threaded : 40 bit run 
 - 4232 sec 13900K b 32 core RTX-4090 Ada gpu 0 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
