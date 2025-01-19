@@ -84,8 +84,6 @@ public class ULong128Impl implements ULong128 {
 		return new ULong128Impl(temp1, temp0);
 	}
 	
-	
-	
 	@Override
 	public long getLong0() {
 		return long0;
@@ -113,8 +111,24 @@ public class ULong128Impl implements ULong128 {
 			result = result.add(BigInteger.valueOf(Long.MAX_VALUE));
 			result = result.shiftLeft(1);
 			result = result.multiply(BigInteger.valueOf(long1));
+		} else {
+			if(long1 < 0) { // handle 127th bit
+				result = result.add(BigInteger.valueOf(Long.MAX_VALUE));
+				result = result.shiftLeft(1);
+				result = result.multiply(BigInteger.valueOf(long1));
+				result = result.setBit(127); // test
+			}
 		}
-		result = result.add(BigInteger.valueOf(long0));
+
+		if(long0 < 0) { // handle 63 bit
+			result = result.add(BigInteger.valueOf(long0));//.negate());
+			result = result.add(BigInteger.valueOf(Long.MAX_VALUE));
+			result = result.add(BigInteger.valueOf(1L));
+			result = result.add(BigInteger.valueOf(Long.MAX_VALUE));
+			result = result.add(BigInteger.valueOf(1L));
+		} else {
+			result = result.add(BigInteger.valueOf(long0));
+		}
 		return result.toString();
 	}
 	
