@@ -39,7 +39,6 @@ public class Collatz128bit {
 	
 	public boolean isCollatzMax(ULong128 oddSearchCurrent, long secondsStart) {
 		boolean result = false;
-		//Long result = 0L;
 		ULong128 current = oddSearchCurrent;
 		long path = 0L;
 		ULong128 maxValue = new ULong128Impl();
@@ -53,6 +52,7 @@ public class Collatz128bit {
 			if (current.isEven()) {
 				current = current.shiftRight(1);
 			} else {
+
 				current = current.shiftRight(1).add(current).add(ONE); // optimize
 				//current = (current << 1) + current + 1L
 				path++;

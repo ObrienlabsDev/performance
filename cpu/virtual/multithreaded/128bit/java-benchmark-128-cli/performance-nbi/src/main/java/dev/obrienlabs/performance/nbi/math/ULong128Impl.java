@@ -65,6 +65,9 @@ public class ULong128Impl implements ULong128 {
 		long carry0 = Long.compareUnsigned(temp0, this.getLong0()) < 0 ? 1L : 0L;
 		long temp1 = this.long1 + ulong128.getLong1() + carry0;
 		return new ULong128Impl(temp1, temp0);
+		//this.long1 = this.long1 + ulong128.getLong1() + carry0;
+		//this.long0 = temp0;
+		//return this;
 	}
 	
 	@Override
@@ -82,6 +85,9 @@ public class ULong128Impl implements ULong128 {
 		long temp0 = (this.long0 >>> 1) + highShiftedLeft63BitsInPrepOfAddToLow ;
 		long temp1 = this.long1 >>> 1;
 		return new ULong128Impl(temp1, temp0);
+		//this.long0 = (this.long0 >>> 1) + highShiftedLeft63BitsInPrepOfAddToLow ;
+		//this.long1 = this.long1 >>> 1;	
+		//return this;
 	}
 	
 	@Override
