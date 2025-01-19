@@ -68,14 +68,14 @@ public class Collatz128bit {
 				// check limits
 				if (maxValue.isGreaterThan(globalMaxValue)) {
 					globalMaxValue = maxValue;
-					System.out.println("m0: " + oddSearchCurrent + " p: " + path + " m: " + maxValue.shiftLeft(1) + " ms: " 
+					System.out.println("m0: " + oddSearchCurrent + " p: " + path + " m: " + maxValue.shiftLeft(1) + "=" + maxValue.shiftLeft(1).toUnsigned128String() + " ms: " 
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
 					result = true;
 				}
 				if (path > globalMaxPath) {
 					globalMaxPath = path;
-					System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + maxValue.shiftLeft(1) + " ms: " 
+					System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + maxValue.shiftLeft(1) + "=" + maxValue.shiftLeft(1).toUnsigned128String() + " ms: " 
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
 					result = true;
@@ -111,7 +111,7 @@ public class Collatz128bit {
 				.filter(num -> isCollatzMax(num, secondsStart))
 				.collect(Collectors.toList());
 
-			results.stream().forEach(x -> System.out.println(x));  // fix comparable in https://github.com/ObrienlabsDev/performance/issues/27
+			//results.stream().forEach(x -> System.out.println(x.toUnsigned128String()));  // fix comparable in https://github.com/ObrienlabsDev/performance/issues/27
 			//results.stream().sorted().forEach(x -> System.out.println(x)); 
 		}
 		System.out.println("last number: " + ((1 + (batches) * threads) - 1));

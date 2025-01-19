@@ -1,5 +1,6 @@
 package dev.obrienlabs.performance.nbi.math;
 
+import java.math.BigInteger;
 import java.util.Objects;
 
 /**
@@ -83,30 +84,50 @@ public class ULong128Impl implements ULong128 {
 		return new ULong128Impl(temp1, temp0);
 	}
 	
+	
+	
 	@Override
 	public long getLong0() {
 		return long0;
 	}
+	
 	@Override
 	public void setLong0(long long0) {
 		this.long0 = long0;
 	}
+	
 	@Override
 	public long getLong1() {
 		return long1;
 	}
+	
 	@Override
 	public void setLong1(long long1) {
 		this.long1 = long1;
 	}
+	
+	@Override
+	public String toUnsigned128String() {
+		BigInteger result = BigInteger.valueOf(0L);
+		if(long1 > 0) {
+			result = result.add(BigInteger.valueOf(Long.MAX_VALUE));
+			result = result.shiftLeft(1);
+			result = result.multiply(BigInteger.valueOf(long1));
+		}
+		result = result.add(BigInteger.valueOf(long0));
+		return result.toString();
+	}
+	
 	@Override
 	public String toString() {
 		return new StringBuffer().append(long1).append(":").append(Long.toUnsignedString(long0)).toString();
 	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(long0, long1);
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -118,5 +139,4 @@ public class ULong128Impl implements ULong128 {
 		ULong128Impl other = (ULong128Impl) obj;
 		return long0 == other.long0 && long1 == other.long1;
 	}
-
 }

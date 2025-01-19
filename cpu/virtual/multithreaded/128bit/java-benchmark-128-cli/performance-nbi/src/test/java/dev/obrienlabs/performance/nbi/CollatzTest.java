@@ -12,6 +12,18 @@ import dev.obrienlabs.performance.nbi.math.ULong128Impl;
 class CollatzTest {
 
 	@Test
+	void test128bitPrint() {
+		ULong128 a = new ULong128Impl(2L, 3L);
+		ULong128 b = new ULong128Impl(1L, 1L);
+		ULong128 expected = new ULong128Impl(3L, 4L);
+		ULong128 c = a.add(b);
+		assert c.getLong1() == expected.getLong1();
+		assertTrue(c.getLong0() == expected.getLong0());
+		String printed = c.toUnsigned128String();
+		System.out.println(c + " = " + printed);
+	}
+	
+	@Test
 	void test128bitAddWithoutOverflow() {
 		ULong128 a = new ULong128Impl(2L, 3L);
 		ULong128 b = new ULong128Impl(1L, 1L);

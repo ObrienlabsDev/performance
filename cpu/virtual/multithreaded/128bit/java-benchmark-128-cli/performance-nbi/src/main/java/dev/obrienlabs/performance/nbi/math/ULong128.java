@@ -24,5 +24,7 @@ public interface ULong128 {
 	long getLong1();
 
 	void setLong1(long long1);
+	
+	String toUnsigned128String();
 
 }
