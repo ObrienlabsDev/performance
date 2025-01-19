@@ -109,11 +109,13 @@ public class ULong128Impl implements ULong128 {
 		BigInteger result = BigInteger.valueOf(0L);
 		if(long1 > 0) {
 			result = result.add(BigInteger.valueOf(Long.MAX_VALUE));
+			result = result.add(BigInteger.valueOf(1L)); // add 1 to above 2^63 - 1  - will add 2 after shift
 			result = result.shiftLeft(1);
 			result = result.multiply(BigInteger.valueOf(long1));
 		} else {
 			if(long1 < 0) { // handle 127th bit
 				result = result.add(BigInteger.valueOf(Long.MAX_VALUE));
+				result = result.add(BigInteger.valueOf(1L));
 				result = result.shiftLeft(1);
 				result = result.multiply(BigInteger.valueOf(long1));
 				result = result.setBit(127); // test
@@ -123,9 +125,9 @@ public class ULong128Impl implements ULong128 {
 		if(long0 < 0) { // handle 63 bit
 			result = result.add(BigInteger.valueOf(long0));//.negate());
 			result = result.add(BigInteger.valueOf(Long.MAX_VALUE));
-			result = result.add(BigInteger.valueOf(1L));
+			result = result.add(BigInteger.valueOf(1L)); // add 1 to above 2^63 - 1
 			result = result.add(BigInteger.valueOf(Long.MAX_VALUE));
-			result = result.add(BigInteger.valueOf(1L));
+			result = result.add(BigInteger.valueOf(1L)); // add 1 to above 2^63 - 1
 		} else {
 			result = result.add(BigInteger.valueOf(long0));
 		}

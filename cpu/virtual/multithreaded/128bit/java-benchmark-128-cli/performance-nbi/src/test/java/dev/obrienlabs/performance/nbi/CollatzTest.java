@@ -40,6 +40,22 @@ class CollatzTest {
 	}
 	
 	@Test
+	void test128bitPrintOffBy2_after_64th_bit() {
+		ULong128 a = new ULong128Impl(0L, 0L);
+		ULong128 b = new ULong128Impl(1L, 2275654840695500112L);
+		//ULong128 expected = new ULong128Impl(0L, 4L);
+		ULong128 c = a.add(b);
+		//assert c.getLong1() == expected.getLong1();
+		//assertTrue(c.getLong0() == expected.getLong0());
+		String printed = c.toUnsigned128String();
+		String printedLow = "20722398914405051728";
+		assertTrue(printed.compareTo(printedLow) == 0);
+		// 1:2275654840695500112 = 20722398914405051728
+		System.out.println(c + " = " + printed);
+	}
+	
+	
+	@Test
 	void test128bitAddWithoutOverflow() {
 		ULong128 a = new ULong128Impl(2L, 3L);
 		ULong128 b = new ULong128Impl(1L, 1L);
