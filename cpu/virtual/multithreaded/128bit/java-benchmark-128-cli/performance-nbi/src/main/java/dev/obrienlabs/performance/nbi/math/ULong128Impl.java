@@ -28,7 +28,6 @@ public class ULong128Impl implements ULong128 {
 	
 	@Override
 	public boolean isEven() {
-		// testBit(0)
 		return long0 % 2 == 0;
 	}
 
@@ -59,7 +58,7 @@ public class ULong128Impl implements ULong128 {
 	
 	@Override
 	// we add the low bytes, detect the carry, add the high bytes and add the carry
-	public ULong128 add(ULong128 ulong128) {;
+	public ULong128 add(ULong128 ulong128) {
 		long temp0 = this.long0 + ulong128.getLong0();
 		// a smaller result means we experienced overflow
 		long carry0 = Long.compareUnsigned(temp0, this.getLong0()) < 0 ? 1L : 0L;
@@ -102,7 +101,7 @@ public class ULong128Impl implements ULong128 {
 	}
 	@Override
 	public String toString() {
-		return new StringBuffer().append(long1).append(":").append(long0).toString();
+		return new StringBuffer().append(long1).append(":").append(Long.toUnsignedString(long0)).toString();
 	}
 	@Override
 	public int hashCode() {
