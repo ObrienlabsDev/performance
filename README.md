@@ -259,6 +259,7 @@ last number: 1099511627776
 - 392 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch noAV
 - 455 sec Hyperv Ubuntu 24 on 13900k a 3.0/5.7 GHz 16 of 8p/16e/32t 128g
 - 674 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 24 batch noAV
+- 705 sec P15 - batch 13
 
 #### Go
 
