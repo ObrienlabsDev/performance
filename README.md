@@ -4,6 +4,8 @@ Multithreaded optimization depends on multiple factors including CPU/GPU type (M
 
 A secondary requirement of this multi-language work is to demonstrate, test and learn about concurrency and throughput of various languages under various types of bound workloads - https://github.com/ObrienlabsDev/blog/blob/main/programming_language_index.md
 
+See also Mandelbrot GPU code in https://github.com/ObrienlabsDev/performance/edit/main/README.md
+
 # Performance Numbers
 I am getting 7.2 times the speedup using an RTX-A6000 GPU over the best multithreaded Java performance on an M4Max CPU-only mobile - ideally we should be seeing 20-100x
 
@@ -219,11 +221,12 @@ last number: 1099511627776
 - 52983 sec MacMini M4pro 8p4e 24g - 22 batch 20250119
 - 55786 sec MacMini M4pro 8p4e 24g - 26 batch
 - 63554 sec MacMini M4pro 8p4e 24g - 13 batch
--  sec MacMini M4 4p6e/10v 16g - 22 batch
+
 - 75313 sec MacBook 16 M1max 8p2e 32g - 22 batch
 - 76355 sec MacBook 16 M1max 8p2e 32g - 20 batch
 - 79076 sec MacMini M4 4p6e/10v 16g - 24 batch
 - 80153 sec MacMini M4 4p6e/10v 16g - 22 batch
+- 94111 sec MacMini M4 4p6e/10v 16g - 22 batch - 20250121
 - sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch
 - 107075 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 22 batch
 - 107771 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 22 batch
