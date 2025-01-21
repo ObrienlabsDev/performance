@@ -208,8 +208,9 @@ last number: 1099511627776
 - 52983 sec MacMini M4pro 8p4e 24g - 22 batch 20250119
 - 55786 sec MacMini M4pro 8p4e 24g - 26 batch
 - 63554 sec MacMini M4pro 8p4e 24g - 13 batch
-- sec MacMini M4 4p6e/10v 16g - 22 batch
+-  sec MacMini M4 4p6e/10v 16g - 22 batch
 - 75313 sec MacBook 16 M1max 8p2e 32g - 22 batch
+- 76355 sec MacBook 16 M1max 8p2e 32g - 20 batch
 - 79076 sec MacMini M4 4p6e/10v 16g - 24 batch
 - 80153 sec MacMini M4 4p6e/10v 16g - 22 batch
 - sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
