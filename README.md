@@ -29,9 +29,14 @@ operations/sec = 129240459 runs/sec * 2250 ops/iteration = 290791032639 IPS or 2
 Using the CUDA code at https://github.com/ObrienlabsDev/performance/blob/main/gpu/nvidia/cuda/cpp/128bit/collatz_cuda/kernel_collatz.cu
 Top GPU is an RTX-A6000 48G GA102 ampere 10752 core 786 GB/s card running on a 14900K system.  The current performance is 24% TDP or 55% GPU saturation.
 
-At 9h we are at record 63 of "Eric Roosendaal"'s http://www.ericr.nl/wondrous/pathrecs.html and switching from those created by "Leavens & Vermuelen" up to bit 44 to "Tomás Oliveira e Silva" at bit 46.
+At 136h we are at record 65 of "Eric Roosendaal"'s http://www.ericr.nl/wondrous/pathrecs.html and switching from those created by "Leavens & Vermuelen" up to bit 44 to "Tomás Oliveira e Silva" at bit 47.
 
 ```
+20250120: - record 65 at 47 bits and 93 max
+65	116,050121,715711	2530,584067,833784,961226,236392	0.188	47	92	Tomás Oliveira e Silva
+Time duration: 492412 sec, 136h, 5.7d
+GPU01:Sec: 492412 path: 1081 GlobalMax: 0:116050121715711: 137183237:3691742072724775400 last search: 116050121752577
+
 20250113:1000 - record 64 at 46 bits and 91 max
 64,848224,337147	1274,106920,208158,465786,267728	0.303	46	91	Tomás Oliveira e Silva
 Time duration: 215057 sec, 60h, 2.5d
