@@ -155,6 +155,7 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 #### Multi Threaded : 44 bit run 
 - sec 13900K b 32 core RTX-4090 Ada gpu 0 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 22
 - sec 13900KS d RTX-A4500 gpu 1 single 3.2/5.9 GHz - 22 batch - no av
+- 107521 sec RTX-5000 TU104 16g mobile P17gen1 256  7168 * 5 batch 22 - with path - no av
 - 109071 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20/22 batch, 256 7168*5 threads - with path - no av
 
 #### Multi Threaded : 42 bit run 
@@ -179,6 +180,7 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 658 sec 14900K c RTX-A6000 single 55% GPU 45% TDP .5g/48g - 35840k threads / 256 threads/block no av - batch 20? (rerun)
 - 799 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av
 - 805 sec RTX-5000 TU104 16g mobile P17gen1 256  7168 * 5 batch 20 - with path - no av
+- RTX-A4000 single - no thread post-processing
 - 
 #### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 - 14 sec 14900K c RTX-A6000 single 55% GPU 45% TDP .5g/48g - 32k threads / 512 threads/block
@@ -240,7 +242,7 @@ last number: 1099511627776
 - sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
 - 15292 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch
 - 16988 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch
-- 
+- 25719 sec P15
 ## Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 ### 128 bit native
 #### Java
