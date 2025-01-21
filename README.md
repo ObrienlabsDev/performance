@@ -168,9 +168,9 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 
 #### Multi Threaded : 40 bit run 
 - 4232 sec 13900K b 32 core RTX-4090 Ada gpu 0 single 16384 cores 50% GPU 24% TDP 35840 threads 256 threads/block no av - batch 20
+- 5293 sec 13900k a RTX-A4000 single batch 22 - no thread post-processing
 - 5347 sec 14900K c RTX-A6000 single 60% GPU 54% TDP .5g/48g - 35840k threads / 256 threads/block batch 20 no av
-- 5508 sec 13900KS d RTX-A4500 gpu 1 single 3.2/5.9 GHz - 20 batch - no av
-- RTX-A4000 single batch 22 - no thread post-processing
+- 5293 sec 13900k a RTX-A4000 single batch 22 - no thread post-processingv
 - RTX-A4000 single batch 22- thread post-processing
 - 6596/6611 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20/22 batch, 256 7168*5 threads - with path - no av
 - 6643 sec RTX-5000 TU104 16g mobile P17gen1 256  7168 * 5 batch 22 - with path - no av
@@ -224,9 +224,9 @@ last number: 1099511627776
 - 76355 sec MacBook 16 M1max 8p2e 32g - 20 batch
 - 79076 sec MacMini M4 4p6e/10v 16g - 24 batch
 - 80153 sec MacMini M4 4p6e/10v 16g - 22 batch
-- sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 13 batch
 - sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch
 - 107075 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 22 batch
+- 107771 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 22 batch
 - sec 13900k a 3.0/5.7 GHz 8p/16e/32t 32/128g - 16 batch
 - sec 13900k a 3.0/5.7 GHz 8p/16e/32t 9/128g - 20 batch
 ## Multi Threaded : 37 bit run
