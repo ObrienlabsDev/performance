@@ -180,7 +180,7 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 658 sec 14900K c RTX-A6000 single 55% GPU 45% TDP .5g/48g - 35840k threads / 256 threads/block no av - batch 20? (rerun)
 - 799 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av
 - 805 sec RTX-5000 TU104 16g mobile P17gen1 256  7168 * 5 batch 20 - with path - no av
-- RTX-A4000 single - no thread post-processing
+- 17143 RTX-A4000 single - no thread post-processing
 - 
 #### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 - 14 sec 14900K c RTX-A6000 single 55% GPU 45% TDP .5g/48g - 32k threads / 512 threads/block
