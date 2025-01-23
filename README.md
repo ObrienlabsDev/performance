@@ -242,6 +242,7 @@ last number: 1099511627776
 - 107771 sec P1Gen6 13800H 6p8e/20t 2.5/4.1 GHz 64g - 22 batch
 - sec 13900k a 3.0/5.7 GHz 8p/16e/32t 32/128g - 16 batch
 - sec 13900k a 3.0/5.7 GHz 8p/16e/32t 9/128g - 20 batch
+- 221943 sec P15
 ## Multi Threaded : 37 bit run
 ### 128 bit native
 #### Java 
