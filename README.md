@@ -4,7 +4,18 @@ Multithreaded optimization depends on multiple factors including CPU/GPU type (M
 
 A secondary requirement of this multi-language work is to demonstrate, test and learn about concurrency and throughput of various languages under various types of bound workloads - https://github.com/ObrienlabsDev/blog/blob/main/programming_language_index.md
 
-See also Mandelbrot GPU code in https://github.com/ObrienlabsDev/performance/edit/main/README.md
+See also Mandelbrot GPU code in https://github.com/ObrienlabsDev/fractals
+- block size 16 x 16, 5000 4096x4096 images with max iteration of 8192
+
+perf | sec | /run | # GPUs | % GPU | Watts | TDP | Chip | GPU spec
+--- | --- | --- | --- | --- | --- | --- | --- | ---
+5.85 | 46 | .0092 | 1 | 99 | 452 | 94 | AD-102 | RTX-4090 Ada 24G
+2.66 | 101 | .02 | 1 | 99 | 304 | 102 | GA-102 | RTX-A6000 48G
+2.56 | 105 | .0037 | 1 | 99 | 102 | ? | AD-104 | RTX-3500 Ada 12G Thermal Throttling
+1.72 | 156 | .0312 | 1 | 99 | 194 | 97 | GA-102 | RTX-A4500 20G
+1.29 | 208 | .0416 | 1 | 99 | 143 | 102 | GA-104 | RTX-A4000 16G
+1 | 269 | .0538 | 1 | 99 | 105 | ? | TU-104 | RTX-5000 16G
+
 
 # Performance Numbers
 I am getting 7.2 times the speedup using an RTX-A6000 GPU over the best multithreaded Java performance on an M4Max CPU-only mobile - ideally we should be seeing 20-100x
