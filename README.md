@@ -198,7 +198,6 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 - 686 RTX-A4000 single batch 22- thread post-processing
 - 799 sec P1Gen6 13800H RTX-3500 Ada mobile 5120 cores 60% GPU - 20 batch, 256 7168*5 threads - with path - no av
 - 805 sec RTX-5000 TU104 16g mobile P17gen1 256  7168 * 5 batch 20 - with path - no av
-
 - 
 #### Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 - 14 sec 14900K c RTX-A6000 single 55% GPU 45% TDP .5g/48g - 32k threads / 512 threads/block
@@ -228,6 +227,17 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 #### Java
 Increase batch depending on search space to avoid excessive heap ops.
 last number: 1099511627776
+-  sec Macbook 16 M4max 12p4e - 22 batch
+-  sec MacMini M4pro 2 8p4e 24g - 22 batch
+-  sec MacMini M4pro 1 8p4e 24g - 22 batch
+-  sec MacBook 16 M1max 8p2e 32g - 22 batch
+-  sec MacMini M2pro 6p4e 16g - 22 batch
+
+## Multi Threaded : 40 bit run
+### 128 bit native
+#### Java
+Increase batch depending on search space to avoid excessive heap ops.
+last number: 1099511627776
 - 39814 sec Macbook 16 M4max 12p4e - 22 batch
 - 50477 sec MacMini M4pro 8p4e 24g - 24 batch?
 - 52983 sec MacMini M4pro 8p4e 24g - 22 batch 20250119
@@ -235,7 +245,7 @@ last number: 1099511627776
 - 63554 sec MacMini M4pro 8p4e 24g - 13 batch
 - 75313 sec MacBook 16 M1max 8p2e 32g - 22 batch
 - 76355 sec MacBook 16 M1max 8p2e 32g - 20 batch
--  sec MacMini M2pro 6p4e 16g - 22 batch
+- 75394 sec MacMini M2pro 6p4e 16g - 22 batch
 - 79076 sec MacMini M4 4p6e/10v 16g - 24 batch
 - 80153 sec MacMini M4 4p6e/10v 16g - 22 batch
 - 94111 sec MacMini M4 4p6e/10v 16g - 22 batch - 20250121
