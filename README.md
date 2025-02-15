@@ -222,7 +222,7 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 #### Java
 - sec MacMini M4pro 8p4e 24g - 16 batch
 - 
-## Multi Threaded : 40 bit run
+## Multi Threaded : 42 bit run
 ### 128 bit native
 #### Java
 Increase batch depending on search space to avoid excessive heap ops.
@@ -297,7 +297,9 @@ last number: 1099511627776
 - 392 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch noAV
 - 455 sec Hyperv Ubuntu 24 on 13900k a 3.0/5.7 GHz 16 of 8p/16e/32t 128g
 - 674 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 24 batch noAV
+- sec P17
 - 705 sec P15 - batch 13
+- 1154 sec nuc5y i7-5557u batch 15
 
 #### Go
 
