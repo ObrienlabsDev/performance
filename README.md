@@ -264,6 +264,7 @@ last number: 1099511627776
 - 3920 sec Mac Studio M2Ultra 60c 64g - 69->77% 17->17.9c - 19 batch
 - ? sec Macbook 16 M4max 12p4e - 19 batch
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
+- 5793 sec MacMini M4pro 8p4e 24g - 19 batch
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
 - 5985/6394 sec MacMini M4pro 8p4e 24g - 22 batch
 - 6052 sec MacMini M4pro 8p4e 24g - 24 batch
