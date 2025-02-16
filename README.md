@@ -19,6 +19,7 @@ perf | sec | /run | # GPUs | % GPU | Watts | TDP | Chip | Cores | GPU spec
 1 | 269 | .0538 | 1 | 99 | 105 | ? | TU-104 | 3072 | RTX-5000 16G
 
 
+
 # Performance Numbers
 I am getting 7.2 times the speedup using an RTX-A6000 GPU over the best multithreaded Java performance on an M4Max CPU-only mobile - ideally we should be seeing 20-100x
 
@@ -40,6 +41,7 @@ We do on average one shift left and one shift right + an add - which averages to
 With an average path of 1500 per run we are doing around 2250 ops/run.
 operations/sec = 129240459 runs/sec * 2250 ops/iteration = 290791032639 IPS or 290791 MIPS or ~ 290 GigaFLOPS FP0 or .3 TerraFLOPS
 
+- For Multicore Java based CPU metrics - the M2Ultra CPU in a Mac Studio 2023 is 10.1% faster (17.8 of 24 cores) than a M4Max 16c CPU in a Macbook Pro 16 inch 2024 (12.6 of 16 cores)
 ## Records
 Using the CUDA code at https://github.com/ObrienlabsDev/performance/blob/main/gpu/nvidia/cuda/cpp/128bit/collatz_cuda/kernel_collatz.cu
 Top GPU is an RTX-A6000 48G GA102 ampere 10752 core 786 GB/s card running on a 14900K system.  The current performance is 24% TDP or 55% GPU saturation.
@@ -258,6 +260,7 @@ last number: 1099511627776
 ## Multi Threaded : 37 bit run
 ### 128 bit native
 #### Java 
+- 4460 sec Mac Studio M2Ultra 60c 64g - 69->73% 17->17.7c - 19 batch
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
 - 5985/6394 sec MacMini M4pro 8p4e 24g - 22 batch
@@ -278,7 +281,7 @@ last number: 1099511627776
 ### 128 bit native
 #### Java
 - 105 sec Mac Studio M2Ultra 60c 64g - 16c - 15 batch
-- 107 sec Mac Studio M2Ultra 60c 64g - 17c - 12 batch
+- 107 sec Mac Studio M2Ultra 60c 64g - 70% 17c - 12 batch
 - 114 sec Macbook 16 M4max 12p4e 40c 48g - 13 batch
 - 115 sec Mac Studio M2Ultra 60c 64g - 16c - 16 batch
 - 151 sec MacMini M4pro 8p4e16v 24g - 14 batch
