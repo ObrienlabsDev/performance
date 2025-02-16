@@ -228,8 +228,8 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 Increase batch depending on search space to avoid excessive heap ops.
 last number: 1099511627776
 -  sec Macbook 16 M4max 12p4e - 22 batch
--  sec MacMini M4pro 2 8p4e 24g - 22 batch
--  sec MacMini M4pro 1 8p4e 24g - 22 batch
+- 256882 sec MacMini M4pro 2 8p4e 24g - 22 batch
+- 255288 sec MacMini M4pro 1 8p4e 24g - 22 batch
 -  sec MacBook 16 M1max 8p2e 32g - 22 batch
 -  sec MacMini M2pro 6p4e 16g - 22 batch
 
