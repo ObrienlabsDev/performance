@@ -233,7 +233,7 @@ last number: 1099511627776
 -  sec Macbook 16 M4max 12p4e - 22 batch
 - 256882 sec MacMini M4pro 2 8p4e 24g - 22 batch
 - 255288 sec MacMini M4pro 1 8p4e 24g - 22 batch
--  sec MacBook 16 M1max 8p2e 32g - 22 batch
+- 396717 sec MacBook 16 M1max 8p2e 32g - 22 batch
 -  sec MacMini M2pro 6p4e 16g - 22 batch
 
 ## Multi Threaded : 40 bit run
@@ -241,6 +241,7 @@ last number: 1099511627776
 #### Java
 Increase batch depending on search space to avoid excessive heap ops.
 last number: 1099511627776
+-       sec Mac Studio M2Ultra 60c 64g - 73->75% 16.5->17.9c - 19 batch
 - 39814 sec Macbook 16 M4max 12p4e - 22 batch
 - 50477 sec MacMini M4pro 8p4e 24g - 24 batch?
 - 52983 sec MacMini M4pro 8p4e 24g - 22 batch 20250119
