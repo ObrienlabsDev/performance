@@ -263,7 +263,7 @@ last number: 1099511627776
 ### 128 bit native
 #### Java 
 - 3920 sec Mac Studio M2Ultra 60c 64g - 69->77% 17->17.9c - 19 batch
-- ? sec Macbook 16 M4max 12p4e - 19 batch
+- 4369 sec Macbook 16 M4max 12p4e - 19 batch
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
 - 5793 sec MacMini M4pro 8p4e 24g - 19 batch
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
@@ -284,10 +284,11 @@ last number: 1099511627776
 ## Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 ### 128 bit native
 #### Java
+- 103 sec Mac Studio M2Ultra 60c 64g - 16c - 13 batch
 - 105 sec Mac Studio M2Ultra 60c 64g - 16c - 15 batch
 - 107 sec Mac Studio M2Ultra 60c 64g - 70% 17c - 12 batch
 - 114 sec Macbook 16 M4max 12p4e 40c 48g - 13 batch
-- 115 sec Mac Studio M2Ultra 60c 64g - 16c - 16 batch
+- 115 sec Mac Studio M2Ultra 60c 64g - 16c - 15/16 batch
 - 151 sec MacMini M4pro 8p4e16v 24g - 14 batch
 - 153 sec MacMini M4pro 8p4e16v 24g - 11/13 batch
 - 225 sec MacBook 16 M1max 8p2e 32g - 13 batch
