@@ -234,7 +234,7 @@ last number: 1099511627776
 - 256882 sec MacMini M4pro 2 8p4e 24g - 22 batch
 - 255288 sec MacMini M4pro 1 8p4e 24g - 22 batch
 - 396717 sec MacBook 16 M1max 8p2e 32g - 22 batch
--  sec MacMini M2pro 6p4e 16g - 22 batch
+- 443839 sec MacMini M2pro 6p4e 16g - 22 batch
 
 ## Multi Threaded : 40 bit run
 ### 128 bit native
