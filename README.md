@@ -265,6 +265,7 @@ last number: 1099511627776
 - 75313 sec MacBook 16 M1max 8p2e 32g - 22 batch
 - 76355 sec MacBook 16 M1max 8p2e 32g - 20 batch
 - 75394 sec MacMini M2pro 6p4e 16g - 22 batch
+- 77349 sec MacBook 16 M1max 8p2e 32g - 22 batch - 20250219
 - 79076 sec MacMini M4 4p6e/10v 16g - 24 batch
 - 80153 sec MacMini M4 4p6e/10v 16g - 22 batch
 - 94111 sec MacMini M4 4p6e/10v 16g - 22 batch - 20250121
