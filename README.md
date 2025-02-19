@@ -224,7 +224,18 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 ### 128 bit native
 #### Java
 - sec MacMini M4pro 8p4e 24g - 16 batch
-- 
+
+## Multi Threaded : 44 bit run
+### 128 bit native
+#### Java
+- sec Mac Studio M2Ultra 60c 64g - 24 batch
+- sec Macbook 16 M4max 12p4e 48g - 24 batch
+- sec MacMini M4pro 2 8p4e 24g - 24 batch
+- sec MacMini M4pro 1 8p4e 24g - 24 batch
+- sec MacBook 16 M1max 8p2e 32g - 24 batch
+- sec MacMini M4 4p6e/10v 16g - 24 batch
+- sec MacMini M2pro 6p4e 16g - 24 batch
+  
 ## Multi Threaded : 42 bit run
 ### 128 bit native
 #### Java
@@ -234,6 +245,7 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 - 256882 sec MacMini M4pro 2 8p4e 24g - 22 batch
 - 255288 sec MacMini M4pro 1 8p4e 24g - 22 batch
 - 396717 sec MacBook 16 M1max 8p2e 32g - 22 batch
+- 439564 sec MacMini M4 4p6e/10v 16g - 22 batch
 - 443839 sec MacMini M2pro 6p4e 16g - 22 batch
 
 ## Multi Threaded : 40 bit run
