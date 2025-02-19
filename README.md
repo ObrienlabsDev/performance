@@ -242,8 +242,8 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 Increase batch depending on search space to avoid excessive heap ops.
 last number: 1099511627776
 - 33451 sec Mac Studio M2Ultra 60c 64g - 22 batch
-- sec Macbook 16 M4max 12p4e 48g - 22 batch
-- 39814 sec Macbook 16 M4max 12p4e - 22 batch
+- 37115 sec Macbook 16 M4max 12p4e 48g - 22 batch
+- 39814 sec Macbook 16 M4max 12p4e 48g - 22 batch
 - 43064 sec Mac Studio M2Ultra 60c 64g - 73->75% 16.5->17.9c - 19 batch
 - 44792 sec Macbook 16 M4max 12p4e - 19 batch
 - 50477 sec MacMini M4pro 8p4e 24g - 24 batch?
