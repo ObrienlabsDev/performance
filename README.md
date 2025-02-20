@@ -71,10 +71,11 @@ GPU01:Sec: 29652 GlobalMax: 0:9016346070511: 13673390:1233423889223725952 last s
 = 2.52229527e26
 ```
 
-- 17.6h on an M4Pro 8p4e to check up to 40 bits (79 bit max) #60 on http://www.ericr.nl/wondrous/pathrecs.html
+- 71.4h on an M4Pro 8p4e to check up to 42 bits (88 bit max) #62 on http://www.ericr.nl/wondrous/pathrecs.html
 ```
-60	871673,828443	400558,740821,250122,033728	0.527	40	79	Leavens & Vermeulen
+62	3,716509,988199	207,936463,344549,949044,875464	15.054	42	88	Leavens & Vermeulen
 ```
+
 # Architecture
 see https://github.com/ObrienlabsDev/blog/wiki/Performance
 The 3n+1, collatz or hailstone numbers problem - https://en.wikipedia.org/wiki/Collatz_conjecture
