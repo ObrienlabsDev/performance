@@ -47,7 +47,10 @@ operations/sec = 129240459 runs/sec * 2250 ops/iteration = 290791032639 IPS or 2
 Using the CUDA code at https://github.com/ObrienlabsDev/performance/blob/main/gpu/nvidia/cuda/cpp/128bit/collatz_cuda/kernel_collatz.cu
 Top GPU is an RTX-A6000 48G GA102 ampere 10752 core 786 GB/s card running on a 14900K system.  The current performance is 24% TDP or 55% GPU saturation.
 
-At 136h we are at record 65 of "Eric Roosendaal"'s http://www.ericr.nl/wondrous/pathrecs.html and switching from those created by "Leavens & Vermuelen" up to bit 44 to "Tomás Oliveira e Silva" at bit 47.
+### CUDA
+
+At 136h running 128 bit C CUDA code - we are at record 65 of "Eric Roosendaal"'s http://www.ericr.nl/wondrous/pathrecs.html and switching from those created by "Leavens & Vermuelen" up to bit 44 to "Tomás Oliveira e Silva" at bit 47.
+
 
 ```
 20250120: - record 65 at 47 bits and 93 max
@@ -70,8 +73,8 @@ GPU01:Sec: 29652 GlobalMax: 0:9016346070511: 13673390:1233423889223725952 last s
 = 2.52229526e26 + 1233423889223725952
 = 2.52229527e26
 ```
-
-- 71.4h on an M4Pro 8p4e to check up to 42 bits (88 bit max) #62 on http://www.ericr.nl/wondrous/pathrecs.html
+### Java 21
+- 71.4h running multithreaded 128bit Java longs on an M4Pro 8p4e to check up to 42 bits (88 bit max) #62 on http://www.ericr.nl/wondrous/pathrecs.html
 ```
 62	3,716509,988199	207,936463,344549,949044,875464	15.054	42	88	Leavens & Vermeulen
 ```
