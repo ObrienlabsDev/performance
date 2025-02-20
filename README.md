@@ -74,7 +74,7 @@ GPU01:Sec: 29652 GlobalMax: 0:9016346070511: 13673390:1233423889223725952 last s
 = 2.52229527e26
 ```
 ### Java 21
-- 71.4h running multithreaded 128bit Java longs on an M4Pro 8p4e to check up to 42 bits (88 bit max) #62 on http://www.ericr.nl/wondrous/pathrecs.html
+- 38.6h running multithreaded 128bit Java longs on an M2 Ultra 16p8e to check up to 42 bits (88 bit max) #62 on http://www.ericr.nl/wondrous/pathrecs.html
 ```
 62	3,716509,988199	207,936463,344549,949044,875464	15.054	42	88	Leavens & Vermeulen
 ```
@@ -172,6 +172,7 @@ mp: 0:2610744987 p: 1050 m: 0:966616035460 ms: 67696 dur: 182
 
 # GPU
 20250116: GPU code is CPU bound for thread processing - at 100% cpu (other process) GPU slows by 4-10 times.  I need to increase the threads sent to the GPU past 64k
+
 ## 128 bit native
 ### CUDA 12.6: CPP
 #### Multi Threaded : 44 bit run 
@@ -232,7 +233,7 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 ## Multi Threaded : 44 bit run
 ### 128 bit native
 #### Java
-- sec Mac Studio M2Ultra 60c 64g - 24 batch
+- sec Mac Studio M2Ultra 16p8e 60c 64g - 26 batch
 - sec Macbook 16 M4max 12p4e 48g - 24 batch
 - sec MacMini M4pro 2 8p4e 24g - 24 batch
 - sec MacMini M4pro 1 8p4e 24g - 24 batch
@@ -243,8 +244,7 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 ## Multi Threaded : 42 bit run
 ### 128 bit native
 #### Java
-
-- sec Mac Studio M2Ultra 60c 64g - 24 batch
+- 138833 sec Mac Studio M2Ultra 16p8e 60c 64g - 24 batch
 - sec Macbook 16 M4max 12p4e 48g - 22 batch
 - 256882 sec MacMini M4pro 2 8p4e 24g - 22 batch
 - 255288 sec MacMini M4pro 1 8p4e 24g - 22 batch
@@ -257,10 +257,10 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 #### Java
 Increase batch depending on search space to avoid excessive heap ops.
 last number: 1099511627776
-- 33451 sec Mac Studio M2Ultra 60c 64g - 22 batch
+- 33451 sec Mac Studio M2Ultra 16p8e 60c 64g - 22 batch
 - 37115 sec Macbook 16 M4max 12p4e 48g - 22 batch
 - 39814 sec Macbook 16 M4max 12p4e 48g - 22 batch
-- 43064 sec Mac Studio M2Ultra 60c 64g - 73->75% 16.5->17.9c - 19 batch
+- 43064 sec Mac Studio M2Ultra 16p8e 60c 64g - 73->75% 16.5->17.9c - 19 batch
 - 44792 sec Macbook 16 M4max 12p4e - 19 batch
 - 50477 sec MacMini M4pro 8p4e 24g - 24 batch?
 - 52983 sec MacMini M4pro 8p4e 24g - 22 batch 20250119
@@ -282,7 +282,7 @@ last number: 1099511627776
 ## Multi Threaded : 37 bit run
 ### 128 bit native
 #### Java 
-- 3920 sec Mac Studio M2Ultra 60c 64g - 69->77% 17->17.9c - 19 batch
+- 3920 sec Mac Studio M2Ultra 16p8e 60c 64g - 69->77% 17->17.9c - 19 batch
 - 4369 sec Macbook 16 M4max 12p4e - 19 batch
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
 - 5793 sec MacMini M4pro 8p4e 24g - 19 batch
@@ -304,11 +304,11 @@ last number: 1099511627776
 ## Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 ### 128 bit native
 #### Java
-- 103 sec Mac Studio M2Ultra 60c 64g - 16c - 13 batch
-- 105 sec Mac Studio M2Ultra 60c 64g - 16c - 15 batch
-- 107 sec Mac Studio M2Ultra 60c 64g - 70% 17c - 12 batch
+- 103 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 13 batch
+- 105 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15 batch
+- 107 sec Mac Studio M2Ultra 60c 16p8e 64g - 70% 17c - 12 batch
 - 114 sec Macbook 16 M4max 12p4e 40c 48g - 13 batch
-- 115 sec Mac Studio M2Ultra 60c 64g - 16c - 15/16 batch
+- 115 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15/16 batch
 - 151 sec MacMini M4pro 8p4e16v 24g - 14 batch
 - 153 sec MacMini M4pro 8p4e16v 24g - 11/13 batch
 - 225 sec MacBook 16 M1max 8p2e 32g - 13 batch
