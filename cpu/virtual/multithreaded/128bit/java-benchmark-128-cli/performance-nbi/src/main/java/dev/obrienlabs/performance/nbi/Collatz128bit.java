@@ -127,7 +127,7 @@ public class Collatz128bit {
 
 	public static void main(String[] args) {
 
-		System.out.println("Collatz multithreaded 2025 michael at obrienlabs.dev: args searchStart searchEnd batch (both in bits: ie: 0 32 13 for 32 bit search space");
+		System.out.println("Collatz multithreaded 2025 michael at obrienlabs.dev: args searchStart searchEnd batch (both in bits: ie: 0 32 13 for 32 bit search space - note 29 is the heap limit for threads (64G)");
 
 		long batchBits = 13; // adjust this based on the chip architecture 
 		long searchBitsStart = 0;
