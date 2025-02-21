@@ -88,24 +88,32 @@ public class Collatz128bit {
 	}
 	
 	public void searchCollatzParallel(long oddSearchCurrent, long secondsStart, long searchBitsStart, long searchBitsEnd, long batchBits) {
-		long batches = 1 << batchBits;
-		long threadBits = searchBitsEnd - searchBitsStart - batchBits;
-		long threads = 1 << threadBits;
-		long rangeStart = (1 << searchBitsStart) + 1L;
+		// batchBits must be < (end - start + 1): ie: 32 to 37 search needs max 4 bits
+		//long batches = 1L << batchBits;
+		//long threadBits = searchBitsEnd - searchBitsStart - batchBits;
+		long threads = 1L << batchBits;//((1L << searchBitsEnd) - (1L << searchBitsStart)) / batches;
+		long batches = ((1L << searchBitsEnd) - (1L << searchBitsStart)) / threads;
+		long rangeStart = (1L << searchBitsStart) + 1L;
 		
 		System.out.println("Searching: " + searchBitsStart + " to " + searchBitsEnd + " space, batch " + "0" + " of " 
-				+ batches + " with " + threadBits +" bits of " + threads + " threads over a " + batchBits + " batch size" );
+				+ batches + " with " + threads + " threads over a " + batchBits + " batch size starting at " + rangeStart );
 		
+		long count = 0L;
 		for (long part = 0; part < (batches + 1) ; part++) {	
 			// generate a limited collection (CopyOnWriteArrayList not required as r/o) for the search space - 32 is a good
 			List<ULong128> oddNumbers = LongStream
-					.rangeClosed(rangeStart + (part * threads), ((1 + part) * threads) - 1)
+					.rangeClosed(rangeStart + (part * threads), rangeStart + ((1 + part) * threads) - 1)
 					.filter(x -> x % 2 != 0) // TODO: find a way to avoid this filter using range above
 					.boxed()
 					.map(ULong128Impl::new)
 					.collect(Collectors.toList());
 			
-			// filter on max value or path
+			count = count + 1;
+			if(count > 256) {
+				count = 0;
+				System.out.println("part " + part + " of " + batches + " computed " + rangeStart + (part * threads) + " span " + oddNumbers.size());
+			}
+				// filter on max value or path
 			List<ULong128> results = oddNumbers
 				.parallelStream()	
 				.filter(num -> isCollatzMax(num, secondsStart))
