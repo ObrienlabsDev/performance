@@ -29,7 +29,7 @@ Long.toUnsignedString
  */
 public class Collatz128bit {
 	
-	private long secondsLast = System.currentTimeMillis();
+	private long secondsLast = System.currentTimeMillis(); // need threadsaft long
 	
 	private ULong128 globalMaxValue = new ULong128Impl(1L);
 	private long globalMaxPath = 1L;
@@ -37,6 +37,10 @@ public class Collatz128bit {
 	private static ULong128 TWO = new ULong128Impl(2L);
 	
 	
+	public void reportMax(ULong128 _oddSearchCurrent, long _path,  ULong128 _value64s, String _value128, long _time) {
+
+	}
+
 	public boolean isCollatzMax(ULong128 oddSearchCurrent, long secondsStart) {
 		boolean result = false;
 		ULong128 current = oddSearchCurrent;
@@ -52,7 +56,6 @@ public class Collatz128bit {
 			if (current.isEven()) {
 				current = current.shiftRight(1);
 			} else {
-
 				current = current.shiftRight(1).add(current).add(ONE); // optimize
 				//current = (current << 1) + current + 1L
 				path++;
@@ -75,12 +78,13 @@ public class Collatz128bit {
 				}
 				if (path > globalMaxPath) {
 					globalMaxPath = path;
-					System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + maxValue.shiftLeft(1) + "=" + maxValue.shiftLeft(1).toUnsigned128String() + " ms: " 
+					System.out.println("mp: " + oddSearchCurrent + " p: " + path + " m: " + maxValue.shiftLeft(1) + "=" 
+						+ maxValue.shiftLeft(1).toUnsigned128String() + " ms: " 
 						+ (System.currentTimeMillis() - secondsLast) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 					secondsLast = System.currentTimeMillis();
 					result = true;
+					reportMax(oddSearchCurrent, path,  maxValue.shiftLeft(1), maxValue.shiftLeft(1).toUnsigned128String(), System.currentTimeMillis());
 				}
-
 				break;
 			}
 		}
@@ -108,11 +112,7 @@ public class Collatz128bit {
 					.map(ULong128Impl::new)
 					.collect(Collectors.toList());
 			
-			count = count + 1;
-			if(count > 256) {
-				count = 0;
-				System.out.println("part " + part + " of " + batches + " computed " + rangeStart + (part * threads) + " span " + oddNumbers.size());
-			}
+
 				// filter on max value or path
 			List<ULong128> results = oddNumbers
 				.parallelStream()	
@@ -121,6 +121,13 @@ public class Collatz128bit {
 
 			//results.stream().forEach(x -> System.out.println(x.toUnsigned128String()));  // fix comparable in https://github.com/ObrienlabsDev/performance/issues/27
 			//results.stream().sorted().forEach(x -> System.out.println(x)); 
+
+			count = count + 1;
+			if(count > 256) {
+				count = 0;
+				System.out.println("part " + part + " of " + batches + " computed " + rangeStart + (part * threads) 
+					+ " span " + oddNumbers.size() + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
+			}
 		}
 		System.out.println("last number: " + ((1 + (batches) * threads) - 1));
 	}
@@ -129,9 +136,9 @@ public class Collatz128bit {
 
 		System.out.println("Collatz multithreaded 2025 michael at obrienlabs.dev: args searchStart searchEnd batch (both in bits: ie: 0 32 13 for 32 bit search space - note 29 is the heap limit for threads (64G)");
 
-		long batchBits = 13; // adjust this based on the chip architecture 
-		long searchBitsStart = 0;
-		long searchBitsEnd = 32;
+		long batchBits = 28; // adjust this based on the chip architecture 
+		long searchBitsStart = 40;
+		long searchBitsEnd = 42;
 		if(args.length > 2) {
 			searchBitsStart = Long.parseLong(args[0]);
 			searchBitsEnd = Long.parseLong(args[1]);
