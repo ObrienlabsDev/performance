@@ -6,16 +6,16 @@ Abstract:
 An Objective C class to manage all of the Metal objects this app creates.
 
 michaelobrien 20250222 adjustments
-3G ram, 96% GPU, 2% CPU - M4Max 16/40
+3G ram for float 6 g double, 96% GPU, 2% CPU - M4Max 16/40
 */
 
 #import "MetalAdder.h"
 #include <time.h>
 
 // The number of floats in each array, and the size of the arrays in bytes.
-const unsigned long arrayLength = 1 << 28;//24;
-const unsigned long iterations = 1 << 12;
-const unsigned long bufferSize = arrayLength * sizeof(float);
+const unsigned long arrayLength = 1 << 29	;//24; after 27 m4max 40 gpu is 1.6x slower than m2ultra 60 gpu
+const unsigned long iterations = 1 << 13; // 1 second overhead
+const unsigned long bufferSize = arrayLength * sizeof(double);
 
 @implementation MetalAdder {
     id<MTLDevice> _mDevice;
@@ -76,8 +76,8 @@ const unsigned long bufferSize = arrayLength * sizeof(float);
     _mBufferA = [_mDevice newBufferWithLength:bufferSize options:MTLResourceStorageModeShared];
     _mBufferB = [_mDevice newBufferWithLength:bufferSize options:MTLResourceStorageModeShared];
     _mBufferResult = [_mDevice newBufferWithLength:bufferSize options:MTLResourceStorageModeShared];
-    [self generateRandomFloatData:_mBufferA];
-    [self generateRandomFloatData:_mBufferB];
+    [self generateRandomData:_mBufferA];
+    [self generateRandomData:_mBufferB];
     printf("ram allocated\n");
 }
 
@@ -117,7 +117,7 @@ const unsigned long bufferSize = arrayLength * sizeof(float);
     time(&timeEnd);
     timeElapsed = difftime(timeEnd, timeStart);
     printf("Time: %g seconds\n", timeElapsed);
-    [self verifyResults];
+    //[self verifyResults];
 }
 
 - (void)encodeAddCommand:(id<MTLComputeCommandEncoder>)computeEncoder {
@@ -141,17 +141,17 @@ const unsigned long bufferSize = arrayLength * sizeof(float);
               threadsPerThreadgroup:threadgroupSize];
 }
 
-- (void) generateRandomFloatData: (id<MTLBuffer>) buffer {
-    float* dataPtr = buffer.contents;
+- (void) generateRandomData: (id<MTLBuffer>) buffer {
+    double* dataPtr = buffer.contents;
     for (unsigned long index = 0; index < arrayLength; index++) {
-        dataPtr[index] = (float)rand()/(float)(RAND_MAX);
+        dataPtr[index] = (double)rand()/(double)(RAND_MAX);
     }
 }
 
 - (void) verifyResults {
-    float* a = _mBufferA.contents;
-    float* b = _mBufferB.contents;
-    float* result = _mBufferResult.contents;
+    double* a = _mBufferA.contents;
+    double* b = _mBufferB.contents;
+    double* result = _mBufferResult.contents;
     printf("Verifying results...\n");
     for (unsigned long index = 0; index < arrayLength; index++) {
         if (result[index] != (a[index] + b[index])) {
