@@ -13,8 +13,8 @@ michaelobrien 20250222 adjustments
 #include <time.h>
 
 // The number of floats in each array, and the size of the arrays in bytes.
-const unsigned long arrayLength = 1 << 29	;//24; after 27 m4max 40 gpu is 1.6x slower than m2ultra 60 gpu
-const unsigned long iterations = 1 << 13; // 1 second overhead
+const unsigned long arrayLength = 1 << 29;//24; after 27 m4max 40 gpu is 1.6x slower than m2ultra 60 gpu
+const unsigned long iterations = 1 << 16; // 1 second overhead
 const unsigned long bufferSize = arrayLength * sizeof(double);
 
 @implementation MetalAdder {
