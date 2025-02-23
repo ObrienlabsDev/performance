@@ -14,7 +14,7 @@ michaelobrien 20250222 adjustments
 
 // The number of floats in each array, and the size of the arrays in bytes.
 const unsigned long arrayLength = 1 << 29;//24; after 27 m4max 40 gpu is 1.6x slower than m2ultra 60 gpu
-const unsigned long iterations = 1 << 16; // 1 second overhead
+const unsigned long iterations = 1 << 9; // 1 second overhead
 const unsigned long bufferSize = arrayLength * sizeof(double);
 
 @implementation MetalAdder {
@@ -81,7 +81,7 @@ const unsigned long bufferSize = arrayLength * sizeof(double);
     printf("ram allocated\n");
 }
 
-- (void) sendComputeCommand {
+- (void) sendComputeCommandGPU {
     time_t timeStart, timeEnd;
     double timeElapsed;
     time(&timeStart);
@@ -120,6 +120,28 @@ const unsigned long bufferSize = arrayLength * sizeof(double);
     //[self verifyResults];
 }
 
+- (void) sendComputeCommandCPU {
+    time_t timeStart, timeEnd;
+    double timeElapsed;
+
+    double* a = _mBufferA.contents;
+    double* b = _mBufferB.contents;
+    double* result = _mBufferResult.contents;
+    printf("Iterations: %lu\n", iterations);
+    time(&timeStart);
+    
+    // Create a command buffer to hold commands
+    for (unsigned long iter=0; iter<iterations; iter++) {
+        for (unsigned long index = 0; index < arrayLength; index++) {
+                result[index] = a[index] + b[index];
+        }
+    //printf("end waitUntilCompleted\n");
+    }
+    time(&timeEnd);
+    timeElapsed = difftime(timeEnd, timeStart);
+    printf("Time: %g seconds\n", timeElapsed);
+    //[self verifyResults];
+}
 - (void)encodeAddCommand:(id<MTLComputeCommandEncoder>)computeEncoder {
     // Encode the pipeline state object and its parameters.
     [computeEncoder setComputePipelineState:_mAddFunctionPSO];
