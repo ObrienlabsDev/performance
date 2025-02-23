@@ -886,9 +886,9 @@ mp: 0:2081751768559 4:6202015729192499496: p: 1437 sec: 43451 dur: 479777
 
 ## Apple CPU - Single Threaded
 2^30 float arrays added together - 2^16 times
-- sec studio m2 ultra 24c 60gpu
-- sec macbook 16 pro m4 max 16c 40gpu
-- sec macbook 16 pro m1 max 10c 32gpu
+- 50176 sec studio m2 ultra 24c 60gpu
+- 45312 sec macbook 16 pro m4 max 16c 40gpu
+- 54272 sec macbook 16 pro m1 max 10c 32gpu
 - sec mini m4 pro 12c 16gpu
 - 
 # Links
