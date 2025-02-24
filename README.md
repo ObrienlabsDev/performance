@@ -19,7 +19,7 @@ perf | sec | /run | # GPUs | % GPU | Watts | TDP | Chip | Cores | GPU spec
 1.29 | 208 | .0416 | 1 | 99 | 143 | 102 | GA-104 | 6144 | RTX-A4000 16G old
 1.16 | 231 | .0462 | 1 | 98 | 120 | ? | M4 Max 40 | 5120 | Macbook Pro 16 M4Max 48G
 1 | 269 | .0538 | 1 | 99 | 105 | ? | TU-104 | 3072 | RTX-5000 16G
-0.78 | 344 | .0688 | 1 | 97 | 120 | ? | M2 Ultra 60 | 5680 | Mac Studio 2 M2Ultra 64G
+0.78 | 344 | .0688 | 1 | 97 | 120 | ? | M2 Ultra 60 | 7680 | Mac Studio 2 M2Ultra 64G
 0.47 | 571 | .1142 | 1 | 79-98 |  | ? | M4 Pro 16 | 2048 | Mac Mini M4 Pro 24G
 0.39 | 693 | .1386 | 1 | 95 |  | ? | M1 Max 32 | 4096 | Macbook Pro 16 M1Max 32G
 
