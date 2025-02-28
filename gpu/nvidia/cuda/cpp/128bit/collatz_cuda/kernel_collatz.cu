@@ -25,6 +25,7 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned lon
 {
     const unsigned long long MAXBIT = 9223372036854775808ULL;
     const unsigned long long MAX64 = 18446744073709551615ULL;
+
     // Calculate this thread's index
     int threadIndex = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -93,10 +94,12 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned lon
 }
 
 void singleGPUSearch() {
-    unsigned long long MAXBIT = 9223372036854775808;
+    const unsigned long long MAXBIT = 9223372036854775808;
+    const unsigned long long MAX61SEARCH = 1980976057694800255;
+    //GPU01:Sec: 0 path : 1475 GlobalMax : 0 : 1980976057694848447 : 3470784170169173952 : 7073134427238031588 last search : 1980976057694871935
     unsigned int path = 0;
     int deviceCount = 0;
-    int dualDevice = 0;
+    int dualDevice = 1;
     cudaGetDeviceCount(&deviceCount);
     printf("%d CUDA devices found - reallocating\n", deviceCount);
     if (deviceCount > 1) {
@@ -105,17 +108,17 @@ void singleGPUSearch() {
 
     const unsigned long long oddOffsetOptimization = 2ULL;
     const int dev0 = 0;
-    const unsigned long long threadsPerBlock = 512ULL;// 128;// 128; 128=50%, 256=66 on RTX-3500
+    const unsigned long long threadsPerBlock = 256ULL;// 128;// 128; 128=50%, 256=66 on RTX-3500
     unsigned long long cores = 5120ULL;// (argc > 1) ? atoi(argv[1]) : 5120; // get command
 
     // variables
     // keep these 2 in sync
-    unsigned int threadsPower = 20;//20;// 16; // 15
+    unsigned int threadsPower = 22;//20;// 16; // 15 // keep threadsPower lower than 20
     const unsigned long long threads = 7168 * 5;// 40960;// 7168 * 2;// 40960;// 7168 * 5;// 32768; // maximize threads below 64k
     // 43008 crash rtx-3500
     // diff should be 31 bits (minus oddOffsetOptimization)
-    unsigned int startSequencePower = 1;  // do not use 0
-    unsigned int endSequencePower = 32; 
+    unsigned int startSequencePower = 0;  // do not use 0
+    unsigned int endSequencePower = 44;// 32;
 
     // derived
     unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
@@ -129,7 +132,7 @@ void singleGPUSearch() {
     unsigned long long globalMaxStart0 = startSequenceNumber;
     unsigned long long globalMaxValue1 = 0ULL;
     unsigned long long globalMaxStart1 = 0ULL;
-    unsigned long long iterations = (endSequenceNumber - startSequenceNumber) / oddOffsetOptimization * ((1ULL << (endSequencePower - 32)));
+    unsigned long long iterations = (endSequenceNumber - startSequenceNumber) / oddOffsetOptimization;// *((1ULL << (endSequencePower - 32)));
     unsigned long long batchNumberPower = (endSequencePower - startSequencePower) - threadsPower;
     unsigned long long batchNumber = iterations / threads; // 1ULL << batchNumberPower;
     printf("BatchNumberPower: %llu\n", batchNumberPower);
