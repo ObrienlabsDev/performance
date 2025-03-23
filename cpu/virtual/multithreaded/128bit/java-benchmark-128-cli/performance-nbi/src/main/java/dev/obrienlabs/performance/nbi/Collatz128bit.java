@@ -126,7 +126,7 @@ public class Collatz128bit {
 			if(count > 256) {
 				count = 0;
 				System.out.println("part " + part + " of " + batches + " computed " + rangeStart + (part * threads) 
-					+ " span " + oddNumbers.size() + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
+					+ " span " + oddNumbers.get(0) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
 			}
 		}
 		System.out.println("last number: " + ((1 + (batches) * threads) - 1));
