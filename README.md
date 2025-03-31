@@ -286,6 +286,7 @@ last number: 1099511627776
 ### 128 bit native
 #### Java 
 - 3920 sec Mac Studio M2Ultra 16p8e 60c 64g - 69->77% 17->17.9c - 19 batch
+- 4171 sec Macbook 16 M4max 12p4e - 19 batch - Java 24
 - 4369 sec Macbook 16 M4max 12p4e - 19 batch
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
 - 5793 sec MacMini M4pro 8p4e 24g - 19 batch
