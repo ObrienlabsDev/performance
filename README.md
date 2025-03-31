@@ -309,6 +309,7 @@ last number: 1099511627776
 #### Java
 - 103 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 13 batch
 - 105 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15 batch
+- 106 sec Macbook 16 M4max 12p4e 40c 48g - 17 batch - Java 24
 - 107 sec Mac Studio M2Ultra 60c 16p8e 64g - 70% 17c - 12 batch
 - 114 sec Macbook 16 M4max 12p4e 40c 48g - 13 batch
 - 115 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15/16 batch
