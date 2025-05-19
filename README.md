@@ -4,21 +4,24 @@ Multithreaded optimization depends on multiple factors including CPU/GPU type (M
 
 A secondary requirement of this multi-language work is to demonstrate, test and learn about concurrency and throughput of various languages under various types of bound workloads - https://github.com/ObrienlabsDev/blog/blob/main/programming_language_index.md
 
+
 See also Mandelbrot GPU code in https://github.com/ObrienlabsDev/fractals
-- block size 16 x 16, 5000 4096x4096 images with max iteration of 8192
+- block size 16 x 16, 5000 iterations of 4096x4096 images with max mandelbrot iteration of 8192
 
 perf | sec | /run | # GPUs | % GPU | Watts | TDP | Chip | Cores | GPU spec
 --- | --- | --- | --- | --- | --- | --- | --- | --- | --
-11.7 | 23 | .0092 | 1 | 99 | 904 | 94 | AD-102 | 32768 | dual RTX-4090 Ada (no NVLink (not used 48G))
+11.7 | 23 | .0092 | 2 | 99 | 904 | 94 | AD-102 | 32768 | dual RTX-4090 Ada (no NVLink (not used 48G))
 5.85 | 46 | .0092 | 1 | 99 | 452 | 94 | AD-102 | 16384 | RTX-4090 Ada 24G
-3.44 | 78 | .0312 | 1 | 99 | 388 | 97 | GA-102 | 14336| dual [RTX-A4500](https://www.nvidia.com/content/dam/en-zz/Solutions/design-visualization/rtx/nvidia-rtx-a4500-datasheet.pdf) with NVLink (not used) 40G
-2.66 | 101 | .02 | 1 | 99 | 304 | 102 | GA-102 | 10752 | [RTX-A6000](https://www.nvidia.com/content/dam/en-zz/Solutions/design-visualization/quadro-product-literature/proviz-print-nvidia-rtx-a6000-datasheet-us-nvidia-1454980-r9-web%20(1).pdf) 48G
-2.56 | 105 | .021 | 1 | 99 | 102 | ? | AD-104 | 6144 | RTX-3500 Ada 12G Thermal Throttling
-1.72 | 156 | .0312 | 1 | 99 | 194 | 97 | GA-102 | 7168 | RTX-A4500 20G
-1.29 | 208 | .0416 | 1 | 99 | 143 | 102 | GA-104 | 6144 | RTX-A4000 16G
+3.44 | 78 | .0312 | 2 | 99 | 388 | 97 | GA-102 | 14336| dual [RTX-A4500](https://www.nvidia.com/content/dam/en-zz/Solutions/design-visualization/rtx/nvidia-rtx-a4500-datasheet.pdf) with NVLink (not used) 40G
+2.66 | 100 | .02 | 1 | 99 | 304 | 102 | GA-102 | 10752 | [RTX-A6000](https://www.nvidia.com/content/dam/en-zz/Solutions/design-visualization/quadro-product-literature/proviz-print-nvidia-rtx-a6000-datasheet-us-nvidia-1454980-r9-web%20(1).pdf) 48G
+2.56 | 191 | .0382 | 1 | 99 | 102 | ? | AD-104 | 5120 | RTX-3500 Ada 12G Thermal Throttling
+1.72 | 156 | .0312 | 1 | 99 | 194 | 97 | GA-102 | 7168 | RTX-A4500 20G old
+1.29 | 208 | .0416 | 1 | 99 | 143 | 102 | GA-104 | 6144 | RTX-A4000 16G old
+1.16 | 231 | .0462 | 1 | 98 | 120 | ? | M4 Max 40 | 5120 | Macbook Pro 16 M4Max 48G
 1 | 269 | .0538 | 1 | 99 | 105 | ? | TU-104 | 3072 | RTX-5000 16G
-
-
+0.78 | 344 | .0688 | 2 | 97 | 120 | ? | M2 Ultra 60 | 7680 | Mac Studio 2 M2Ultra 64G
+0.47 | 571 | .1142 | 1 | 79-98 |  | ? | M4 Pro 16 | 2048 | Mac Mini M4 Pro 24G
+0.39 | 693 | .1386 | 1 | 95 |  | ? | M1 Max 32 | 4096 | Macbook Pro 16 M1Max 32G
 
 # Performance Numbers
 I am getting 7.2 times the speedup using an RTX-A6000 GPU over the best multithreaded Java performance on an M4Max CPU-only mobile - ideally we should be seeing 20-100x
@@ -28,7 +31,7 @@ Several orders of magnitude slower than optimum (4x higher GPU allocation), mult
 - 2^27 search/sec around the 45 bit space (2^32 search/30-sec)
 - 0.3 TeraOPS/sec (the goal would be at least 30 TFLOPS level - the RTX-A6000 FP8 maxiumum)
 
-On an RTX-A6000 running CUDA C code at a 55% GPU saturation (24% TDP) we are getting around 3370 seconds per bit from bit 44 to 46 which is around 64-9 = 55 quadrillion search space.  If we divide 3370 by 3600 we 0.94 h/quadrillion.  Now we are checking only odd numbers so performance is double this.
+On an RTX-A6000 running CUDA C code at a 55% GPU saturation (24% TDP) we are getting around 3370 seconds per bit computing collatz sequence numbers from bit 44 to 46 which is around 64-9 = 55 quadrillion search space.  If we divide 3370 by 3600 we 0.94 h/quadrillion.  Now we are checking only odd numbers so performance is double this.
 
 Throughput
 (bit 46 max - bit 44 max) = 55831878266636 / 2(odd optimization) = 27915939133318 runs 
@@ -283,6 +286,7 @@ last number: 1099511627776
 ### 128 bit native
 #### Java 
 - 3920 sec Mac Studio M2Ultra 16p8e 60c 64g - 69->77% 17->17.9c - 19 batch
+- 4171 sec Macbook 16 M4max 12p4e - 19 batch - Java 24
 - 4369 sec Macbook 16 M4max 12p4e - 19 batch
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
 - 5793 sec MacMini M4pro 8p4e 24g - 19 batch
@@ -306,6 +310,7 @@ last number: 1099511627776
 #### Java
 - 103 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 13 batch
 - 105 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15 batch
+- 106 sec Macbook 16 M4max 12p4e 40c 48g - 17 batch - Java 24
 - 107 sec Mac Studio M2Ultra 60c 16p8e 64g - 70% 17c - 12 batch
 - 114 sec Macbook 16 M4max 12p4e 40c 48g - 13 batch
 - 115 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15/16 batch
@@ -874,6 +879,25 @@ mp: 0:1444338092271 0:1219624271099764: p: 1408 sec: 75267 dur: 328786
 mp: 0:1899148184679 0:1037298361093936: p: 1411 sec: 107540 dur: 436326
 mp: 0:2081751768559 4:6202015729192499496: p: 1437 sec: 43451 dur: 479777
 
+m0: 0:4611687388055180647 p: 1241 m: 11987849323931:16046514479390312240=221136788472763275685602138834736 ms: 17904743 dur: 231729
+221136788472763275685602138834736
+350589187937078188831873920282244
+76	10709,980568,908647	350,589187,937078,188831,873920,282244	3.056	54	109	Tomás Oliveira e Silva
 ```
 
+## Apple GPU
+2^30 float arrays added together - 2^16 times
+- 576 sec studio m2 ultra 24c 60gpu
+- 943 sec macbook 16 pro m4 max 16c 40gpu
+- 1156 sec macbook 16 pro m1 max 10c 32gpu
+- 1870 sec mini m4 pro 12c 16gpu
+- 
+
+## Apple CPU - Single Threaded
+2^30 float arrays added together - 2^16 times
+- 50176 sec studio m2 ultra 24c 60gpu
+- 45312 sec macbook 16 pro m4 max 16c 40gpu
+- 54272 sec macbook 16 pro m1 max 10c 32gpu
+- sec mini m4 pro 12c 16gpu
+- 
 # Links

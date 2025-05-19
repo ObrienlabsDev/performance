@@ -25,6 +25,7 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned lon
 {
     const unsigned long long MAXBIT = 9223372036854775808ULL;
     const unsigned long long MAX64 = 18446744073709551615ULL;
+
     // Calculate this thread's index
     int threadIndex = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -93,10 +94,12 @@ __global__ void collatzCUDAKernel(/*unsigned long long* _input1, */ unsigned lon
 }
 
 void singleGPUSearch() {
-    unsigned long long MAXBIT = 9223372036854775808;
+    const unsigned long long MAXBIT = 9223372036854775808;
+    const unsigned long long MAX61SEARCH = 1980976057694800255;
+    //GPU01:Sec: 0 path : 1475 GlobalMax : 0 : 1980976057694848447 : 3470784170169173952 : 7073134427238031588 last search : 1980976057694871935
     unsigned int path = 0;
     int deviceCount = 0;
-    int dualDevice = 0;
+    int dualDevice = 1;
     cudaGetDeviceCount(&deviceCount);
     printf("%d CUDA devices found - reallocating\n", deviceCount);
     if (deviceCount > 1) {
@@ -115,9 +118,7 @@ void singleGPUSearch() {
     // 43008 crash rtx-3500
     // diff should be 31 bits (minus oddOffsetOptimization)
     unsigned int startSequencePower = 1;  // do not use 0
-    unsigned int endSequencePower = 44; 
-    // 43 sec 181 power 20
-    // 57 sec 8x blocks 80% gpu
+    unsigned int endSequencePower = 32; 
 
     // derived
     unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
