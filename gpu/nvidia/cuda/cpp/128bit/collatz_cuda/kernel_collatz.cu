@@ -105,31 +105,33 @@ void singleGPUSearch() {
 
     const unsigned long long oddOffsetOptimization = 2ULL;
     const int dev0 = 0;
-    const unsigned long long threadsPerBlock = 512ULL;// 128;// 128; 128=50%, 256=66 on RTX-3500
+    const unsigned long long threadsPerBlock = 256LL;// 128;// 128; 128=50%, 256=66 on RTX-3500
     unsigned long long cores = 5120ULL;// (argc > 1) ? atoi(argv[1]) : 5120; // get command
 
     // variables
     // keep these 2 in sync
-    unsigned int threadsPower = 20;//20;// 16; // 15
+    unsigned int threadsPower = 22;//20;// 16; // 15 // 
     const unsigned long long threads = 7168 * 5;// 40960;// 7168 * 2;// 40960;// 7168 * 5;// 32768; // maximize threads below 64k
     // 43008 crash rtx-3500
     // diff should be 31 bits (minus oddOffsetOptimization)
     unsigned int startSequencePower = 1;  // do not use 0
-    unsigned int endSequencePower = 32; 
+    unsigned int endSequencePower = 44; 
+    // 43 sec 181 power 20
+    // 57 sec 8x blocks 80% gpu
 
     // derived
     unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
     unsigned long long endSequenceNumber = (1ULL << endSequencePower) - 1ULL;
     printf("endSequenceNumber: %llu\n", endSequenceNumber);
     // Number of blocks = ceiling(N / threadsPerBlock)
-    unsigned int blocks = (threads + threadsPerBlock - 1) / threadsPerBlock;
+    unsigned int blocks = 8 * ((threads + threadsPerBlock - 1) / threadsPerBlock);
     size_t size = threads * sizeof(unsigned long long);
     size_t sizeInt = threads * sizeof(unsigned int);
     unsigned long long globalMaxValue0 = startSequenceNumber;
     unsigned long long globalMaxStart0 = startSequenceNumber;
     unsigned long long globalMaxValue1 = 0ULL;
     unsigned long long globalMaxStart1 = 0ULL;
-    unsigned long long iterations = (endSequenceNumber - startSequenceNumber) / oddOffsetOptimization * ((1ULL << (endSequencePower - 32)));
+    unsigned long long iterations = (endSequenceNumber - startSequenceNumber) / oddOffsetOptimization;// *((1ULL << (endSequencePower - 32)));
     unsigned long long batchNumberPower = (endSequencePower - startSequencePower) - threadsPower;
     unsigned long long batchNumber = iterations / threads; // 1ULL << batchNumberPower;
     printf("BatchNumberPower: %llu\n", batchNumberPower);
@@ -272,7 +274,7 @@ void dualGPUSearch() {
     const unsigned long long oddOffsetOptimization = 2ULL;
     const int dev0 = 0;
     const int dev1 = 1;
-    const unsigned long long threadsPerBlock = 256ULL;// 128;// 128; 128=50%, 256=66 on RTX-3500
+    const unsigned long long threadsPerBlock = 512ULL;// 128;// 128; 128=50%, 256=66 on RTX-3500
     unsigned long long cores = 5120ULL;// (argc > 1) ? atoi(argv[1]) : 5120; // get command
     // exited with code -1073741571 any higher
     // VRAM related - cannot exceed 32k threads for dual 12g RTX-3500 - check 4090
