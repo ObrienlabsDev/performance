@@ -110,26 +110,26 @@ void singleGPUSearch() {
 
     // variables
     // keep these 2 in sync
-    unsigned int threadsPower = 20;//20;// 16; // 15
-    const unsigned long long threads = 7168 * 5;// 40960;// 7168 * 2;// 40960;// 7168 * 5;// 32768; // maximize threads below 64k
+    unsigned int threadsPower = 16;//20;// 16; // 15
+    const unsigned long long threads = 7168 * 4 + 6144;// 40960;// 7168 * 2;// 40960;// 7168 * 5;// 32768; // maximize threads below 64k
     // 43008 crash rtx-3500
     // diff should be 31 bits (minus oddOffsetOptimization)
-    unsigned int startSequencePower = 1;  // do not use 0
-    unsigned int endSequencePower = 32; 
+    unsigned int startSequencePower = 39;  // do not use 0
+    unsigned int endSequencePower = 64; 
 
     // derived
     unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
     unsigned long long endSequenceNumber = (1ULL << endSequencePower) - 1ULL;
     printf("endSequenceNumber: %llu\n", endSequenceNumber);
     // Number of blocks = ceiling(N / threadsPerBlock)
-    unsigned int blocks = (threads + threadsPerBlock - 1) / threadsPerBlock;
+    unsigned int blocks = 1 * ((threads / threadsPerBlock));// +threadsPerBlock - 1) / threadsPerBlock);
     size_t size = threads * sizeof(unsigned long long);
     size_t sizeInt = threads * sizeof(unsigned int);
     unsigned long long globalMaxValue0 = startSequenceNumber;
     unsigned long long globalMaxStart0 = startSequenceNumber;
     unsigned long long globalMaxValue1 = 0ULL;
     unsigned long long globalMaxStart1 = 0ULL;
-    unsigned long long iterations = (endSequenceNumber - startSequenceNumber) / oddOffsetOptimization * ((1ULL << (endSequencePower - 32)));
+    unsigned long long iterations = (endSequenceNumber - startSequenceNumber) / oddOffsetOptimization;// *((1ULL << (endSequencePower - 32)));
     unsigned long long batchNumberPower = (endSequencePower - startSequencePower) - threadsPower;
     unsigned long long batchNumber = iterations / threads; // 1ULL << batchNumberPower;
     printf("BatchNumberPower: %llu\n", batchNumberPower);
