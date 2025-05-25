@@ -13,8 +13,8 @@ michaelobrien 20250222 adjustments
 #include <time.h>
 
 // The number of floats in each array, and the size of the arrays in bytes.
-const unsigned long arrayLength = 1 << 29;//24; after 27 m4max 40 gpu is 1.6x slower than m2ultra 60 gpu
-const unsigned long iterations = 1 << 9; // 1 second overhead
+const unsigned long arrayLength = 1 << 27;//30;//24; after 27 m4max 40 gpu is 1.6x slower than m2ultra 60 gpu
+const unsigned long iterations = 1 << 16;//9; // 1 second overhead
 const unsigned long bufferSize = arrayLength * sizeof(double);
 
 @implementation MetalAdder {
@@ -86,33 +86,33 @@ const unsigned long bufferSize = arrayLength * sizeof(double);
     double timeElapsed;
     time(&timeStart);
     
-    printf("Iterations: %lu\n", iterations);
+    printf("Iterations: GPU %lu ArrayLength: %lu\n", iterations, arrayLength);
     
     // Create a command buffer to hold commands
     for (unsigned long iter=0; iter<iterations; iter++) {
-    id<MTLCommandBuffer> commandBuffer = [_mCommandQueue commandBuffer];
-    assert(commandBuffer != nil);
+        id<MTLCommandBuffer> commandBuffer = [_mCommandQueue commandBuffer];
+        assert(commandBuffer != nil);
     
-    // Start a compute pass.
-    //printf("Starting compute pass\n");
-    id<MTLComputeCommandEncoder> computeEncoder = [commandBuffer computeCommandEncoder];
-    assert(computeEncoder != nil);
+        // Start a compute pass.
+        //printf("Starting GPU compute pass\n");
+        id<MTLComputeCommandEncoder> computeEncoder = [commandBuffer computeCommandEncoder];
+        assert(computeEncoder != nil);
 
-    [self encodeAddCommand:computeEncoder];
+        [self encodeAddCommand:computeEncoder];
     
-    // End the compute pass.
-    //printf("endEncoding\n");
-    [computeEncoder endEncoding];
+        // End the compute pass.
+        //printf("endEncoding\n");
+        [computeEncoder endEncoding];
 
-    // Execute the command.
-    //printf("commit\n");
-    [commandBuffer commit];
+        // Execute the command.
+        //printf("commit\n");
+        [commandBuffer commit];
     
-    // Normally, you want to do other work in your app while the GPU is running,
-    // but in this example, the code simply blocks until the calculation is complete.
-    //printf("start waitUntilCompleted\n");
-    [commandBuffer waitUntilCompleted];
-    //printf("end waitUntilCompleted\n");
+        // Normally, you want to do other work in your app while the GPU is running,
+        // but in this example, the code simply blocks until the calculation is complete.
+        //printf("start waitUntilCompleted\n");
+        [commandBuffer waitUntilCompleted];
+        //printf("end waitUntilCompleted\n");
     }
     time(&timeEnd);
     timeElapsed = difftime(timeEnd, timeStart);
@@ -127,7 +127,7 @@ const unsigned long bufferSize = arrayLength * sizeof(double);
     double* a = _mBufferA.contents;
     double* b = _mBufferB.contents;
     double* result = _mBufferResult.contents;
-    printf("Iterations: %lu\n", iterations);
+    printf("Iterations: CPU %lu\n", iterations);
     time(&timeStart);
     
     // Create a command buffer to hold commands

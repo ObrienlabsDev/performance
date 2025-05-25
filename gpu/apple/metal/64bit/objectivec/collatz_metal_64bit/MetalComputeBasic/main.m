@@ -35,8 +35,8 @@ int main(int argc, const char * argv[]) {
         [adder prepareData];
         
         // Send a command to the GPU to perform the calculation.
-        //[adder sendComputeCommandGPU];
-        [adder sendComputeCommandCPU];
+        [adder sendComputeCommandGPU];
+        //[adder sendComputeCommandCPU];
         
         NSLog(@"Execution finished");
     }

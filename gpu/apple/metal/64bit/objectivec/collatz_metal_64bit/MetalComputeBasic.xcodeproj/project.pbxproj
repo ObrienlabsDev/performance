@@ -299,6 +299,7 @@
 			baseConfigurationReference = 00E3B7B90BF943DB3EE281D2 /* SampleCode.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = SKDV4CD2H9;
@@ -315,6 +316,7 @@
 			baseConfigurationReference = 00E3B7B90BF943DB3EE281D2 /* SampleCode.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = SKDV4CD2H9;

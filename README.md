@@ -31,7 +31,7 @@ Several orders of magnitude slower than optimum (4x higher GPU allocation), mult
 - 2^27 search/sec around the 45 bit space (2^32 search/30-sec)
 - 0.3 TeraOPS/sec (the goal would be at least 30 TFLOPS level - the RTX-A6000 FP8 maxiumum)
 
-On an RTX-A6000 running CUDA C code at a 55% GPU saturation (24% TDP) we are getting around 3370 seconds per bit from bit 44 to 46 which is around 64-9 = 55 quadrillion search space.  If we divide 3370 by 3600 we 0.94 h/quadrillion.  Now we are checking only odd numbers so performance is double this.
+On an RTX-A6000 running CUDA C code at a 55% GPU saturation (24% TDP) we are getting around 3370 seconds per bit computing collatz sequence numbers from bit 44 to 46 which is around 64-9 = 55 quadrillion search space.  If we divide 3370 by 3600 we 0.94 h/quadrillion.  Now we are checking only odd numbers so performance is double this.
 
 Throughput
 (bit 46 max - bit 44 max) = 55831878266636 / 2(odd optimization) = 27915939133318 runs 
@@ -286,6 +286,7 @@ last number: 1099511627776
 ### 128 bit native
 #### Java 
 - 3920 sec Mac Studio M2Ultra 16p8e 60c 64g - 69->77% 17->17.9c - 19 batch
+- 4171 sec Macbook 16 M4max 12p4e - 19 batch - Java 24
 - 4369 sec Macbook 16 M4max 12p4e - 19 batch
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
 - 5793 sec MacMini M4pro 8p4e 24g - 19 batch
@@ -309,6 +310,7 @@ last number: 1099511627776
 #### Java
 - 103 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 13 batch
 - 105 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15 batch
+- 106 sec Macbook 16 M4max 12p4e 40c 48g - 17 batch - Java 24
 - 107 sec Mac Studio M2Ultra 60c 16p8e 64g - 70% 17c - 12 batch
 - 114 sec Macbook 16 M4max 12p4e 40c 48g - 13 batch
 - 115 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15/16 batch
