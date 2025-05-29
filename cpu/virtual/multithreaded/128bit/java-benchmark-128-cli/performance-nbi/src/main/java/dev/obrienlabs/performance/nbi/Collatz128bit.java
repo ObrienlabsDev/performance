@@ -100,7 +100,9 @@ public class Collatz128bit {
 		long rangeStart = (1L << searchBitsStart) + 1L;
 		
 		System.out.println("Searching: " + searchBitsStart + " to " + searchBitsEnd + " space, batch " + "0" + " of " 
-				+ batches + " with " + threads + " threads over a " + batchBits + " batch size starting at " + rangeStart );
+				+ batches + " with " + threads + " threads over a " + batchBits + " batch size starting at " + rangeStart 
+				+ " under vCPUs: " + Runtime.getRuntime().availableProcessors()
+				+ " memory: " + Runtime.getRuntime().totalMemory());
 		
 		long count = 0L;
 		for (long part = 0; part < (batches + 1) ; part++) {	
