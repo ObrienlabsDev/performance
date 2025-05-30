@@ -148,7 +148,7 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 ### Optimization 4: Concurrent Multithreading - Parallel Processing
 In general with 8-12 performance cores per chip - parallelization at the CPU level is 5.1 times faster than single threaded CPU code.
 In general with 5120 to 32768 CUDA cores - parallelization at the GPU level is TBD times faster than parallel CPU code and TBD times faster than single threaded CPU code.
-Performance will vary widely up to 10x based on the algorithm and memory/heap architecture used.  For example Java BigInteger is 5 to 50x slower than Java native long code depending on the CPU P/E core ratio, ram size and CPU type (Apple Silicon ARM64 is more efficient with BigInteger usage than IA64 Intel architectures for a reason that I am determining)
+Performance will vary widely up to 10x based on the algorithm and memory/heap architecture used.  For example Java BigInteger is 3 to 50x slower than Java native long code depending on the CPU P/E core ratio, ram size and CPU type (Apple Silicon ARM64 is more efficient with BigInteger usage than IA64 Intel architectures for a reason that I am determining)
 
 In general Apple Silicon GPUs are more than twice as performant as the latest 14900KS Intel processors at integer 128bit mathematics.
 
