@@ -309,7 +309,8 @@ last number: 1099511627776
 ## Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 ### 128 bit native
 #### Java
-- 103 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 13 batch
+- 75 sec Mac Studio M3Ultra 60c 20p8e 96g - 21c - 19 batch - Java 24
+- 103 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 13 batch - Java 21
 - 105 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15 batch
 - 106 sec Macbook 16 M4max 12p4e 40c 48g - 17 batch - Java 24
 - 107 sec Mac Studio M2Ultra 60c 16p8e 64g - 70% 17c - 12 batch
