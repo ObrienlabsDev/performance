@@ -289,6 +289,7 @@ last number: 1099511627776
 ## Multi Threaded : 37 bit run
 ### 128 bit native
 #### Java 
+- 2692 sec Mac Studio M3Ultra 20p8e 60c 96g - 19 batch
 - 3920 sec Mac Studio M2Ultra 16p8e 60c 64g - 69->77% 17->17.9c - 19 batch
 - 4171 sec Macbook 16 M4max 12p4e - 19 batch - Java 24
 - 4369 sec Macbook 16 M4max 12p4e - 19 batch
