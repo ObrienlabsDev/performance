@@ -45,7 +45,7 @@ We do on average one shift left and one shift right + an add - which averages to
 With an average path of 1500 per run we are doing around 2250 ops/run.
 operations/sec = 129240459 runs/sec * 2250 ops/iteration = 290791032639 IPS or 290791 MIPS or ~ 290 GigaFLOPS FP0 or .3 TerraFLOPS
 
-- For Multicore Java based CPU metrics - the M2Ultra CPU in a Mac Studio 2023 is 10.7% faster (17.8 of 24 cores) than a M4Max 16c CPU in a Macbook Pro 16 inch 2024 (12.6 of 16 cores)
+- For Multicore Java based CPU metrics on a 40 bit run - the 24 core M2 Ultra CPU in a Mac Studio 2023 is 10.7% faster (17.8 of 24 cores) than a M4Max 16c CPU in a Macbook Pro 16 inch 2024 (12.6 of 16 cores), However the 28 core M3 Ultra CPU in a Mac Studio 2025 is % faster (21 of 28 cores) than a M4Max 16c CPU in a Macbook Pro 16 inch 2024 (12.6 of 16 cores) and 27-42% faster than the older M2 Ultra 24 core CPU
   
 ## Records
 Using the CUDA code at https://github.com/ObrienlabsDev/performance/blob/main/gpu/nvidia/cuda/cpp/128bit/collatz_cuda/kernel_collatz.cu
