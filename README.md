@@ -250,6 +250,7 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 ## Multi Threaded : 42 bit run
 ### 128 bit native
 #### Java
+- sec Mac Studio M3Ultra 20p8e 60c 96g - 22c - 23 batch
 - 138833 sec Mac Studio M2Ultra 16p8e 60c 64g - 24 batch
 - sec Macbook 16 M4max 12p4e 48g - 22 batch
 - 256882 sec MacMini M4pro 2 8p4e 24g - 22 batch
@@ -265,7 +266,7 @@ Increase batch depending on search space to avoid excessive heap ops.
 last number: 1099511627776
 
 -  sec Mac Studio M2Ultra 16p8e 60c 64g 18c - 21 batch
--  sec Mac Studio M3Ultra 20p8e 60c 96g - 21 batch
+- 23056 sec Mac Studio M3Ultra 20p8e 60c 96g - 22c - 21 batch
 - 33451 sec Mac Studio M2Ultra 16p8e 60c 64g - 22 batch
 - 37115 sec Macbook 16 M4max 12p4e 48g - 22 batch
 - 38118 sec Mac Studio M3Ultra 20p8e 60c 96g - 23 batch
