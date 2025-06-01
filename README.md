@@ -280,6 +280,7 @@ last number: 1099511627776
 - 63554 sec MacMini M4pro 8p4e 24g - 13 batch
 - 63589 sec Mac Studio M2Ultra 16p8e 60c 64g - 23 batch
 - 61911 sec MacMini M2pro 6p4e 16g - 20 batch 2025
+- 73952 sec MacMini M4pro 8p4e 24g - 21 batch
 - 75313 sec MacBook 16 M1max 8p2e 32g - 22 batch
 - 76355 sec MacBook 16 M1max 8p2e 32g - 20 batch
 - 75394 sec MacMini M2pro 6p4e 16g - 22 batch
