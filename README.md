@@ -915,5 +915,8 @@ m0: 0:4611687388055180647 p: 1241 m: 11987849323931:16046514479390312240=2211367
 - 45312 sec macbook 16 pro m4 max 16c 40gpu
 - 54272 sec macbook 16 pro m1 max 10c 32gpu
 - sec mini m4 pro 12c 16gpu
-- 
+
+## Propeller 32 bit 8 core 20MHz Microcontroller Assembly
+- https://github.com/ObrienlabsDev/assembly/blob/main/propeller/propCollatz_13_20120317h.spin
+- https://github.com/ObrienlabsDev/performance/issues/44
 # Links
