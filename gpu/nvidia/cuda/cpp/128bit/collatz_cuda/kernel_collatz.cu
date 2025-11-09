@@ -125,11 +125,8 @@ void singleGPUSearch() {
     unsigned long long endSequenceNumber = (1ULL << endSequencePower) - 1ULL;
     printf("endSequenceNumber: %llu\n", endSequenceNumber);
     // Number of blocks = ceiling(N / threadsPerBlock)
-<<<<<<< HEAD
-    unsigned int blocks = 1 * ((threads / threadsPerBlock));// +threadsPerBlock - 1) / threadsPerBlock);
-=======
+    // unsigned int blocks = 1 * ((threads / threadsPerBlock));// +threadsPerBlock - 1) / threadsPerBlock); // head
     unsigned int blocks = 8 * ((threads + threadsPerBlock - 1) / threadsPerBlock);
->>>>>>> 034812d1776dc3d648ccff25311599646415fbee
     size_t size = threads * sizeof(unsigned long long);
     size_t sizeInt = threads * sizeof(unsigned int);
     unsigned long long globalMaxValue0 = startSequenceNumber;
