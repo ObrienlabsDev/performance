@@ -192,7 +192,7 @@ void singleGPUSearch() {
         cudaMemcpy(host_result1, device_output1, size, cudaMemcpyDeviceToHost);
         cudaMemcpy(host_path, device_path, sizeInt, cudaMemcpyDeviceToHost);
         // process reesults: parallelize with OpenMP // no effect yet
-        omp_set_num_threads(threads);
+        //omp_set_num_threads(threads);
         #pragma omp parallel for reduction (+:globalMaxValue0, globalMaxValue1)
             for (int thread = 0; thread < threads; thread++) {
                 path = host_path[thread];
