@@ -274,6 +274,7 @@ last number: 1099511627776
 - 42675 sec Mac Studio M2Ultra 16p8e 60c 64g - 21 batch
 - 43064 sec Mac Studio M2Ultra 16p8e 60c 64g - 73->75% 16.5->17.9c - 19 batch
 - 44792 sec Macbook 16 M4max 12p4e - 19 batch
+- sec NVIDIA DGX Spark 10p10e - 20 batch - JDK 25
 - 50477 sec MacMini M4pro 8p4e 24g - 24 batch?
 - 52983 sec MacMini M4pro 8p4e 24g - 22 batch 20250119
 - 55786 sec MacMini M4pro 8p4e 24g - 26 batch
@@ -295,6 +296,7 @@ last number: 1099511627776
 - sec 13900k a 3.0/5.7 GHz 8p/16e/32t 32/128g - 16 batch
 - sec 13900k a 3.0/5.7 GHz 8p/16e/32t 9/128g - 20 batch
 - 221943 sec P15
+  
 ## Multi Threaded : 37 bit run
 ### 128 bit native
 #### Java 
@@ -304,6 +306,7 @@ last number: 1099511627776
 - 4171 sec Macbook 16 M4max 12p4e - 19 batch - Java 24
 - 4369 sec Macbook 16 M4max 12p4e - 19 batch
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
+- 5440 sec NVIDIA DGX Spark 10p10e - 20 batch - JDK 25
 - 5793 sec MacMini M4pro 8p4e 24g - 19 batch
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
 - 5985/6394 sec MacMini M4pro 8p4e 24g - 22 batch
@@ -320,6 +323,7 @@ last number: 1099511627776
 - 15292 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch
 - 16988 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch
 - 25719 sec P15
+- 
 ## Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 ### 128 bit native
 #### Java
@@ -331,10 +335,10 @@ last number: 1099511627776
 - 114 sec Macbook 16 M4max 12p4e 40c 48g - 13 batch
 - 115 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15/16 batch
 - 151 sec MacMini M4pro 8p4e16v 24g - 14 batch
-- 152 sec NVIDIA DGX Spark - 19 batch
+- 152 sec NVIDIA DGX Spark 10p10e - 19 batch - JDK 25
 - 153 sec MacMini M4pro 8p4e16v 24g - 11/13 batch
 - 225 sec MacBook 16 M1max 8p2e 32g - 13 batch
-- 226 sec NVIDIA DGX Spark - 13 batch
+- 226 sec NVIDIA DGX Spark 10p10e - 13 batch - JDK 25
 - 232 sec MacMini M2pro 6p4e 16g - 15 batch
 - 235 sec MacMini M2pro 6p4e 16g - 16 batch
 - 243 sec MacMini M2pro 6p4e 16g - 14 batch
