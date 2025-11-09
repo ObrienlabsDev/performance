@@ -331,8 +331,10 @@ last number: 1099511627776
 - 114 sec Macbook 16 M4max 12p4e 40c 48g - 13 batch
 - 115 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15/16 batch
 - 151 sec MacMini M4pro 8p4e16v 24g - 14 batch
+- 152 sec NVIDIA DGX Spark - 19 batch
 - 153 sec MacMini M4pro 8p4e16v 24g - 11/13 batch
 - 225 sec MacBook 16 M1max 8p2e 32g - 13 batch
+- 226 sec NVIDIA DGX Spark - 13 batch
 - 232 sec MacMini M2pro 6p4e 16g - 15 batch
 - 235 sec MacMini M2pro 6p4e 16g - 16 batch
 - 243 sec MacMini M2pro 6p4e 16g - 14 batch
