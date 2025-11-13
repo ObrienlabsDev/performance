@@ -16,7 +16,7 @@ perf | sec | /run | # GPUs | % GPU | Watts | TDP | Chip | Cores | GPU spec
 2.66 | 100 | .02 | 1 | 99 | 304 | 102 | GA102 | 10752 | [RTX-A6000](https://www.nvidia.com/content/dam/en-zz/Solutions/design-visualization/quadro-product-literature/proviz-print-nvidia-rtx-a6000-datasheet-us-nvidia-1454980-r9-web%20(1).pdf) 48G
 0 | 180 |  | 2 | 92 |  | ? | M3 Ultra 60 | 7680 | Mac Studio 3 M3 Ultra 96G (45% increase over M2 Ultra)
 2.56 | 191 | .0382 | 1 | 99 | 102 | ? | AD104 | 5120 | RTX-3500 Ada 12G Thermal Throttling
- |  |  | 1 | 96 | 188 | 96 | GB10 | 6144 | DGX Spark
+? |  |  | 1 | 96 | 188 | 96 | GB10 | 6144 | DGX Spark
 1.72 | 156 | .0312 | 1 | 99 | 194 | 97 | GA102 | 7168 | RTX-A4500 20G old
 1.29 | 208 | .0416 | 1 | 99 | 143 | 102 | GA104 | 6144 | RTX-A4000 16G old
 1.16 | 231 | .0462 | 1 | 98 | 120 | ? | M4 Max 40 | 5120 | Macbook Pro 16 M4Max 48G
