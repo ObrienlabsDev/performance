@@ -275,7 +275,7 @@ last number: 1099511627776
 - 42675 sec Mac Studio M2Ultra 16p8e 60c 64g - 21 batch
 - 43064 sec Mac Studio M2Ultra 16p8e 60c 64g - 73->75% 16.5->17.9c - 19 batch
 - 44792 sec Macbook 16 M4max 12p4e - 19 batch
-- ４６７４５sec NVIDIA DGX Spark 10p10e - 20 batch - JDK 25
+- 46745 sec NVIDIA DGX Spark GB10 10p10e - 21 batch - JDK 25
 - 50477 sec MacMini M4pro 8p4e 24g - 24 batch?
 - 52983 sec MacMini M4pro 8p4e 24g - 22 batch 20250119
 - 55786 sec MacMini M4pro 8p4e 24g - 26 batch
@@ -307,7 +307,7 @@ last number: 1099511627776
 - 4171 sec Macbook 16 M4max 12p4e - 19 batch - Java 24
 - 4369 sec Macbook 16 M4max 12p4e - 19 batch
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
-- 5440 sec NVIDIA DGX Spark 10p10e - 20 batch - JDK 25
+- 5440 sec NVIDIA DGX Spark GB10 10p10e - 20 batch - JDK 25
 - 5793 sec MacMini M4pro 8p4e 24g - 19 batch
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
 - 5985/6394 sec MacMini M4pro 8p4e 24g - 22 batch
@@ -336,7 +336,7 @@ last number: 1099511627776
 - 114 sec Macbook 16 M4max 12p4e 40c 48g - 13 batch
 - 115 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15/16 batch
 - 151 sec MacMini M4pro 8p4e16v 24g - 14 batch
-- 152 sec NVIDIA DGX Spark 10p10e - 19 batch - JDK 25
+- 152 sec NVIDIA DGX Spark GB10 10p10e - 19 batch - JDK 25
 - 153 sec MacMini M4pro 8p4e16v 24g - 11/13 batch
 - 225 sec MacBook 16 M1max 8p2e 32g - 13 batch
 - 226 sec NVIDIA DGX Spark 10p10e - 13 batch - JDK 25
