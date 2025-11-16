@@ -14,7 +14,7 @@ perf | sec | /run | # GPUs | % GPU | Watts | TDP | Chip | Cores | GPU spec
 5.85 | 46 | .0092 | 1 | 99 | 452 | 94 | AD102 | 16384 | RTX-4090 Ada 24G
 3.44 | 78 | .0312 | 2 | 99 | 388 | 97 | GA102 | 14336| dual [RTX-A4500](https://www.nvidia.com/content/dam/en-zz/Solutions/design-visualization/rtx/nvidia-rtx-a4500-datasheet.pdf) with NVLink (not used) 40G
 2.66 | 100 | .02 | 1 | 99 | 304 | 102 | GA102 | 10752 | [RTX-A6000](https://www.nvidia.com/content/dam/en-zz/Solutions/design-visualization/quadro-product-literature/proviz-print-nvidia-rtx-a6000-datasheet-us-nvidia-1454980-r9-web%20(1).pdf) 48G
-2.09 | 128 | .0256 | 1 | 91 | 103 (197 system) | ? | GB10 | 6144 | DGX Spark 128G - CUDA 13.0
+2.09 | 128 | .0256 | 1 | 91 | 103 (197 system) | ? | GB10 | 6144 | single 2025 NVIDIA DGX Spark 128G - CUDA 13.0
 1.72 | 156 | .0312 | 1 | 99 | 194 | 97 | GA102 | 7168 | RTX-A4500 20G old
 1.49 | 180 |  | 2 | 92 |  | ? | M3 Ultra 60 | 7680 | Mac Studio 3 M3Ultra 96G
 1.41 | 191 | .0382 | 1 | 99-68 | 102 | ? | AD104 | 5120 | RTX-3500 Ada 12G Thermal Throttling
