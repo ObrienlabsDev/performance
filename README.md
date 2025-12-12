@@ -10,16 +10,18 @@ See also Mandelbrot GPU code in https://github.com/ObrienlabsDev/fractals
 
 perf | sec | /run | # GPUs | % GPU | Watts | TDP | Chip | Cores | GPU spec
 --- | --- | --- | --- | --- | --- | --- | --- | --- | --
-11.7 | 23 | .0092 | 2 | 99 | 904 | 94 | AD-102 | 32768 | dual RTX-4090 Ada (no NVLink (not used 48G))
-5.85 | 46 | .0092 | 1 | 99 | 452 | 94 | AD-102 | 16384 | RTX-4090 Ada 24G
-3.44 | 78 | .0312 | 2 | 99 | 388 | 97 | GA-102 | 14336| dual [RTX-A4500](https://www.nvidia.com/content/dam/en-zz/Solutions/design-visualization/rtx/nvidia-rtx-a4500-datasheet.pdf) with NVLink (not used) 40G
-2.66 | 100 | .02 | 1 | 99 | 304 | 102 | GA-102 | 10752 | [RTX-A6000](https://www.nvidia.com/content/dam/en-zz/Solutions/design-visualization/quadro-product-literature/proviz-print-nvidia-rtx-a6000-datasheet-us-nvidia-1454980-r9-web%20(1).pdf) 48G
-2.56 | 191 | .0382 | 1 | 99 | 102 | ? | AD-104 | 5120 | RTX-3500 Ada 12G Thermal Throttling
-1.72 | 156 | .0312 | 1 | 99 | 194 | 97 | GA-102 | 7168 | RTX-A4500 20G old
-1.29 | 208 | .0416 | 1 | 99 | 143 | 102 | GA-104 | 6144 | RTX-A4000 16G old
+11.7 | 23 | .0092 | 2 | 99 | 904 | 94 | AD102 | 32768 | dual RTX-4090 Ada (no NVLink (not used 48G))
+5.85 | 46 | .0092 | 1 | 99 | 452 | 94 | AD102 | 16384 | RTX-4090 Ada 24G
+3.44 | 78 | .0312 | 2 | 99 | 388 | 97 | GA102 | 14336| dual [RTX-A4500](https://www.nvidia.com/content/dam/en-zz/Solutions/design-visualization/rtx/nvidia-rtx-a4500-datasheet.pdf) with NVLink (not used) 40G
+2.66 | 100 | .02 | 1 | 99 | 304 | 102 | GA102 | 10752 | [RTX-A6000](https://www.nvidia.com/content/dam/en-zz/Solutions/design-visualization/quadro-product-literature/proviz-print-nvidia-rtx-a6000-datasheet-us-nvidia-1454980-r9-web%20(1).pdf) 48G
+2.09 | 128 | .0256 | 1 | 91 | 103 (197 system) | ? | GB10 | 6144 | single 2025 NVIDIA DGX Spark 128G - CUDA 13.0
+1.72 | 156 | .0312 | 1 | 99 | 194 | 97 | GA102 | 7168 | RTX-A4500 20G old
+1.49 | 180 |  | 2 | 92 |  | ? | M3 Ultra 60 | 7680 | Mac Studio 3 M3Ultra 96G
+1.41 | 191 | .0382 | 1 | 99-68 | 102 | ? | AD104 | 5120 | RTX-3500 Ada 12G Thermal Throttling
+1.29 | 208 | .0416 | 1 | 99 | 143 | 102 | GA104 | 6144 | RTX-A4000 16G old
 1.16 | 231 | .0462 | 1 | 98 | 120 | ? | M4 Max 40 | 5120 | Macbook Pro 16 M4Max 48G
-1 | 269 | .0538 | 1 | 99 | 105 | ? | TU-104 | 3072 | RTX-5000 16G
-0.78 | 344 | .0688 | 2 | 97 | 120 | ? | M2 Ultra 60 | 7680 | Mac Studio 2 M2Ultra 64G
+1 | 269 | .0538 | 1 | 99 | 105 | ? | TU104 | 3072 | RTX-5000 16G
+0.78 | 344 | .0688 | 2 | 96 | 120 | ? | M2 Ultra 60 | 7680 | Mac Studio 2 M2Ultra 64G
 0.47 | 571 | .1142 | 1 | 79-98 |  | ? | M4 Pro 16 | 2048 | Mac Mini M4 Pro 24G
 0.39 | 693 | .1386 | 1 | 95 |  | ? | M1 Max 32 | 4096 | Macbook Pro 16 M1Max 32G
 
@@ -44,7 +46,7 @@ We do on average one shift left and one shift right + an add - which averages to
 With an average path of 1500 per run we are doing around 2250 ops/run.
 operations/sec = 129240459 runs/sec * 2250 ops/iteration = 290791032639 IPS or 290791 MIPS or ~ 290 GigaFLOPS FP0 or .3 TerraFLOPS
 
-- For Multicore Java based CPU metrics - the M2Ultra CPU in a Mac Studio 2023 is 10.7% faster (17.8 of 24 cores) than a M4Max 16c CPU in a Macbook Pro 16 inch 2024 (12.6 of 16 cores)
+- For Multicore Java based CPU metrics on a 40 bit run - the 24 core M2 Ultra CPU in a Mac Studio 2023 is 10.7% faster (17.8 of 24 cores) than a M4Max 16c CPU in a Macbook Pro 16 inch 2024 (12.6 of 16 cores), However the 28 core M3 Ultra CPU in a Mac Studio 2025 is % faster (21 of 28 cores) than a M4Max 16c CPU in a Macbook Pro 16 inch 2024 (12.6 of 16 cores) and 27-42% faster than the older M2 Ultra 24 core CPU (of which 25% is due to the 16 to 20 performance core increase and 17% is due to the M3 efficiency increase over M2)
   
 ## Records
 Using the CUDA code at https://github.com/ObrienlabsDev/performance/blob/main/gpu/nvidia/cuda/cpp/128bit/collatz_cuda/kernel_collatz.cu
@@ -147,7 +149,9 @@ When whe have for example a power of 2 like 256 - this will represent a straight
 ### Optimization 4: Concurrent Multithreading - Parallel Processing
 In general with 8-12 performance cores per chip - parallelization at the CPU level is 5.1 times faster than single threaded CPU code.
 In general with 5120 to 32768 CUDA cores - parallelization at the GPU level is TBD times faster than parallel CPU code and TBD times faster than single threaded CPU code.
-Performance will vary widely up to 10x based on the algorithm and memory/heap architecture used.  For example Java BigInteger is 5 to 50x slower than Java native long code depending on the CPU P/E core ratio, ram size and CPU type (Apple Silicon ARM64 is more efficient with BigInteger usage than IA64 Intel architectures for a reason that I am determining)
+Performance will vary widely up to 10x based on the algorithm and memory/heap architecture used.  For example Java BigInteger is 3 to 50x slower than Java native long code depending on the CPU P/E core ratio, ram size and CPU type (Apple Silicon ARM64 is more efficient with BigInteger usage than IA64 Intel architectures for a reason that I am determining)
+
+In general Apple Silicon GPUs are more than twice as performant as the latest 14900KS Intel processors at integer 128bit mathematics.
 
 - We will use concurrency as each operation is independent of parallel searches.  Except for the case of global maximum records.  Since the code is concurrent - not all the maximums will be displayed.  The reason is the global maximum may be reached in an adjacent thread.  For example 27:111:9232 may be missed by 34177:187:1302532.  Use of Thread local maximums will solve this.
 - see https://github.com/ObrienlabsDev/performance/issues/26
@@ -247,6 +251,7 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 ## Multi Threaded : 42 bit run
 ### 128 bit native
 #### Java
+- 122754 sec Mac Studio M3Ultra 20p8e 60c 96g - 22c - 22 batch
 - 138833 sec Mac Studio M2Ultra 16p8e 60c 64g - 24 batch
 - sec Macbook 16 M4max 12p4e 48g - 22 batch
 - 256882 sec MacMini M4pro 2 8p4e 24g - 22 batch
@@ -260,19 +265,29 @@ Sec: 4 GlobalMax: 319804831 : 1414236446719942480 last search : 1073741825
 #### Java
 Increase batch depending on search space to avoid excessive heap ops.
 last number: 1099511627776
+
+-  sec Mac Studio M2Ultra 16p8e 60c 64g 18c - 21 batch
+- 23056 sec Mac Studio M3Ultra 20p8e 60c 96g - 22c - 21 batch
 - 33451 sec Mac Studio M2Ultra 16p8e 60c 64g - 22 batch
 - 37115 sec Macbook 16 M4max 12p4e 48g - 22 batch
+- 38118 sec Mac Studio M3Ultra 20p8e 60c 96g - 23 batch
 - 39814 sec Macbook 16 M4max 12p4e 48g - 22 batch
+- 42675 sec Mac Studio M2Ultra 16p8e 60c 64g - 21 batch
 - 43064 sec Mac Studio M2Ultra 16p8e 60c 64g - 73->75% 16.5->17.9c - 19 batch
 - 44792 sec Macbook 16 M4max 12p4e - 19 batch
+- 46745 sec NVIDIA DGX Spark GB10 10p10e - 21 batch - JDK 25
 - 50477 sec MacMini M4pro 8p4e 24g - 24 batch?
 - 52983 sec MacMini M4pro 8p4e 24g - 22 batch 20250119
 - 55786 sec MacMini M4pro 8p4e 24g - 26 batch
 - 63554 sec MacMini M4pro 8p4e 24g - 13 batch
+- 63589 sec Mac Studio M2Ultra 16p8e 60c 64g - 23 batch
+- 61911 sec MacMini M2pro 6p4e 16g - 20 batch 2025
+- 73952 sec MacMini M4pro 8p4e 24g - 21 batch
 - 75313 sec MacBook 16 M1max 8p2e 32g - 22 batch
 - 76355 sec MacBook 16 M1max 8p2e 32g - 20 batch
 - 75394 sec MacMini M2pro 6p4e 16g - 22 batch
 - 77349 sec MacBook 16 M1max 8p2e 32g - 22 batch - 20250219
+- 77671 sec MacMini M2pro 6p4e 16g - 23 batch 2025
 - 79076 sec MacMini M4 4p6e/10v 16g - 24 batch
 - 80153 sec MacMini M4 4p6e/10v 16g - 22 batch
 - 94111 sec MacMini M4 4p6e/10v 16g - 22 batch - 20250121
@@ -282,13 +297,17 @@ last number: 1099511627776
 - sec 13900k a 3.0/5.7 GHz 8p/16e/32t 32/128g - 16 batch
 - sec 13900k a 3.0/5.7 GHz 8p/16e/32t 9/128g - 20 batch
 - 221943 sec P15
+  
 ## Multi Threaded : 37 bit run
 ### 128 bit native
 #### Java 
+- 2678 sec Mac Studio M3Ultra 20p8e 60c 96g - 20 batch
+- 2692 sec Mac Studio M3Ultra 20p8e 60c 96g - 19 batch
 - 3920 sec Mac Studio M2Ultra 16p8e 60c 64g - 69->77% 17->17.9c - 19 batch
 - 4171 sec Macbook 16 M4max 12p4e - 19 batch - Java 24
 - 4369 sec Macbook 16 M4max 12p4e - 19 batch
 - 4796 sec Macbook 16 M4max 12p4e - 22 batch
+- 5440 sec NVIDIA DGX Spark GB10 10p10e - 20 batch - JDK 25
 - 5793 sec MacMini M4pro 8p4e 24g - 19 batch
 - 5833 sec Macbook 16 M4max 12p4e - 13 batch
 - 5985/6394 sec MacMini M4pro 8p4e 24g - 22 batch
@@ -305,18 +324,22 @@ last number: 1099511627776
 - 15292 sec 13900k a 3.0/5.7 GHz 8p/16e/32t 128g - 13 batch
 - 16988 sec 14900K c 3.2/5.9 GHz 8p of 32 cores 13/128g - 13 batch
 - 25719 sec P15
+- 
 ## Multi Threaded : 32 bit run (search 0-(2^32-1) odd integer space)
 ### 128 bit native
 #### Java
-- 103 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 13 batch
+- 75 sec Mac Studio M3Ultra 60c 20p8e 96g - 21c - 19 batch - Java 24
+- 103 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 13 batch - Java 21
 - 105 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15 batch
 - 106 sec Macbook 16 M4max 12p4e 40c 48g - 17 batch - Java 24
 - 107 sec Mac Studio M2Ultra 60c 16p8e 64g - 70% 17c - 12 batch
 - 114 sec Macbook 16 M4max 12p4e 40c 48g - 13 batch
 - 115 sec Mac Studio M2Ultra 60c 16p8e 64g - 16c - 15/16 batch
 - 151 sec MacMini M4pro 8p4e16v 24g - 14 batch
+- 152 sec NVIDIA DGX Spark GB10 10p10e - 19 batch - JDK 25
 - 153 sec MacMini M4pro 8p4e16v 24g - 11/13 batch
 - 225 sec MacBook 16 M1max 8p2e 32g - 13 batch
+- 226 sec NVIDIA DGX Spark 10p10e - 13 batch - JDK 25
 - 232 sec MacMini M2pro 6p4e 16g - 15 batch
 - 235 sec MacMini M2pro 6p4e 16g - 16 batch
 - 243 sec MacMini M2pro 6p4e 16g - 14 batch
@@ -899,5 +922,8 @@ m0: 0:4611687388055180647 p: 1241 m: 11987849323931:16046514479390312240=2211367
 - 45312 sec macbook 16 pro m4 max 16c 40gpu
 - 54272 sec macbook 16 pro m1 max 10c 32gpu
 - sec mini m4 pro 12c 16gpu
-- 
+
+## Propeller 32 bit 8 core 20MHz Microcontroller Assembly
+- https://github.com/ObrienlabsDev/assembly/blob/main/propeller/propCollatz_13_20120317h.spin
+- https://github.com/ObrienlabsDev/performance/issues/44
 # Links

@@ -117,14 +117,15 @@ void singleGPUSearch() {
     const unsigned long long threads = 7168 * 5;// 40960;// 7168 * 2;// 40960;// 7168 * 5;// 32768; // maximize threads below 64k
     // 43008 crash rtx-3500
     // diff should be 31 bits (minus oddOffsetOptimization)
-    unsigned int startSequencePower = 1;  // do not use 0
-    unsigned int endSequencePower = 32; 
+    unsigned int startSequencePower = 39;  // do not use 0
+    unsigned int endSequencePower = 64; 
 
     // derived
     unsigned long long startSequenceNumber = (1ULL << startSequencePower) + 1ULL;
     unsigned long long endSequenceNumber = (1ULL << endSequencePower) - 1ULL;
     printf("endSequenceNumber: %llu\n", endSequenceNumber);
     // Number of blocks = ceiling(N / threadsPerBlock)
+    // unsigned int blocks = 1 * ((threads / threadsPerBlock));// +threadsPerBlock - 1) / threadsPerBlock); // head
     unsigned int blocks = 8 * ((threads + threadsPerBlock - 1) / threadsPerBlock);
     size_t size = threads * sizeof(unsigned long long);
     size_t sizeInt = threads * sizeof(unsigned int);
@@ -191,7 +192,7 @@ void singleGPUSearch() {
         cudaMemcpy(host_result1, device_output1, size, cudaMemcpyDeviceToHost);
         cudaMemcpy(host_path, device_path, sizeInt, cudaMemcpyDeviceToHost);
         // process reesults: parallelize with OpenMP // no effect yet
-        omp_set_num_threads(threads);
+        //omp_set_num_threads(threads);
         #pragma omp parallel for reduction (+:globalMaxValue0, globalMaxValue1)
             for (int thread = 0; thread < threads; thread++) {
                 path = host_path[thread];

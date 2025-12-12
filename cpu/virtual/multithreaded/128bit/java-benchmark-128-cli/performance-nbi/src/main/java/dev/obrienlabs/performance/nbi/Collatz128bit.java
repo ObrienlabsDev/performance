@@ -1,5 +1,7 @@
 package dev.obrienlabs.performance.nbi;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
@@ -36,6 +38,7 @@ public class Collatz128bit {
 	private static ULong128 ONE = new ULong128Impl(1L);
 	private static ULong128 TWO = new ULong128Impl(2L);
 	
+	private OperatingSystemMXBean osBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 	
 	public void reportMax(ULong128 _oddSearchCurrent, long _path,  ULong128 _value64s, String _value128, long _time) {
 
@@ -100,7 +103,9 @@ public class Collatz128bit {
 		long rangeStart = (1L << searchBitsStart) + 1L;
 		
 		System.out.println("Searching: " + searchBitsStart + " to " + searchBitsEnd + " space, batch " + "0" + " of " 
-				+ batches + " with " + threads + " threads over a " + batchBits + " batch size starting at " + rangeStart );
+				+ batches + " with " + threads + " threads over a " + batchBits + " batch size starting at " + rangeStart 
+				+ " under vCPUs: " + Runtime.getRuntime().availableProcessors()
+				+ " memory: " + Runtime.getRuntime().totalMemory());
 		
 		long count = 0L;
 		for (long part = 0; part < (batches + 1) ; part++) {	
@@ -126,7 +131,8 @@ public class Collatz128bit {
 			if(count > 256) {
 				count = 0;
 				System.out.println("part " + part + " of " + batches + " computed " + rangeStart + (part * threads) 
-					+ " span " + oddNumbers.get(0) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000));
+					+ " span " + oddNumbers.get(0) + " dur: " + ((System.currentTimeMillis() - secondsStart) / 1000)
+					+ " cpu: " + osBean.getSystemLoadAverage());
 			}
 		}
 		System.out.println("last number: " + ((1 + (batches) * threads) - 1));
@@ -136,9 +142,9 @@ public class Collatz128bit {
 
 		System.out.println("Collatz multithreaded 2025 michael at obrienlabs.dev: args searchStart searchEnd batch (both in bits: ie: 0 32 13 for 32 bit search space - note 29 is the heap limit for threads (64G)");
 
-		long batchBits = 28; // adjust this based on the chip architecture 
-		long searchBitsStart = 40;
-		long searchBitsEnd = 42;
+		long batchBits = 19;//28; // adjust this based on the chip architecture 
+		long searchBitsStart = 0;//40;
+		long searchBitsEnd = 36;//42;
 		if(args.length > 2) {
 			searchBitsStart = Long.parseLong(args[0]);
 			searchBitsEnd = Long.parseLong(args[1]);

@@ -81,7 +81,9 @@ public class Collatz {
 		long threads = 1 << threadBits;
 		
 		System.out.println("Searching: " + searchBits + " space, batch " + "0" + " of " 
-				+ batches + " with " + threadBits +" bits of " + threads + " threads"  );
+				+ batches + " with " + threadBits +" bits of " + threads + " threads"
+				+ " under vCPUs: " + Runtime.getRuntime().availableProcessors()
+				+ " memory: " + Runtime.getRuntime().totalMemory());
 		
 		for (long part = 0; part < (batches + 1) ; part++) {	
 			// generate a limited collection (CopyOnWriteArrayList not required as r/o) for the search space - 32 is a good
