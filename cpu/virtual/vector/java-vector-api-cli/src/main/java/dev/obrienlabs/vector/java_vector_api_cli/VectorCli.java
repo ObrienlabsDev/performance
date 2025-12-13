@@ -99,6 +99,28 @@ $ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vecto
 WARNING: Using incubator modules: jdk.incubator.vector
 Vector width: 256 Time: 6998 ms
 
+after turning off 8 e cores and e-core ht - remaining 8 p cores only
+
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 7959 ms
+(base)
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 8183 ms
+(base)
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 7613 ms
+(base)
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 7782 ms
+
      */
 }
 
