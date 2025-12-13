@@ -73,6 +73,32 @@ public class VectorCli {
      *   Vector width: 128 Time: 9199 ms
      * m1max macbook pro
      *   Vector width: 128 Time: 9721 ms
+
+	 Vector width: 256 Time: 14588 ms
+
+	 13900k with dual 4090 (e cores enabled, ht on) - depending on core speed 4.6 to 5.6ghz
+
+	 michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 13657 ms
+(base)
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 14588 ms
+
+(base)
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 8569 ms
+(base)
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 6998 ms
+
      */
 }
 
