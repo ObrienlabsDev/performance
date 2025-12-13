@@ -60,6 +60,7 @@ public class VectorCli {
     }
 
     /**
+	As you can see there is some random noise around 25-50% affecting performance - which performance core is active or busy
      * michaelobrien@mbp8 classes % java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
 	 * custom 13900KS d 5.89ghz
      *   Vector width: 256 Time: 6125 ms
@@ -71,8 +72,11 @@ public class VectorCli {
      *   Vector width: 128 Time: 7979 ms
      * Lenovo p1gen6 13800H
      *   Vector width: 256 Time: 8135 ms
+	 * Mini10 M4 Pro
+	 *   Vector width: 128 Time: 8489 ms
 	 * Macbook Pro M4 Max - 1 core
      *   Vector width: 128 Time: 8671 ms
+
 	 * custom 14900K A6000
 	 *   Vector width: 256 Time: 9130 ms
      * MacStudio M2 Ultra
