@@ -61,20 +61,24 @@ public class VectorCli {
 
     /**
      * michaelobrien@mbp8 classes % java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
-	 * 13900ks d 5.89ghz
+	 * custom 13900KS d 5.89ghz
      *   Vector width: 256 Time: 6125 ms
-	 * m3ultra
+	 * custom 13900K b 4090 dual 5.6ghz (no HT, no E cores)
+	 *   Vector width: 256 Time: 6998 ms
+	 * Mini09 M4 only
+	 *   Vector width: 128 Time: 7738 ms
+	 * MacStudio M3 Ultra
      *   Vector width: 128 Time: 7979 ms
-     * p1gen6 13800H
+     * Lenovo p1gen6 13800H
      *   Vector width: 256 Time: 8135 ms
-	 * Macbook Pro M4Max - 1 core
+	 * Macbook Pro M4 Max - 1 core
      *   Vector width: 128 Time: 8671 ms
-     * M2ultra
+	 * custom 14900K A6000
+	 *   Vector width: 256 Time: 9130 ms
+     * MacStudio M2 Ultra
      *   Vector width: 128 Time: 9199 ms
-     * m1max macbook pro
+     * Macbook Pro M1 Max macbook pro
      *   Vector width: 128 Time: 9721 ms
-
-	 Vector width: 256 Time: 14588 ms
 
 	 13900k with dual 4090 (e cores enabled, ht on) - depending on core speed 4.6 to 5.6ghz
 
@@ -120,6 +124,7 @@ michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vecto
 $ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
 WARNING: Using incubator modules: jdk.incubator.vector
 Vector width: 256 Time: 7782 ms
+
 
      */
 }
