@@ -62,16 +62,17 @@ public class VectorCli {
     /**
      * michaelobrien@mbp8 classes % java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
 	 * 13900ks d 5.89ghz
-Vector width: 256 Time: 6125 ms
+     *   Vector width: 256 Time: 6125 ms
 	 * m3ultra
-     * Vector width: 128 Time: 7979 ms
-     * p1gen6
-     * Vector width: 256 Time: 8135 ms
+     *   Vector width: 128 Time: 7979 ms
+     * p1gen6 13800H
+     *   Vector width: 256 Time: 8135 ms
 	 * Macbook Pro M4Max - 1 core
-     * Vector width: 128 Time: 8671 ms
+     *   Vector width: 128 Time: 8671 ms
      * M2ultra
-     * Vector width: 128 Time: 9199 ms
-
+     *   Vector width: 128 Time: 9199 ms
+     * m1max macbook pro
+     *   Vector width: 128 Time: 9721 ms
      */
 }
 
