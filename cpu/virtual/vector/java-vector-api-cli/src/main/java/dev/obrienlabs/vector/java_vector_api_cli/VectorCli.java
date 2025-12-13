@@ -15,6 +15,25 @@ public class VectorCli {
 	 */
     public static void multiply(float[][] A, float[][] B, float[][] C, int n) {   
         for(int i=0; i<n; i++) {
+        	for(int j=0; j<n; j+=SPECIES.length()) {
+                FloatVector acc = FloatVector.zero(SPECIES);
+                for (int k = 0; k < n; k++) {
+                    VectorMask<Float> mask = SPECIES.indexInRange(j, n);
+                    FloatVector bVec = FloatVector.fromArray(SPECIES, B[k], j, mask);
+                    float valA = A[i][k];
+                   
+                    // fused multiply add
+                    // acc = acc + (valA * bVec)
+                    //acc = bVec.fma(valA, acc);
+                    // Broadcast scalar valA into a vector
+                    FloatVector vecA = FloatVector.broadcast(SPECIES, valA);
+                    acc = bVec.fma(vecA, acc);
+                }
+
+                // accumulator
+                VectorMask<Float> mask = SPECIES.indexInRange(j, n);
+                acc.intoArray(C[i], j, mask);
+            }
         }
     }
 	
@@ -39,4 +58,12 @@ public class VectorCli {
 
         System.out.printf("Vector width: %d Time: %d ms%n", SPECIES.vectorBitSize(), duration / 1_000_000);
     }
+
+    /**
+     * michaelobrien@mbp8 classes % java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+     * Macbook Pro M4Max - 1 core
+     * Vector width: 128 Time: 8671 ms
+     */
 }
+
+
