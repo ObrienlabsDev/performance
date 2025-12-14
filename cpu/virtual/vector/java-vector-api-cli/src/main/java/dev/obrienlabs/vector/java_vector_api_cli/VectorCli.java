@@ -37,8 +37,9 @@ public class VectorCli {
     }
 	
     public static void main( String[] args) {
-        VectorCli vectorCli = new VectorCli();
-        int N = 2048;//1024; 
+        //VectorCli vectorCli = new VectorCli();
+        int N = 32768;//65536; 
+        long start = System.nanoTime();
         float[][] A = new float[N][N];
         float[][] B = new float[N][N];
         float[][] C = new float[N][N];
@@ -50,22 +51,97 @@ public class VectorCli {
                 B[i][j] = 2.0f;
             }
         }
-
-        long start = System.nanoTime();
-        multiply(A, B, C, N);
-        long duration = 1 + System.nanoTime() - start; // divide/zero/error
-
-        System.out.printf("Vector width: %d Time: %d ms%n", SPECIES.vectorBitSize(), duration / 1_000_000);
+        long duration = 1 + System.nanoTime() - start; 
+        System.out.printf("matrix initialize time: ", duration);
+        System.out.println();
+        int size = 2;
+        for (int step=2; step<16; step++) {
+            start = System.nanoTime();
+            multiply(A, B, C, size);//N);
+            duration = 1 + System.nanoTime() - start; // divide/zero/error
+            System.out.printf("Vector size: %d width: %d Time: %d ms%n", size, SPECIES.vectorBitSize(), duration / 1_000_000);
+            size = size * 2;
+        }
     }
 
     /**
+	As you can see there is some random noise around 25-50% affecting performance - which performance core is active or busy
      * michaelobrien@mbp8 classes % java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
-     * m3ultra
-     * Vector width: 128 Time: 7979 ms
-     * Macbook Pro M4Max - 1 core
-     * Vector width: 128 Time: 8671 ms
-     * M2ultra
-     * Vector width: 128 Time: 9199 ms
+	 * custom 13900KS d 5.89ghz
+     *   Vector width: 256 Time: 6125 ms
+	 * custom 13900K b 4090 dual 5.6ghz (no HT, no E cores)
+	 *   Vector width: 256 Time: 6998 ms
+	 * Mini09 M4 only
+	 *   Vector width: 128 Time: 7738 ms
+	 * MacStudio M3 Ultra
+     *   Vector width: 128 Time: 7979 ms
+     * Lenovo p1gen6 13800H
+     *   Vector width: 256 Time: 8135 ms
+	 * Mini10 M4 Pro
+	 *   Vector width: 128 Time: 8489 ms
+	 * Macbook Pro M4 Max - 1 core
+     *   Vector width: 128 Time: 8671 ms
+
+	 * custom 14900K A6000
+	 *   Vector width: 256 Time: 9130 ms
+     * MacStudio M2 Ultra
+     *   Vector width: 128 Time: 9199 ms
+     * Macbook Pro M1 Max macbook pro
+     *   Vector width: 128 Time: 9721 ms
+	 * NVIDIA / PNY DGX Spark with Grace Blackwel GB10 - a bit slower than anticipated - will check turning off the e-cores
+     *   Vector width: 128 Time: 21590 ms
+
+
+	 13900k with dual 4090 (e cores enabled, ht on) - depending on core speed 4.6 to 5.6ghz
+
+	 michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 13657 ms
+(base)
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 14588 ms
+
+(base)
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 8569 ms
+(base)
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 6998 ms
+
+after turning off 8 e cores and e-core ht - remaining 8 p cores only
+
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 7959 ms
+(base)
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 8183 ms
+(base)
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 7613 ms
+(base)
+michael@13900b MINGW64 /c/wse_github/obrienlabsdev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes (main)
+$ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 256 Time: 7782 ms
+
+
+	 * NVIDIA / PNY DGX Spark with Grace Blackwel GB10 - a bit slower than anticipated - will check turning off the e-cores
+michael@spark-7d19:~/wse_github/ObrienlabsDev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes$ java --add-modules=jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 128 Time: 21590 ms
 
      */
 }
