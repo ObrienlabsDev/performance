@@ -38,8 +38,9 @@ public class VectorCli {
     }
 	
     public static void main( String[] args) {
-        VectorCli vectorCli = new VectorCli();
-        int N = 2048;//1024; 
+        //VectorCli vectorCli = new VectorCli();
+        int N = 32768;//65536; 
+        long start = System.nanoTime();
         float[][] A = new float[N][N];
         float[][] B = new float[N][N];
         float[][] C = new float[N][N];
@@ -51,12 +52,17 @@ public class VectorCli {
                 B[i][j] = 2.0f;
             }
         }
-
-        long start = System.nanoTime();
-        multiply(A, B, C, N);
-        long duration = 1 + System.nanoTime() - start; // divide/zero/error
-
-        System.out.printf("Vector width: %d Time: %d ms%n", SPECIES.vectorBitSize(), duration / 1_000_000);
+        long duration = 1 + System.nanoTime() - start; 
+        System.out.printf("matrix initialize time: ", duration);
+        System.out.println();
+        int size = 2;
+        for (int step=2; step<16; step++) {
+            start = System.nanoTime();
+            multiply(A, B, C, size);//N);
+            duration = 1 + System.nanoTime() - start; // divide/zero/error
+            System.out.printf("Vector size: %d width: %d Time: %d ms%n", size, SPECIES.vectorBitSize(), duration / 1_000_000);
+            size = size * 2;
+        }
     }
 
     /**
