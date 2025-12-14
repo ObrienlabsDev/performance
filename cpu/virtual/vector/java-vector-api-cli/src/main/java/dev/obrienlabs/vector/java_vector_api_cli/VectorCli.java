@@ -6,6 +6,7 @@ import jdk.incubator.vector.*;
  * https://github.com/ObrienlabsDev/performance/issues/42
  */
 public class VectorCli {
+   public static final long NS_TO_MS = 1_000_000;
 	// No AVX-512 on intel CPUs since gen 11 (e-core introduction
 	static final VectorSpecies<Float> SPECIES = FloatVector.SPECIES_PREFERRED; // .SPECIES_128;
 
@@ -52,15 +53,15 @@ public class VectorCli {
             }
         }
         long duration = 1 + System.nanoTime() - start; 
-        System.out.printf("matrix initialize time: ", duration);
+        System.out.printf("matrix initialize time: %d ms", duration / NS_TO_MS);
         System.out.println();
         int size = 2;
-        for (int step=2; step<16; step++) {
+        for (int step=1; step<16; step++) {
             start = System.nanoTime();
             multiply(A, B, C, size);//N);
             duration = 1 + System.nanoTime() - start; // divide/zero/error
-            System.out.printf("Vector size: %d width: %d Time: %d ms%n", size, SPECIES.vectorBitSize(), duration / 1_000_000);
-            size = size * 2;
+            System.out.printf("Vector size: %d width: %d Time: %d ms%n", size, SPECIES.vectorBitSize(), duration / NS_TO_MS);
+            size*=2;
         }
     }
 
