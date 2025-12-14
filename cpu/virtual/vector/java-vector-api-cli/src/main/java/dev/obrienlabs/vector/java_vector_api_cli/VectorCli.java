@@ -83,6 +83,9 @@ public class VectorCli {
      *   Vector width: 128 Time: 9199 ms
      * Macbook Pro M1 Max macbook pro
      *   Vector width: 128 Time: 9721 ms
+	 * NVIDIA / PNY DGX Spark with Grace Blackwel GB10 - a bit slower than anticipated - will check turning off the e-cores
+     *   Vector width: 128 Time: 21590 ms
+
 
 	 13900k with dual 4090 (e cores enabled, ht on) - depending on core speed 4.6 to 5.6ghz
 
@@ -129,6 +132,11 @@ $ java --add-modules jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vecto
 WARNING: Using incubator modules: jdk.incubator.vector
 Vector width: 256 Time: 7782 ms
 
+
+	 * NVIDIA / PNY DGX Spark with Grace Blackwel GB10 - a bit slower than anticipated - will check turning off the e-cores
+michael@spark-7d19:~/wse_github/ObrienlabsDev/performance/cpu/virtual/vector/java-vector-api-cli/target/classes$ java --add-modules=jdk.incubator.vector -cp . dev.obrienlabs.vector.java_vector_api_cli.VectorCli
+WARNING: Using incubator modules: jdk.incubator.vector
+Vector width: 128 Time: 21590 ms
 
      */
 }
