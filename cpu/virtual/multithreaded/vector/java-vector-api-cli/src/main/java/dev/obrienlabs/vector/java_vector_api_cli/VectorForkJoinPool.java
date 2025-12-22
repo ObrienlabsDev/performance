@@ -32,11 +32,13 @@ public class VectorForkJoinPool {// extends ForkJoinPool {
         }
         long duration = 1 + System.nanoTime() - start; 
         System.out.printf("matrix init time: %d ms\n", duration / NS_TO_MS);
+        // size = 1 << 11 = split = single threaded
         int size = 1 << 11;//2;
+        int split = 1 << 10;
         //for (int step=1; step<16; step++) {
             start = System.nanoTime();
             //multiplyParallel(A, B, C, size);//N);
-            VectorForkJoinUnitOfWork uow = new VectorForkJoinUnitOfWork(0, 0, 0,
+            VectorForkJoinUnitOfWork uow = new VectorForkJoinUnitOfWork(split, 0, size,
                 A, B, C, size);
             mapReducePool = new ForkJoinPool();
             mapReducePool.invoke(uow);

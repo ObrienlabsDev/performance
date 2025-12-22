@@ -9,33 +9,33 @@ import java.util.concurrent.RecursiveAction;
 public class VectorForkJoinUnitOfWork extends RecursiveAction {
     protected long start;
     protected long len;
-    protected long uowSplit = 1024;
+    protected long uowSplit;
     protected float[][] A;
     protected float[][] B;
     protected float[][] C;
-    protected int n;
-
-
+    protected int vectorSize;
+ 
     public static final long NS_TO_MS = 1_000_000;
 	// No AVX-512 on intel CPUs since gen 11 (e-core introduction
 	static final VectorSpecies<Float> SPECIES = FloatVector.SPECIES_PREFERRED; // .SPECIES_128;
 
-    public VectorForkJoinUnitOfWork(long split, long start, long len, float[][] A, float[][] B, float[][] C, int n) {
+    public VectorForkJoinUnitOfWork(long split, long start, long len, 
+        float[][] A, float[][] B, float[][] C, int vectorSize) {
         this.start = start;
         this.len = len;
         this.uowSplit = split;
         this.A = A;
         this.B = B;
         this.C = C;
-        this.n = n;
+        this.vectorSize = vectorSize;
     }
 
     protected void computeNoFork() {
-       for(int i=0; i<n; i++) {
-        	for(int j=0; j<n; j+=SPECIES.length()) {
+       for(int i=0; i<vectorSize; i++) {
+        	for(int j=0; j<vectorSize; j+=SPECIES.length()) {
                 FloatVector acc = FloatVector.zero(SPECIES);
-                for (int k = 0; k < n; k++) {
-                    VectorMask<Float> mask = SPECIES.indexInRange(j, n);
+                for (int k = 0; k < vectorSize; k++) {
+                    VectorMask<Float> mask = SPECIES.indexInRange(j, vectorSize);
                     FloatVector bVec = FloatVector.fromArray(SPECIES, B[k], j, mask);
                     float valA = A[i][k];
                    
@@ -48,7 +48,7 @@ public class VectorForkJoinUnitOfWork extends RecursiveAction {
                 }
 
                 // accumulator
-                VectorMask<Float> mask = SPECIES.indexInRange(j, n);
+                VectorMask<Float> mask = SPECIES.indexInRange(j, vectorSize);
                 acc.intoArray(C[i], j, mask);
             }
         }
@@ -57,15 +57,14 @@ public class VectorForkJoinUnitOfWork extends RecursiveAction {
     @Override
     protected void compute() {
         // base case
-        //if(len <= uowSplit) {
+        if(len <= uowSplit) {
             computeNoFork();
-        //    return;
-        //}
+            return;
+        }
         // recursive case
-        	    long split = len / 2;
-	    // recursive case
-	    //invokeAll(new VectorForkJoinUnitOfWork(uowSplit, start, split),
-	    //          new VectorForkJoinUnitOfWork(uowSplit, start + split, len - split)
-	    //);	
+        long split = len / 2;
+	    invokeAll(new VectorForkJoinUnitOfWork(uowSplit, start, split, A, B, C, vectorSize),
+	              new VectorForkJoinUnitOfWork(uowSplit, start + split, len - split, A, B, C, vectorSize)
+	    );	
     }
 }
