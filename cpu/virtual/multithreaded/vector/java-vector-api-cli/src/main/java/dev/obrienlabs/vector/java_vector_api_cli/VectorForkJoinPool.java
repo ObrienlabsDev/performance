@@ -4,6 +4,9 @@ import java.util.concurrent.ForkJoinPool;
 import jdk.incubator.vector.*;
 
 
+/**
+ * https://github.com/ObrienlabsDev/performance/issues/42
+ */
 
 public class VectorForkJoinPool {// extends ForkJoinPool {
     protected ForkJoinPool mapReducePool;
