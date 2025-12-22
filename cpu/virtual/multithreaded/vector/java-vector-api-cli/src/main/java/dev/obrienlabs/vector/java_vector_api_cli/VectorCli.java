@@ -53,6 +53,7 @@ public class VectorCli {
                 B[i][j] = 2.0f;
             }
         }
+        
         long duration = 1 + System.nanoTime() - start; 
         System.out.printf("matrix init time: %d ms\n", duration / NS_TO_MS);
         int size = 1 << 11;//2;
