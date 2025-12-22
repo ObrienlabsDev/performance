@@ -21,6 +21,7 @@ public class VectorForkJoinUnitOfWork extends RecursiveAction {
 
     public VectorForkJoinUnitOfWork(int split, int start, int len, 
         float[][] A, float[][] B, float[][] C, int vectorSize) {
+            System.out.printf("split: %d, %d, %d, %d\n", split, start, len, vectorSize);
         this.start = start;
         this.len = len;
         this.uowSplit = split;

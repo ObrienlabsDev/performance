@@ -16,7 +16,7 @@ public class VectorForkJoinPool {// extends ForkJoinPool {
 	static final VectorSpecies<Float> SPECIES = FloatVector.SPECIES_PREFERRED; // .SPECIES_128;
 
     public void compute() {
-        int N = 16384;//65536;
+        int N = 32768;//65536;
         System.out.printf("Vector size: %d\n", N); 
         long start = System.nanoTime();
         float[][] A = new float[N][N];
@@ -33,7 +33,7 @@ public class VectorForkJoinPool {// extends ForkJoinPool {
         long duration = 1 + System.nanoTime() - start; 
         System.out.printf("matrix init time: %d ms\n", duration / NS_TO_MS);
         // size = 1 << 11 = split = single threaded
-        int size = 1 << 11;//2;
+        int size = 1 << 12;//2;
         int split = 1 << 10;
         //for (int step=1; step<16; step++) {
             start = System.nanoTime();
