@@ -2,12 +2,14 @@ package dev.obrienlabs.vector.java_vector_api_cli;
 
 import jdk.incubator.vector.*;
 import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * https://github.com/ObrienlabsDev/performance/issues/42
  */
 public class VectorForkJoinUnitOfWork extends RecursiveAction {
-    protected int start;
+    private static final long serialVersionUID = -6208723531541368474L;
+	protected int start;
     protected int len;
     protected int uowSplit;
     protected float[][] A;
@@ -18,10 +20,11 @@ public class VectorForkJoinUnitOfWork extends RecursiveAction {
     public static final long NS_TO_MS = 1_000_000;
 	// No AVX-512 on intel CPUs since gen 11 (e-core introduction
 	static final VectorSpecies<Float> SPECIES = FloatVector.SPECIES_PREFERRED; // .SPECIES_128;
+	static AtomicLong threads = new AtomicLong(0);
 
     public VectorForkJoinUnitOfWork(int split, int start, int len, 
         float[][] A, float[][] B, float[][] C, int vectorSize) {
-            System.out.printf("split: %d, %d, %d, %d\n", split, start, len, vectorSize);
+        System.out.printf("%d : split: %d, %d, %d, %d\n", threads.get(), split, start, len, vectorSize);
         this.start = start;
         this.len = len;
         this.uowSplit = split;
@@ -29,6 +32,7 @@ public class VectorForkJoinUnitOfWork extends RecursiveAction {
         this.B = B;
         this.C = C;
         this.vectorSize = vectorSize;
+        threads.addAndGet(1);
     }
 
     protected void computeNoFork() {
@@ -64,8 +68,8 @@ public class VectorForkJoinUnitOfWork extends RecursiveAction {
         }
         // recursive case
         int split = len / 2;
-	    invokeAll(new VectorForkJoinUnitOfWork(uowSplit, start, split, A, B, C, vectorSize),
-	              new VectorForkJoinUnitOfWork(uowSplit, start + split, len - split, A, B, C, vectorSize)
+	    invokeAll(new VectorForkJoinUnitOfWork(uowSplit, start, start + split, A, B, C, vectorSize),
+	              new VectorForkJoinUnitOfWork(uowSplit, start + split, len, A, B, C, vectorSize)
 	    );	
     }
 }

@@ -1,5 +1,9 @@
 package dev.obrienlabs.vector.java_vector_api_cli;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.stream.IntStream;
+
 import jdk.incubator.vector.*;
 
 /**
@@ -10,10 +14,50 @@ public class VectorCli {
 	// No AVX-512 on intel CPUs since gen 11 (e-core introduction
 	static final VectorSpecies<Float> SPECIES = FloatVector.SPECIES_PREFERRED; // .SPECIES_128;
 
+	
+	public static void multiplyParallelPCores(int threadCount, float[][] A, float[][] B, float[][] C, int n) {
+			//throws ExecutionException, InterruptedException {
+		// don't use e-cores (avoid memory contention, heat generation affecting pcores)
+		ForkJoinPool customPool = new ForkJoinPool(threadCount);
+        System.out.printf("%d threads\n", threadCount);
+		try {
+		customPool.submit(() -> {
+			// rows from previous 0 to n for loop - across customPool threads
+			IntStream.range(0, n).parallel().forEach(i -> {
+				for (int j = 0; j < n; j += SPECIES.length()) {
+					FloatVector acc = FloatVector.zero(SPECIES);
+
+					for (int k = 0; k < n; k++) {
+						VectorMask<Float> mask = SPECIES.indexInRange(j, n);
+						FloatVector bVec = FloatVector.fromArray(SPECIES, B[k], j, mask);
+						float valA = A[i][k];
+
+	                    // fused multiply add
+	                    // acc = acc + (valA * bVec)
+	                    //acc = bVec.fma(valA, acc);
+	                    // Broadcast scalar valA into a vector
+						FloatVector vecA = FloatVector.broadcast(SPECIES, valA);
+						// Fused Multiply Add
+						acc = bVec.fma(vecA, acc);
+					}
+					// accumulator
+					VectorMask<Float> mask = SPECIES.indexInRange(j, n);
+					acc.intoArray(C[i], j, mask);
+				}
+			});
+		}).get();
+	} catch (InterruptedException | ExecutionException e) {
+        e.printStackTrace();
+    } finally {
+        customPool.shutdown();
+    }
+	}
+	
 	/**
 	 * nxn matrices
 	 */
-    public static void multiplyParallel(float[][] A, float[][] B, float[][] C, int n) {   
+    public static void multiply(int threadCount, float[][] A, float[][] B, float[][] C, int n) {   
+        System.out.printf("%d threads\n", threadCount);
         for(int i=0; i<n; i++) {
         	for(int j=0; j<n; j+=SPECIES.length()) {
                 FloatVector acc = FloatVector.zero(SPECIES);
@@ -37,9 +81,12 @@ public class VectorCli {
         }
     }
 	
+    // serial 
+    // parallel 8 Vector size: 4096 width: 128 Time: 11568 ms 
     public static void main( String[] args) {
         //VectorCli vectorCli = new VectorCli();
         int N = 16384;//65536;
+        int threadCount = 8; // M1max 8p2e
         System.out.printf("Vector size: %d\n", N); 
         long start = System.nanoTime();
         float[][] A = new float[N][N];
@@ -56,12 +103,20 @@ public class VectorCli {
         
         long duration = 1 + System.nanoTime() - start; 
         System.out.printf("matrix init time: %d ms\n", duration / NS_TO_MS);
-        int size = 1 << 11;//2;
+        int size = 1 << 12;//2;
         //for (int step=1; step<16; step++) {
             start = System.nanoTime();
-            multiplyParallel(A, B, C, size);//N);
+            //try {
+            multiplyParallelPCores(threadCount,A, B, C, size);//N);
             duration = 1 + System.nanoTime() - start; // divide/zero/error
-            System.out.printf("Vector size: %d width: %d Time: %d ms %n\n", size, SPECIES.vectorBitSize(), duration / NS_TO_MS);
+            System.out.printf("Vector size: %d width: %d Time: %d ms %n", size, SPECIES.vectorBitSize(), duration / NS_TO_MS);
+            start = System.nanoTime();
+            multiply(1, A, B, C, size);//N);
+            //} catch (Exception e) {
+            //	e.printStackTrace();
+            //}
+            duration = 1 + System.nanoTime() - start; // divide/zero/error
+            System.out.printf("Vector size: %d width: %d Time: %d ms %n", size, SPECIES.vectorBitSize(), duration / NS_TO_MS);
             size*=2;
         //}
     }
