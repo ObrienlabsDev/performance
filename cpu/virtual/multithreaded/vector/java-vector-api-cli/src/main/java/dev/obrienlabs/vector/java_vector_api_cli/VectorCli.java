@@ -19,7 +19,7 @@ public class VectorCli {
 			//throws ExecutionException, InterruptedException {
 		// don't use e-cores (avoid memory contention, heat generation affecting pcores)
 		ForkJoinPool customPool = new ForkJoinPool(threadCount);
-        System.out.printf("%d threads\n", threadCount);
+        System.out.printf("%d thread\n", threadCount);
 		try {
 		customPool.submit(() -> {
 			// rows from previous 0 to n for loop - across customPool threads
@@ -57,7 +57,7 @@ public class VectorCli {
 	 * nxn matrices
 	 */
     public static void multiply(int threadCount, float[][] A, float[][] B, float[][] C, int n) {   
-        System.out.printf("%d threads\n", threadCount);
+        System.out.printf("%d thread\n", threadCount);
         for(int i=0; i<n; i++) {
         	for(int j=0; j<n; j+=SPECIES.length()) {
                 FloatVector acc = FloatVector.zero(SPECIES);
@@ -103,22 +103,22 @@ public class VectorCli {
         
         long duration = 1 + System.nanoTime() - start; 
         System.out.printf("matrix init time: %d ms\n", duration / NS_TO_MS);
-        int size = 1 << 12;//2;
-        //for (int step=1; step<16; step++) {
+        int size = 2;//1 << 12;//2;
+        for (int step=1; step<16; step++) {
             start = System.nanoTime();
             //try {
             multiplyParallelPCores(threadCount,A, B, C, size);//N);
             duration = 1 + System.nanoTime() - start; // divide/zero/error
             System.out.printf("Vector size: %d width: %d Time: %d ms %n", size, SPECIES.vectorBitSize(), duration / NS_TO_MS);
             start = System.nanoTime();
-            multiply(1, A, B, C, size);//N);
+            //multiply(1, A, B, C, size);//N);
             //} catch (Exception e) {
             //	e.printStackTrace();
             //}
             duration = 1 + System.nanoTime() - start; // divide/zero/error
             System.out.printf("Vector size: %d width: %d Time: %d ms %n", size, SPECIES.vectorBitSize(), duration / NS_TO_MS);
             size*=2;
-        //}
+        }
     }
 
     /**
