@@ -19,7 +19,7 @@ public class VectorCli {
 			//throws ExecutionException, InterruptedException {
 		// don't use e-cores (avoid memory contention, heat generation affecting pcores)
 		ForkJoinPool customPool = new ForkJoinPool(threadCount);
-        System.out.printf("%d thread\n", threadCount);
+        //System.out.printf("%d thread\n", threadCount);
 		try {
 		customPool.submit(() -> {
 			// rows from previous 0 to n for loop - across customPool threads
@@ -57,7 +57,7 @@ public class VectorCli {
 	 * nxn matrices
 	 */
     public static void multiply(int threadCount, float[][] A, float[][] B, float[][] C, int n) {   
-        System.out.printf("%d thread\n", threadCount);
+        //System.out.printf("%d thread\n", threadCount);
         for(int i=0; i<n; i++) {
         	for(int j=0; j<n; j+=SPECIES.length()) {
                 FloatVector acc = FloatVector.zero(SPECIES);
@@ -85,9 +85,12 @@ public class VectorCli {
     // parallel 8 Vector size: 4096 width: 128 Time: 11568 ms 
     public static void main( String[] args) {
         //VectorCli vectorCli = new VectorCli();
-        int N = 16384;//65536;
-        int threadCount = 8; // M1max 8p2e
-        System.out.printf("Vector size: %d\n", N); 
+        int N = 32758;
+        //int threadCount = 8; // M1max 8p2e
+        //int threadCount = 8; // M4max 10p4e
+        int threadCount = 28; // m3ultra low 20p8e = 24, 28=
+
+        //System.out.printf("Vector size: %d\n", N); 
         long start = System.nanoTime();
         float[][] A = new float[N][N];
         float[][] B = new float[N][N];
@@ -103,22 +106,26 @@ public class VectorCli {
         
         long duration = 1 + System.nanoTime() - start; 
         System.out.printf("matrix init time: %d ms\n", duration / NS_TO_MS);
-        int size = 2;//1 << 12;//2;
-        for (int step=1; step<16; step++) {
+        int size = 2;//4096;//2;//1 << 12;//2;
+        for(int step=1; step<15; step++) {
+        for(threadCount=1;threadCount<29;threadCount++) {
             start = System.nanoTime();
             //try {
             multiplyParallelPCores(threadCount,A, B, C, size);//N);
             duration = 1 + System.nanoTime() - start; // divide/zero/error
-            System.out.printf("Vector size: %d width: %d Time: %d ms %n", size, SPECIES.vectorBitSize(), duration / NS_TO_MS);
+            System.out.printf("Vector size: %d width: %d thread: %d Time: %d ms %n", 
+                size, SPECIES.vectorBitSize(), threadCount, duration / NS_TO_MS);
             start = System.nanoTime();
             //multiply(1, A, B, C, size);//N);
             //} catch (Exception e) {
             //	e.printStackTrace();
             //}
             duration = 1 + System.nanoTime() - start; // divide/zero/error
-            System.out.printf("Vector size: %d width: %d Time: %d ms %n", size, SPECIES.vectorBitSize(), duration / NS_TO_MS);
-            size*=2;
+            //System.out.printf("Vector size: %d width: %d Time: %d ms %n", size, SPECIES.vectorBitSize(), duration / NS_TO_MS);
+            //size*=2;
         }
+        size*=2;
+    }
     }
 
     /**
