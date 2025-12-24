@@ -2,6 +2,7 @@
 # https://github.com/ObrienlabsDev/performance/issues/42
 # Michael O'Brien
 # docker login -u username with token before running - to push
+# Note: docker is not usable for the vector API - memory overead slows down even a single thread by 3x
 
 TAG=0.0.1-arm
 #TAG=0.0.1-ia64

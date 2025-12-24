@@ -4,7 +4,10 @@
 # https://hub.docker.com/r/amd64/eclipse-temurin/
 # missing metadata
 #FROM amd64/eclipse-temurin:25-alpine-3.23 
-FROM eclipse-temurin:25.0.1_8-jdk-alpine-3.23
+#FROM eclipse-temurin:25.0.1_8-jdk-alpine-3.23
+# not performant 2048:17193 instead of 2048:4450 for single native thread
+# this is due to memory sharing slowing down native vector operations - docker is not usable for the Vector API
+FROM arm64v8/eclipse-temurin:25-jdk-alpine-3.23
 
 ARG USERVICE_HOME=/opt/app/
 
