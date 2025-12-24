@@ -1,0 +1,19 @@
+#FROM openjdk:17
+# https://hub.docker.com/r/arm64v8/eclipse-temurin/
+#FROM arm64v8/eclipse-temurin:21-jdk-ubi9-minimal
+# https://hub.docker.com/r/amd64/eclipse-temurin/
+# missing metadata
+#FROM amd64/eclipse-temurin:25-alpine-3.23 
+FROM eclipse-temurin:25.0.1_8-jdk-alpine-3.23
+
+ARG USERVICE_HOME=/opt/app/
+
+# Build up the deployment folder structure
+RUN mkdir -p $USERVICE_HOME
+
+ADD java-*.jar $USERVICE_HOME/ROOT.jar
+#ADD application_default_credentials.json application_default_credentials.json
+
+#ARG GOOGLE_APPLICATION_CREDENTIALS=application_default_credentials.json
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/opt/app/ROOT.jar"]
+
