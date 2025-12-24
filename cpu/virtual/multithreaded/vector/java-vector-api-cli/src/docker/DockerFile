@@ -15,5 +15,8 @@ ADD java-*.jar $USERVICE_HOME/ROOT.jar
 #ADD application_default_credentials.json application_default_credentials.json
 
 #ARG GOOGLE_APPLICATION_CREDENTIALS=application_default_credentials.json
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/opt/app/ROOT.jar"]
+ENV JAVA_OPTS="-Xms512m -Xmx16384m"
+#CMD ["java", "--add-modules", "jdk.incubator.vector", "-jar", "/opt/app/ROOT.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","--add-modules", "jdk.incubator.vector","-jar","/opt/app/ROOT.jar"]
+
 
