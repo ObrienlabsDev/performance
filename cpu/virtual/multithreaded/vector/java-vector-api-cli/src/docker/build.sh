@@ -42,7 +42,7 @@ docker rm $CONTAINER_IMAGE
 docker run --name $CONTAINER_IMAGE -d -p 8888:8080 $DOCKERHUB_REPO/$CONTAINER_IMAGE:$TAG 
 sleep 1
 docker ps -a
-docker logs $CONTAINER_IMAGE
+#docker logs $CONTAINER_IMAGE
 #docker stop $CONTAINER_IMAGE2
 #docker rm $CONTAINER_IMAGE2
 #docker stop  mysql-dev0
@@ -62,6 +62,7 @@ docker logs $CONTAINER_IMAGE
 
 
 cd ../../src/docker
+docker logs -f $CONTAINER_IMAGE
 
 #echo "http://127.0.0.1:8888/nbi/forward/packet?dnsFrom=host.docker.internal&dnsTo=host.docker.internal&from=8889&to=8888&delay=1000"
 #echo "http://127.0.0.1:8888/nbi/forward/reset"
