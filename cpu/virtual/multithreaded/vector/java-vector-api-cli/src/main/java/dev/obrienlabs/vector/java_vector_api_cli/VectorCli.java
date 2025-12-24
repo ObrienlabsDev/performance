@@ -50,6 +50,7 @@ public class VectorCli {
         e.printStackTrace();
     } finally {
         customPool.shutdown();
+        customPool.close();
     }
 	}
 	
