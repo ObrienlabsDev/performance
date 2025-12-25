@@ -86,10 +86,14 @@ public class VectorCli {
     // parallel 8 Vector size: 4096 width: 128 Time: 11568 ms 
     public static void main( String[] args) {
         //VectorCli vectorCli = new VectorCli();
-        int N = 16384;
+       	int gridPower = 14;
+	int N = 1 << gridPower;
+	int startPower = 7;
+	int endPower = 16; 
         //int threadCount = 8; // M1max 8p2e
         //int threadCount = 8; // M4max 10p4e
-        int threadCount = 28; // m3ultra low 20p8e = 24, 28=
+	int threadCount = 1;
+        int threadMaxCount = 28; // m3ultra low 20p8e = 24, 28=
 
         //System.out.printf("Vector size: %d\n", N); 
         long start = System.nanoTime();
@@ -106,10 +110,11 @@ public class VectorCli {
         }
         
         long duration = 1 + System.nanoTime() - start; 
-        System.out.printf("matrix init time: %d ms\n", duration / NS_TO_MS);
-        int size = 128;//4096;//2;//1 << 12;//2;
-        for(int step=1; step<9; step++) {
-        for(threadCount=1;threadCount<29;threadCount++) {
+        System.out.printf("matrix %d init time: %d ms\n", N, duration / NS_TO_MS);
+        int size = 1 << startPower;
+	System.out.printf("start: %d end: %d\n", size, endPower);
+        for(int step=startPower-1; step<endPower; step++) {
+        for(threadCount=1;threadCount<(1+threadMaxCount);threadCount++) {
             start = System.nanoTime();
             //try {
             multiplyParallelPCores(threadCount,A, B, C, size);//N);
@@ -125,7 +130,7 @@ public class VectorCli {
             //System.out.printf("Vector size: %d width: %d Time: %d ms %n", size, SPECIES.vectorBitSize(), duration / NS_TO_MS);
             //size*=2;
         }
-        size*=2;
+        size*= 2;
     }
     }
 
