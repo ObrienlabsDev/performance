@@ -1,0 +1,25 @@
+#FROM openjdk:17
+# https://hub.docker.com/r/arm64v8/eclipse-temurin/
+#FROM arm64v8/eclipse-temurin:21-jdk-ubi9-minimal
+# https://hub.docker.com/r/amd64/eclipse-temurin/
+# missing metadata
+#FROM amd64/eclipse-temurin:25-alpine-3.23 
+#FROM eclipse-temurin:25.0.1_8-jdk-alpine-3.23
+# not performant 2048:17193 instead of 2048:4450 for single native thread
+# this is due to memory sharing slowing down native vector operations - docker is not usable for the Vector API
+FROM arm64v8/eclipse-temurin:25-jdk-alpine-3.23
+
+ARG USERVICE_HOME=/opt/app/
+
+# Build up the deployment folder structure
+RUN mkdir -p $USERVICE_HOME
+
+ADD java-*.jar $USERVICE_HOME/ROOT.jar
+#ADD application_default_credentials.json application_default_credentials.json
+
+#ARG GOOGLE_APPLICATION_CREDENTIALS=application_default_credentials.json
+ENV JAVA_OPTS="-Xmx16384m"
+#CMD ["java", "--add-modules", "jdk.incubator.vector", "-jar", "/opt/app/ROOT.jar"]
+ENTRYPOINT ["java","-Xmx16384m", "-Djava.security.egd=file:/dev/./urandom","--add-modules", "jdk.incubator.vector","-jar","/opt/app/ROOT.jar"]
+
+
