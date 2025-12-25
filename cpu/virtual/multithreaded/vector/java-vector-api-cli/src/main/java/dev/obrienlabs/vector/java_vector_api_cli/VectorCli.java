@@ -108,7 +108,7 @@ public class VectorCli {
         long duration = 1 + System.nanoTime() - start; 
         System.out.printf("matrix init time: %d ms\n", duration / NS_TO_MS);
         int size = 128;//4096;//2;//1 << 12;//2;
-        for(int step=1; step<14; step++) {
+        for(int step=1; step<9; step++) {
         for(threadCount=1;threadCount<29;threadCount++) {
             start = System.nanoTime();
             //try {
