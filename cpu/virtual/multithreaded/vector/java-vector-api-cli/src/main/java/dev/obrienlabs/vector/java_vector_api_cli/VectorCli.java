@@ -114,7 +114,7 @@ public class VectorCli {
             //try {
             multiplyParallelPCores(threadCount,A, B, C, size);//N);
             duration = 1 + System.nanoTime() - start; // divide/zero/error
-            System.out.printf("Vector: %d width: %d thread: %d Time: %d ms %n", 
+            System.out.printf("Vector,%d,width,%d,thread,%d,time,%d %n", 
                 size, SPECIES.vectorBitSize(), threadCount, duration / NS_TO_MS);
             start = System.nanoTime();
             //multiply(1, A, B, C, size);//N);
