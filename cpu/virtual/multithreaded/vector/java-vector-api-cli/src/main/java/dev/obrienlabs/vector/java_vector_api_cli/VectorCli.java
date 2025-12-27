@@ -89,7 +89,7 @@ public class VectorCli {
        	int gridPower = 14;
 	int N = 1 << gridPower;
 	int startPower = 7;
-	int endPower = 16; 
+	int endPower = gridPower; 
         //int threadCount = 8; // M1max 8p2e
         //int threadCount = 8; // M4max 10p4e
 	int threadCount = 1;
