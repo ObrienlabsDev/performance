@@ -926,4 +926,12 @@ m0: 0:4611687388055180647 p: 1241 m: 11987849323931:16046514479390312240=2211367
 ## Propeller 32 bit 8 core 20MHz Microcontroller Assembly
 - https://github.com/ObrienlabsDev/assembly/blob/main/propeller/propCollatz_13_20120317h.spin
 - https://github.com/ObrienlabsDev/performance/issues/44
+
+# GPT-OSS:20B 
+Tokens/sec for various M series and NVidia Ampere, Ada and Grace Blackwell GPUs
+
+20260120 - https://github.com/ObrienlabsDev/blog/issues/160
+
+<img width="843" height="516" alt="Image" src="https://github.com/user-attachments/assets/8d20f266-5cc0-4bf0-8145-e9a1e9e13da1" />
+
 # Links
