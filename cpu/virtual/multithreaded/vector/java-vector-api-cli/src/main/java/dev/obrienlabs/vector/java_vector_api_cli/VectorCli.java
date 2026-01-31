@@ -4,7 +4,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
 
-import jdk.incubator.vector.*;
+import jdk.incubator.vector.FloatVector;
+import jdk.incubator.vector.VectorMask;
+import jdk.incubator.vector.VectorSpecies;
 
 /**
  * https://github.com/ObrienlabsDev/performance/issues/42
@@ -93,7 +95,7 @@ public class VectorCli {
         //int threadCount = 8; // M1max 8p2e
         //int threadCount = 8; // M4max 10p4e
 	int threadCount = 1;
-        int threadMaxCount = 28; // m3ultra low 20p8e = 24, 28=
+        int threadMaxCount = 32; // m3ultra low 20p8e = 28, 32 for 13900/14900 8p16e x ht = 32
 
         //System.out.printf("Vector size: %d\n", N); 
         long start = System.nanoTime();
@@ -112,7 +114,7 @@ public class VectorCli {
         long duration = 1 + System.nanoTime() - start; 
         System.out.printf("matrix %d init time: %d ms\n", N, duration / NS_TO_MS);
         int size = 1 << startPower;
-	System.out.printf("start: %d end: %d\n", size, endPower);
+        System.out.printf("start: %d end: %d\n", size, endPower);
         for(int step=startPower-1; step<endPower; step++) {
         for(threadCount=1;threadCount<(1+threadMaxCount);threadCount++) {
             start = System.nanoTime();
