@@ -1,6 +1,6 @@
 # Abstract
 This article attempts to systematically determine the optimized spot where we can push our hardware to the fullest possible use.
-Multithreaded optimization depends on multiple factors including CPU/GPU type (M4Max vs 14900 or MetalCUDA.  Operations involving space-time tradeoffs like heap usage need to be fine tuned around batch sizes.
+Multithreaded optimization depends on multiple factors including CPU/GPU type (M4Max vs 14900 or Metal vs CUDA.  Operations involving space-time tradeoffs like heap usage need to be fine tuned around batch sizes.
 
 A secondary requirement of this multi-language work is to demonstrate, test and learn about concurrency and throughput of various languages under various types of bound workloads - https://github.com/ObrienlabsDev/blog/blob/main/programming_language_index.md
 
